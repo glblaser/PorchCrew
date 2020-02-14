@@ -16,7 +16,7 @@ CREATE TABLE players (
   donationsReceived int,
   totalDonations int,
   warDayWins int,
-  clanCardsCollectred int,
+  clanCardsCollected int,
   clanTag varchar,
   CONSTRAINT pk_players PRIMARY KEY (
     tag

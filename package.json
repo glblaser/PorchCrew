@@ -10,7 +10,9 @@
     "start-oh": "webpack -d --watch",
     "start-server": "nodemon server/server.js",
     "build": "webpack --mode production",
-    "full-start": "webpack"
+    "full-start": "webpack",
+    "migrate": "flyway migrate -configFiles=conf/flyway.config",
+    "clean": "flyway clean -configFiles=conf/flyway.config"
   },
   "repository": {
     "type": "git",
