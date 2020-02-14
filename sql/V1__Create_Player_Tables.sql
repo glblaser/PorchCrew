@@ -48,13 +48,12 @@ CREATE TABLE currentDecks (
 );
 
 CREATE TABLE playerCards (
-  id SERIAL NOT NULL,
-  tag varchar,
+  tag varchar NOT NULL,
   cardID int,
   cardLevel int,
   cardCount int,
-  CONSTRAINT pk_playerCards PRIMARY KEY (
-    id
+  CONSTRAINT pk_playerCards_tag_cardID PRIMARY KEY (
+    tag, cardID
   )
 );
 
