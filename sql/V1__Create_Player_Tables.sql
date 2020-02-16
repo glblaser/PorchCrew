@@ -1,80 +1,96 @@
 CREATE TABLE players (
+  "createdAt" timestamptz,
+  "updatedAt" timestamptz,
   tag varchar UNIQUE NOT NULL,
   name varchar,
-  expLevel int,
+  "expLevel" int,
   trophies int,
-  bestTropies int,
+  "bestTrophies" int,
   wins int,
   losses int,
-  battleCount int,
-  threeCrownWins int,
-  challengeCardsWon int,
-  challengeMaxWins int,
-  tournamentBattleCount int,
+  "battleCount" int,
+  "threeCrownWins" int,
+  "challengeCardsWon" int,
+  "challengeMaxWins" int,
+  "tournamentBattleCount" int,
   role varchar,
   donations int,
-  donationsReceived int,
-  totalDonations int,
-  warDayWins int,
-  clanCardsCollected int,
-  clanTag varchar,
+  "donationsReceived" int,
+  "totalDonations" int,
+  "warDayWins" int,
+  "clanCardsCollected" int,
+  "clanTag" varchar,
   CONSTRAINT pk_players PRIMARY KEY (
     tag
   )
 );
 
-CREATE TABLE cards (
-  id int UNIQUE NOT NULL,
-  name varchar,
-  icon varchar,
-  CONSTRAINT pk_cards PRIMARY KEY (
-    id
-  )
-);
-
-CREATE TABLE currentDecks (
-  playerTag varchar UNIQUE NOT NULL,
-  card1ID int,
-  card2ID int,
-  card3ID int,
-  card4ID int,
-  card5ID int,
-  card6ID int,
-  card7ID int,
-  card8ID int,
+CREATE TABLE current_decks (
+  "createdAt" timestamptz,
+  "updatedAt" timestamptz,
+  "playerTag" varchar UNIQUE NOT NULL,
+  "card1Id" int,
+  "card2Id" int,
+  "card3Id" int,
+  "card4Id" int,
+  "card5Id" int,
+  "card6Id" int,
+  "card7Id" int,
+  "card8Id" int,
   CONSTRAINT pk_currentDecks PRIMARY KEY (
-    playerTag
+    "playerTag"
   )
 );
 
-CREATE TABLE playerCards (
+CREATE TABLE player_cards (
+  "createdAt" timestamptz,
+  "updatedAt" timestamptz,
   tag varchar NOT NULL,
-  cardID int,
-  cardLevel int,
-  cardCount int,
+  "cardId" int,
+  "cardLevel" int,
+  "cardCount" int,
   CONSTRAINT pk_playerCards_tag_cardID PRIMARY KEY (
-    tag, cardID
+    tag, "cardId"
   )
 );
 
-ALTER TABLE currentDecks ADD FOREIGN KEY (playerTag) REFERENCES players (tag);
+CREATE TABLE clans (
+  "createdAt" timestamptz,
+  "updatedAt" timestamptz,
+  tag varchar NOT NULL,
+  name varchar,
+  type varchar,
+  description varchar,
+  "badgeId" int,
+  "clanScore" int,
+  "clanWarTrophies" int,
+  "locationId" int,
+  "locationName" varchar,
+  "locationIsCountry" boolean,
+  "locationCountryCode" varchar,
+  "requiredTrophies" int,
+  "donationsPerWeek" int,
+  members int,
+  CONSTRAINT pk_clans PRIMARY KEY (
+    tag
+  )
+);
 
-ALTER TABLE currentDecks ADD FOREIGN KEY (card1ID) REFERENCES cards (id);
-
-ALTER TABLE currentDecks ADD FOREIGN KEY (card2ID) REFERENCES cards (id);
-
-ALTER TABLE currentDecks ADD FOREIGN KEY (card3ID) REFERENCES cards (id);
-
-ALTER TABLE currentDecks ADD FOREIGN KEY (card4ID) REFERENCES cards (id);
-
-ALTER TABLE currentDecks ADD FOREIGN KEY (card5ID) REFERENCES cards (id);
-
-ALTER TABLE currentDecks ADD FOREIGN KEY (card6ID) REFERENCES cards (id);
-
-ALTER TABLE currentDecks ADD FOREIGN KEY (card7ID) REFERENCES cards (id);
-
-ALTER TABLE currentDecks ADD FOREIGN KEY (card8ID) REFERENCES cards (id);
-
-ALTER TABLE playerCards ADD FOREIGN KEY (tag) REFERENCES players (tag);
-
-ALTER TABLE playerCards ADD FOREIGN KEY (cardID) REFERENCES cards (id);
+CREATE TABLE clan_players (
+  "createdAt" timestamptz,
+  "updatedAt" timestamptz,
+  "clanTag" varchar,
+  "playerTag" varchar,
+  name varchar,
+  role varchar,
+  "lastSeen" timestamptz,
+  "expLevel" int,
+  trophies int,
+  "clanRank" int,
+  "previousClanRank" int,
+  donations int,
+  "donationsReceived" int,
+  CONSTRAINT pk_clan_players_clanTag_playerTag PRIMARY KEY (
+    "playerTag"
+  )
+);

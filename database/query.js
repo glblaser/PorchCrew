@@ -1,99 +1,54 @@
-const db = require('./db.js');
+const { Player, Current_Deck, Player_Card, Clan, Clan_Player } = require('../database/models.js');
 
-const updatePlayer = ({
-  tag,
-  name,
-  expLevel,
-  trophies,
-  bestTropies,
-  wins,
-  losses,
-  battleCount,
-  threeCrownWins,
-  challengeCardsWon,
-  challengeMaxWins,
-  tournamentBattleCount,
-  role,
-  donations,
-  donationsReceived,
-  totalDonations,
-  warDayWins,
-  clanCardsCollected,
-  clan
-}) => {
+const updatePlayer = (player) => {
+  player.clanTag = player.clan.tag
+  Player.upsert(player)
+    .then(record => {console.log(record)})
+    .catch(err => console.log('Error updating players: ', err))
 
-    console.log(tag)
-  const query = {
-    name: 'updatePlayer',
-    text: `INSERT INTO players (tag, name, expLevel, trophies, bestTropies, wins, losses, battleCount, threeCrownWins, challengeCardsWon, challengeMaxWins, tournamentBattleCount, role, donations, donationsReceived, totalDonations, warDayWins, clanCardsCollected, clanTag) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19) ON CONFLICT (tag) DO UPDATE SET (name, expLevel, trophies, bestTropies, wins, losses, battleCount, threeCrownWins, challengeCardsWon, challengeMaxWins, tournamentBattleCount, role, donations, donationsReceived, totalDonations, warDayWins, clanCardsCollected, clanTag)=(EXCLUDED.name, EXCLUDED.expLevel, EXCLUDED.trophies, EXCLUDED.bestTropies, EXCLUDED.wins, EXCLUDED.losses, EXCLUDED.battleCount, EXCLUDED.threeCrownWins, EXCLUDED.challengeCardsWon, EXCLUDED.challengeMaxWins, EXCLUDED.tournamentBattleCount, EXCLUDED.role, EXCLUDED.donations, EXCLUDED.donationsReceived, EXCLUDED.totalDonations, EXCLUDED.warDayWins, EXCLUDED.clanCardsCollected, EXCLUDED.clanTag)`,
-    values: [
-      tag,
-      name,
-      expLevel,
-      trophies,
-      bestTropies,
-      wins,
-      losses,
-      battleCount,
-      threeCrownWins,
-      challengeCardsWon,
-      challengeMaxWins,
-      tournamentBattleCount,
-      role,
-      donations,
-      donationsReceived,
-      totalDonations,
-      warDayWins,
-      clanCardsCollected,
-      clan.tag
-    ]
-  };
-
-  return db.query(query);
-};
-
-const updateCurrentDeck = ({ tag, currentDeck }) => {
-  const query = {
-    name: 'updateCurrentDeck',
-    text: 'INSERT INTO currentDecks (playerTag, card1ID, card2ID, card3ID, card4ID, card5ID, card6ID, card7ID, card8ID) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) ON CONFLICT (playerTag) DO UPDATE SET (card1ID, card2ID, card3ID, card4ID, card5ID, card6ID, card7ID, card8ID)=(EXCLUDED.card1ID, EXCLUDED.card2ID, EXCLUDED.card3ID, EXCLUDED.card4ID, EXCLUDED.card5ID, EXCLUDED.card6ID, EXCLUDED.card7ID, EXCLUDED.card8ID);',
-    values: [
-      tag,
-      currentDeck[0].id,
-      currentDeck[1].id,
-      currentDeck[2].id,
-      currentDeck[3].id,
-      currentDeck[4].id,
-      currentDeck[5].id,
-      currentDeck[6].id,
-      currentDeck[7].id
-    ]
-  };
-
-  return db.query(query);
-};
-
-const insertCard = card => {
-  const query = {
-    name: 'insertCard',
-    text: 'INSERT INTO cards (id, name, icon) VALUES ($1, $2, $3) ON CONFLICT (id) DO NOTHING',
-    values: [
-      card.id,
-      card.name,
-      card.iconUrls.medium
-    ]
-  };
-
-  return db.query(query);
 }
 
-const testQuery = tag => {
-  const query = {
-    name: 'testQuery',
-    text: 'INSERT INTO xyz (tag) VALUES ($1);',
-    values: [tag]
-  };
+const bulkUpdatePlayers = () => {
 
-  return db.query(query);
-};
+}
 
-module.exports = { testQuery, updatePlayer, updateCurrentDeck, insertCard };
+const updateCurrentDeck = ({ tag, currentDeck }) => {
+  let deck = {playerTag: tag}
+  currentDeck.forEach((card, ind) => {
+    let key = `card${ind+1}Id`
+    deck[key] = card.id
+  })
+  Current_Deck.upsert(deck)
+    .then(console.log)
+    .catch(err => console.log('Error updating current_decks: ', err))
+}
+
+const updatePlayerCards = (records) => {
+  Player_Card.bulkCreate(records, {
+    updateOnDuplicate: ['updatedAt', 'cardLeve', 'cardCount']
+  })
+    .then(console.log)
+    .catch(err => console.log('Error updating player_cards: ', err))
+}
+
+const updateClan = (clan) => {
+  clan.locationId = clan.location.id
+  clan.locationName = clan.location.name
+  clan.locationIsCountry = clan.location.isCountry
+  clan.locationCountryCode = clan.location.countryCode
+
+  Clan.upsert(clan)
+    .then(console.log)
+    .catch(err => console.log('Error updating clans: ', err))
+}
+
+const updateClanPlayers = (memberList) => {
+  Clan_Player.bulkCreate(memberList, {
+    updateOnDuplicate: ['updatedAt', 'clanTag', 'name', 'role', 'lastSeen', 'expLevel', 'trophies', 'clanRank', 'previousClanRank', 'donations', 'donationsReceived']
+  })
+    .then(console.log)
+    .catch(err => console.log('Error updating clan_players: ', err))
+
+}
+
+module.exports = { updatePlayer, bulkUpdatePlayers, updateCurrentDeck, updatePlayerCards, updateClan, updateClanPlayers };
