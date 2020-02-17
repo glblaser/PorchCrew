@@ -31,12 +31,7 @@ const bulkUpdatePlayers = (players) => {
     .catch(err => console.log('Error updating clan_players: ', err))
 }
 
-const updateCurrentDeck = ({ tag, currentDeck }) => {
-  let deck = {playerTag: tag}
-  currentDeck.forEach((card, ind) => {
-    let key = `card${ind+1}Id`
-    deck[key] = card.id
-  })
+const updateCurrentDeck = (deck) => {
   Current_Deck.upsert(deck)
     .then(console.log)
     .catch(err => console.log('Error updating current_decks: ', err))
@@ -59,11 +54,6 @@ const updatePlayerCards = (records) => {
 }
 
 const updateClan = (clan) => {
-  clan.locationId = clan.location.id
-  clan.locationName = clan.location.name
-  clan.locationIsCountry = clan.location.isCountry
-  clan.locationCountryCode = clan.location.countryCode
-
   Clan.upsert(clan)
     .then(console.log)
     .catch(err => console.log('Error updating clans: ', err))

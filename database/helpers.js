@@ -72,8 +72,14 @@ const savePlayerData = async (tags=['#PLQLR82YQ'], playerCache) => {
     const data = await fetchPlayerData(newTags[0])
     let playerCards = buildPlayerCards(data.tag, data.cards)
 
+    let deck = {playerTag: tag}
+    data.currentDeck.forEach((card, ind) => {
+      let key = `card${ind+1}Id`
+      deck[key] = card.id
+    })
+
     updatePlayer(data)
-    updateCurrentDeck(data)
+    updateCurrentDeck(deck)
     updatePlayerCards(playerCards)
 
     playerCache.set(newTags[0], true)
@@ -134,6 +140,11 @@ const saveClanData = async (tag='#9VUPUQJP', clanCache, playerCache) => {
   if (!clanCache.get(tag) && tag != undefined) {
     const data = await fetchClanData(tag)
     let clanPlayers = buildClanPlayersArray(data.tag, data.memberList)
+
+    data.locationId = data.location.id
+    data.locationName = data.location.name
+    data.locationIsCountry = data.location.isCountry
+    data.locationCountryCode = data.location.countryCode
   
     updateClan(data)
     updateClanPlayers(clanPlayers)
@@ -211,7 +222,7 @@ const buildWarPlayersRecords = (warId, clanTag, participants) => {
       collectionDayBattlesPlayed: participant.collectionDayBattlesPlayed,
       numberOfBattles: participant.numberOfBattles
     }
-    
+
     return warPlayerRecord
   })
 
