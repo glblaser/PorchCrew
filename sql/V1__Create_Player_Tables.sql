@@ -94,3 +94,38 @@ CREATE TABLE clan_players (
     "playerTag"
   )
 );
+
+CREATE TABLE clan_war_players (
+  "createdAt" timestamptz,
+  "updatedAt" timestamptz,
+  "warId" varchar NOT NULL,
+  "clanTag" varchar,
+  "playerTag" varchar NOT NULL,
+  name varchar,
+  "cardsEarned" int,
+  "battlesPlayed" int,
+  wins int,
+  "collectionDayBattlesPlayed" int,
+  "numberOfBattles" int,
+  CONSTRAINT pk_clan_war_players_warId_playerTag PRIMARY KEY (
+    "warId", "playerTag"
+  )
+);
+
+CREATE TABLE clan_wars (
+  "createdAt" timestamptz,
+  "updatedAt" timestamptz,
+  "warId" varchar NOT NULL,
+  "tag" varchar,
+  "seasonId" varchar,
+  "createdDate" timestamptz,
+  "clanScore" int,
+  participants int,
+  "battlesPlayed" int,
+  wins int,
+  "crowns" int,
+  "standing" int,
+  CONSTRAINT pk_clan_wars_warId_tag PRIMARY KEY (
+    "warId", "tag"
+  )
+)

@@ -1,7 +1,7 @@
 const axios = require('axios');
 require('dotenv').config()
 
-const authHeader = { headers: { Authorization: 'Bearer: ' + process.env.API_KEY_HOME } }
+const authHeader = { headers: { Authorization: 'Bearer: ' + process.env.API_KEY_BUZZMILL } }
 const cardDictionary = {}
 
 const fetchCards = () => {
@@ -49,4 +49,13 @@ const fetchClanData = (tag='#9VUPUQJP') => {
     .catch(err => console.log(err));
 }
 
-module.exports = { fetchClanData, fetchPlayerData, populateCardDictionary, cardDictionary };
+const fetchClanWarlogData = (tag='9VUPUQJP') => {
+  tag = encodeURIComponent(tag)
+  return axios.get(`https://api.clashroyale.com/v1/clans/${tag}/warlog`, authHeader)
+    .then(res => {
+      return res.data;
+    })
+    .catch(err => console.log(err));
+}
+
+module.exports = { fetchClanData, fetchPlayerData, populateCardDictionary, cardDictionary, fetchClanWarlogData };

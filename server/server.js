@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
 require('dotenv').config()
+const { populateCardDictionary } = require('../database/clashapi.js');
+const  { saveClanData, saveDeck, savePlayer, savePlayerCards, savePlayerData, saveWarlogData } = require('../database/helpers.js')
 
 const port = process.env.PORT || 3099;
 

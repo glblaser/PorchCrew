@@ -1,15 +1,34 @@
-const { Player, Current_Deck, Player_Card, Clan, Clan_Player } = require('../database/models.js');
+const { Player, Current_Deck, Player_Card, Clan, Clan_Player, Clan_War_Player, Clan_War } = require('../database/models.js');
 
 const updatePlayer = (player) => {
   player.clanTag = player.clan.tag
   Player.upsert(player)
     .then(record => {console.log(record)})
     .catch(err => console.log('Error updating players: ', err))
-
 }
 
-const bulkUpdatePlayers = () => {
+const updateClanWars = (wars) => {
+  Clan_War.bulkCreate(wars, {
+    ignoreDuplicates: true
+  })
+    .then(console.log)
+    .catch(err => console.log('Error updating clan_wars: ', err))
+}
 
+const updateClanWarPlayers = (players) => {
+  Clan_War_Player.bulkCreate(players, {
+    ignoreDuplicates: true
+  })
+  .then(console.log)
+  .catch(err => console.log('Error updating clan_war_players: ', err))
+}
+
+const bulkUpdatePlayers = (players) => {
+  Player.bulkCreate(players, {
+    updateOnDuplicate: ['updatedAt', 'name', 'expLevel', 'trophies', 'bestTrophies', 'wins', 'losses', 'battleCount', 'threeCrownWins', 'challengeCardsWon', 'challengeMaxWins', 'tournamentBattleCount', 'role', 'donations', 'donationsReceived', 'warDayWins', 'clanCardsCollected', 'clanTag']
+  })
+    .then(console.log)
+    .catch(err => console.log('Error updating clan_players: ', err))
 }
 
 const updateCurrentDeck = ({ tag, currentDeck }) => {
@@ -21,6 +40,14 @@ const updateCurrentDeck = ({ tag, currentDeck }) => {
   Current_Deck.upsert(deck)
     .then(console.log)
     .catch(err => console.log('Error updating current_decks: ', err))
+}
+
+const bulkUpdateCurrentDecks = (decks) => {
+  Current_Deck.bulkCreate(decks, {
+    updateOnDuplicate: ['updatedAt', 'card1Id', 'card2Id', 'card3Id', 'card4Id', 'card5Id', 'card6Id', 'card7Id', 'card8Id']
+  })
+    .then(console.log)
+    .catch(err => console.log('Error bulk updating current_decks: ', err))
 }
 
 const updatePlayerCards = (records) => {
@@ -51,4 +78,4 @@ const updateClanPlayers = (memberList) => {
 
 }
 
-module.exports = { updatePlayer, bulkUpdatePlayers, updateCurrentDeck, updatePlayerCards, updateClan, updateClanPlayers };
+module.exports = { updatePlayer, bulkUpdatePlayers, updateCurrentDeck, bulkUpdateCurrentDecks, updatePlayerCards, updateClan, updateClanPlayers, updateClanWars, updateClanWarPlayers };

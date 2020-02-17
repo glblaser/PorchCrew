@@ -215,4 +215,81 @@ const Clan_Player = sequelize.define('clan_player', {
   // options
 });
 
-module.exports = { Player, Current_Deck, Player_Card, Clan, Clan_Player }
+const Clan_War_Player = sequelize.define('clan_war_player', {
+  // attributes
+  warId: {
+    type: Sequelize.STRING,
+    primaryKey: true,
+    allowNull: false
+  },
+  clanTag: {
+    type: Sequelize.STRING,
+    primaryKey: true,
+    allowNull: false
+  },
+  playerTag: {
+    type: Sequelize.STRING
+  },
+  name: {
+    type: Sequelize.STRING
+  },
+  cardsEarned: {
+    type: Sequelize.INTEGER
+  },
+  battlesPlayed: {
+    type: Sequelize.INTEGER
+  },
+  wins: {
+    type: Sequelize.INTEGER
+  },
+  collectionDayBattlesPlayed: {
+    type: Sequelize.INTEGER
+  },
+  numberOfBattles: {
+    type: Sequelize.INTEGER
+  }
+}, {
+  // options
+});
+
+const Clan_War = sequelize.define('clan_war', {
+  // attributes
+  warId: {
+    type: Sequelize.STRING,
+    primaryKey: true,
+    allowNull: false
+  },
+  tag: {
+    type: Sequelize.STRING,
+    primaryKey: true,
+    allowNull: false
+  },
+  seasonId: {
+    type: Sequelize.INTEGER
+  },
+  createdDate: {
+    type: Sequelize.DATE
+  },
+  clanScore: {
+    type: Sequelize.INTEGER
+  },
+  participants: {
+    type: Sequelize.INTEGER
+  },
+  battlesPlayed: {
+    type: Sequelize.INTEGER
+  },
+  wins: {
+    type: Sequelize.INTEGER
+  },
+  crowns: {
+    type: Sequelize.INTEGER
+  },
+  standing: {
+    type: Sequelize.INTEGER
+  }
+}, {
+  // options
+});
+
+module.exports = { Player, Current_Deck, Player_Card, Clan, Clan_Player, Clan_War_Player, Clan_War }
