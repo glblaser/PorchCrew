@@ -1,9 +1,12 @@
 const { fetchClanData, fetchPlayerData, populateCardDictionary, cardDictionary, fetchClanWarlogData } = require('./clashapi.js');
-const { updatePlayer, bulkUpdatePlayers, updateCurrentDeck, bulkUpdateCurrentDecks, updatePlayerCards, updateClan, updateClanPlayers, updateClanWars, updateClanWarPlayers } = require('./query.js');
+const { updatePlayer, bulkUpdatePlayers, updateCurrentDeck, bulkUpdateCurrentDecks, updatePlayerCards, updateClan, updateClanPlayers, updateClanWars, updateClanWarPlayers, getInitPlayerCache, getInitClanCache } = require('./query.js');
 const moment = require("moment");
+const { Op } = require('sequelize')
+
 
 const Client = ({ playerCache, clanCache }) => {
   return {
+    initCache: () => {initCache(playerCache, clanCache)},
     savePlayer: (tag='#PLQLR82YQ') => {savePlayer(tag, playerCache)},
     saveDeck: (tag='#PLQLR82YQ') => {saveDeck(tag, playerCache)},
     savePlayerCards: (tag='#PLQLR82YQ') => {savePlayerCards(tag, playerCache)},
@@ -11,6 +14,34 @@ const Client = ({ playerCache, clanCache }) => {
     saveClanData: (tag='#9VUPUQJP') => {saveClanData(tag, clanCache, playerCache)},
     saveWarlogData: (tag='#9VUPUQJP') => {saveWarlogData(tag, clanCache)}
   }
+}
+
+const initCache = async (playerCache, clanCache) => {
+  let playerCacheData = await getInitPlayerCache()
+  playerCache.mset(playerCacheData.map(row => row.dataValues)
+    .map(row => {
+      //ttl is 1 hour minus the difference between 'now' and last update
+      let ttl = 3600 - moment().diff(moment(row.updatedAt), 'seconds')
+      return {
+        key: row.tag,
+        val: true,
+        ttl: ttl
+      }
+    })
+  )
+
+  let clanCacheData = await getInitClanCache()
+  clanCache.mset(clanCacheData.map(row => row.dataValues)
+    .map(row => {
+      //ttl is 1 day minus the difference between 'now' and last update
+      let ttl = 86400 - moment().diff(moment(row.updatedAt), 'seconds')
+      return {
+        key: row.tag,
+        val: true,
+        ttl: ttl
+      }
+    })
+  )
 }
 
 const savePlayer = async (tag, playerCache) => {
@@ -72,7 +103,7 @@ const savePlayerData = async (tags=['#PLQLR82YQ'], playerCache) => {
     const data = await fetchPlayerData(newTags[0])
     let playerCards = buildPlayerCards(data.tag, data.cards)
 
-    let deck = {playerTag: tag}
+    let deck = {playerTag: newTags[0]}
     data.currentDeck.forEach((card, ind) => {
       let key = `card${ind+1}Id`
       deck[key] = card.id

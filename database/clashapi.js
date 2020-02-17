@@ -1,7 +1,7 @@
 const axios = require('axios');
 require('dotenv').config()
 
-const authHeader = { headers: { Authorization: 'Bearer: ' + process.env.API_KEY_BUZZMILL } }
+const authHeader = { headers: { Authorization: 'Bearer: ' + process.env.API_KEY_HOME } }
 const cardDictionary = {}
 
 const fetchCards = () => {

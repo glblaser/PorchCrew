@@ -15,24 +15,9 @@ app.use(
     strict: false
   })
 );
+
 const client = Client(caches)
-
-// client.savePlayerData(['#9VJ9RJL0U'])
-// client.saveClanData()
-// caches.playerCache.set('#PLQLR82YQ',true)
-// client.savePlayer()
-
-// client.saveDeck()
-// client.savePlayerCards()
-// client.savePlayerData(['#PGJQ80JV9', '#9U9Q9YJU'])
-// client.saveClanData()
-// client.saveWarlogData()
-// client.savePlayerData(['#9VJ9RJL0U', '#8CG2P29R0', '#VVJCVC98'])
-
-
-// caches.clanCache.set('124', true)
-// setTimeout(function(){ console.log(caches.playerCache.keys()) }, 3000);
-// setTimeout(function(){ console.log(caches.clanCache.keys()) }, 4000)
+client.initCache()
 
 app.listen(port, () => {
   console.log(`The shenanigans have started on aisle ${port}`);

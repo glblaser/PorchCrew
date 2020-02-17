@@ -1,5 +1,8 @@
 const { Player, Current_Deck, Player_Card, Clan, Clan_Player, Clan_War_Player, Clan_War } = require('../database/models.js');
 
+const moment = require("moment");
+const { Op } = require('sequelize')
+
 const updatePlayer = (player) => {
   player.clanTag = player.clan.tag
   Player.upsert(player)
@@ -65,7 +68,28 @@ const updateClanPlayers = (memberList) => {
   })
     .then(console.log)
     .catch(err => console.log('Error updating clan_players: ', err))
-
 }
 
-module.exports = { updatePlayer, bulkUpdatePlayers, updateCurrentDeck, bulkUpdateCurrentDecks, updatePlayerCards, updateClan, updateClanPlayers, updateClanWars, updateClanWarPlayers };
+const getInitPlayerCache = () => {
+  return Player.findAll({
+    attributes: ['tag', 'updatedAt'],
+    where: {
+      updatedAt: {
+        [Op.gte]: moment().subtract(3600, 'seconds').toDate()
+      }
+    }
+  })
+}
+
+const getInitClanCache = () => {
+  return Clan.findAll({
+    attributes: ['tag', 'updatedAt'],
+    where: {
+      updatedAt: {
+        [Op.gte]: moment().subtract(1, 'days').toDate()
+      }
+    }
+  })
+}
+
+module.exports = { updatePlayer, bulkUpdatePlayers, updateCurrentDeck, bulkUpdateCurrentDecks, updatePlayerCards, updateClan, updateClanPlayers, updateClanWars, updateClanWarPlayers, getInitPlayerCache, getInitClanCache };
