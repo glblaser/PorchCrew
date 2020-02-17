@@ -12,7 +12,7 @@ const Client = ({ playerCache, clanCache }) => {
     savePlayerCards: (tag='#PLQLR82YQ') => {savePlayerCards(tag, playerCache)},
     savePlayerData: (tags=['#PLQLR82YQ']) => {savePlayerData(tags, playerCache)},
     saveClanData: (tag='#9VUPUQJP') => {saveClanData(tag, clanCache, playerCache)},
-    saveWarlogData: (tag='#9VUPUQJP') => {saveWarlogData(tag, clanCache)}
+    saveWarlogData: (tag='#9VUPUQJP') => {saveWarlogData(tag, clanCache, playerCache)}
   }
 }
 
@@ -170,7 +170,7 @@ const buildClanPlayersArray = (tag, players) => {
 const saveClanData = async (tag='#9VUPUQJP', clanCache, playerCache) => {
   if (!clanCache.get(tag) && tag != undefined) {
     const data = await fetchClanData(tag)
-    let clanPlayers = buildClanPlayersArray(data.tag, data.memberList)
+    const clanPlayers = buildClanPlayersArray(data.tag, data.memberList)
 
     data.locationId = data.location.id
     data.locationName = data.location.name
@@ -180,63 +180,85 @@ const saveClanData = async (tag='#9VUPUQJP', clanCache, playerCache) => {
     updateClan(data)
     updateClanPlayers(clanPlayers)
   
-    let playerTags = data.memberList.map(member => member.tag)
+    const playerTags = data.memberList.map(member => member.tag)
     savePlayerData(playerTags, playerCache)
 
     clanCache.set(tag, true)
+
+    //wabt to return playerTags to separate ou the save clan from save players
   } else {
     return true
   }
 }
 
 const buildWarlogRecords = (clanTag, data) => {
-  let warPlayerRecords =[]
+  let warPlayerRecords = []
+  let allOpponents = new Set()
   
-  let clanWarRecords = data.map(war => {
-    let warRecord =   {
+  const clanWarRecords = data.map(war => {
+    const warRecord =   {
       tag: clanTag,
       seasonId: war.seasonId,
       createdDate: moment.utc(war.createdDate).format()
     }
+    const clans = []
 
-    let clans = []
-    war.standings.forEach((clan, ind) => {
-      clans.push(clan.clan.tag)
-      if (clan.clan.tag === clanTag) {
-        warRecord.clanScore = clan.clan.clanScore
-        warRecord.participants = clan.clan.participants
-        warRecord.battlesPlayed = clan.clan.battlesPlayed
-        warRecord.wins = clan.clan.wins
-        warRecord.crowns = clan.clan.crowns
+    war.standings.forEach(({ clan }, ind) => {
+      clans.push(clan.tag)
+      if (clan.tag === clanTag) {
+        warRecord.clanScore = clan.clanScore
+        warRecord.participants = clan.participants
+        warRecord.battlesPlayed = clan.battlesPlayed
+        warRecord.wins = clan.wins
+        warRecord.crowns = clan.crowns
         warRecord.standing = ind + 1
       }
     })
 
+    clans.forEach(clan => {
+      allOpponents.add(clan)
+    })
     warRecord.warId = clans.sort().join('.')
 
     warPlayerRecords = warPlayerRecords.concat(buildWarPlayersRecords(warRecord.warId, clanTag, war.participants))
 
     return warRecord
   })
+  
+  allOpponents.delete(clanTag)
 
   let warlog = {
     clanWarRecords: clanWarRecords,
-    warPlayerRecords: warPlayerRecords
+    warPlayerRecords: warPlayerRecords,
+    allOpponents: [...allOpponents]
   }
 
   return warlog
 }
 
-const saveWarlogData = async (tag='#9VUPUQJP', clanCache) => {
-  if (!clanCache.get(tag) && tag != undefined) {
+const saveWarlogData = async (tag='#9VUPUQJP', clanCache, playerCache, force=false) => {
+  if ((!clanCache.get(tag) && tag != undefined) || force) {
     const data = await fetchClanWarlogData(tag)
-    const { clanWarRecords, warPlayerRecord } = buildWarlogRecords(tag, data.items)
-    updateClanWars(clanWarRecords)
-    updateClanWarPlayers(warPlayerRecords)
+    const { clanWarRecords, warPlayerRecord, allOpponents } = buildWarlogRecords(tag, data.items)
+    // updateClanWars(clanWarRecords)
+    // updateClanWarPlayers(warPlayerRecords)
+    
+    saveClans(allOpponents, clanCache, playerCache)
 
     clanCache.set(tag, true)
   } else {
     return true
+  }
+}
+
+const saveClans = (clans, clanCache, playerCache) => {
+  // clans.forEach(clan => {
+    
+  // })
+  for (let i=0; i<2; i++) {
+
+    saveClanData(clans[i], clanCache, playerCache)
+    // saveWarlogData(clans[i], clanCache, playerCache, true)
   }
 }
 
