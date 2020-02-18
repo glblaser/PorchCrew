@@ -4,7 +4,7 @@ import axios from 'axios'
 import _ from 'lodash'
 import { limiter, limitTest } from './rateLimiter.js'
 
-const authHeader = { headers: { Authorization: 'Bearer: ' + process.env.API_KEY_GRANT } }
+const authHeader = { headers: { Authorization: 'Bearer: ' + process.env.API_KEY_HOME } }
 export const cardDictionary = {}
 
 export const tokenTest = async () => {

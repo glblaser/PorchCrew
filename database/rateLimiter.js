@@ -18,7 +18,7 @@ export const limiter = new RequestRateLimiter({
   backoffTime: 1, //length of time to backoff if statusCode = 429
   requestRate: 20, //requests per interval
   interval: 1, //interval in seconds
-  timeout: 600, //time requests stay in queue in seconds
+  timeout: 3600, //time requests stay in queue in seconds
 })
 
 limiter.setRequestHandler(new MyRequestHandler());
