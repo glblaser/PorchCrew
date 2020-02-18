@@ -60,7 +60,22 @@ export const fetchPlayerData = async (tag='#9VJ9RJL0U') => {
   } else {
     return 'fetchPlayerData token is not true'
   }
-};
+}
+
+export const fetchBattleLog = async (tag='#9VJ9RJL0U') => {
+  tag = encodeURIComponent(tag)
+  let token = await limiter.request()
+  if (token === true) {
+    return axios.get(`https://api.clashroyale.com/v1/players/${tag}/battlelog`, authHeader)
+      .then(res => {
+        console.log('battlelog')
+        return res.data;
+      }) 
+      .catch(err => console.log(err));
+  } else {
+    return 'fetchCards token is not true'
+  }
+}
 
 export const fetchClanData = async (tag='#9VUPUQJP') => {
   tag = encodeURIComponent(tag)
