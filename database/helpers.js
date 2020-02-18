@@ -1,10 +1,9 @@
-const { fetchClanData, fetchPlayerData, populateCardDictionary, cardDictionary, fetchClanWarlogData } = require('./clashapi.js');
-const { updatePlayer, bulkUpdatePlayers, updateCurrentDeck, bulkUpdateCurrentDecks, updatePlayerCards, updateClan, updateClanPlayers, updateClanWars, updateClanWarPlayers, getInitPlayerCache, getInitClanCache } = require('./query.js');
-const moment = require("moment");
-const { Op } = require('sequelize')
+import { fetchClanData, fetchPlayerData, populateCardDictionary, cardDictionary, fetchClanWarlogData } from './clashapi.js'
+import { updatePlayer, bulkUpdatePlayers, updateCurrentDeck, bulkUpdateCurrentDecks, updatePlayerCards, updateClan, updateClanPlayers, updateClanWars, updateClanWarPlayers, getInitPlayerCache, getInitClanCache } from './query.js'
+import moment from "moment"
 
 
-const Client = ({ playerCache, clanCache }) => {
+export const Client = ({ playerCache, clanCache }) => {
   return {
     initCache: () => {initCache(playerCache, clanCache)},
     savePlayer: (tag='#PLQLR82YQ') => {savePlayer(tag, playerCache)},
@@ -185,7 +184,7 @@ const saveClanData = async (tag='#9VUPUQJP', clanCache, playerCache) => {
 
     clanCache.set(tag, true)
 
-    //wabt to return playerTags to separate ou the save clan from save players
+    //want to return playerTags to separate outg the save clan from save players
   } else {
     return true
   }
@@ -243,6 +242,7 @@ const saveWarlogData = async (tag='#9VUPUQJP', clanCache, playerCache, force=fal
     // updateClanWars(clanWarRecords)
     // updateClanWarPlayers(warPlayerRecords)
     
+    console.log(allOpponents)
     saveClans(allOpponents, clanCache, playerCache)
 
     clanCache.set(tag, true)
@@ -255,7 +255,7 @@ const saveClans = (clans, clanCache, playerCache) => {
   // clans.forEach(clan => {
     
   // })
-  for (let i=0; i<2; i++) {
+  for (let i=0; i<10; i++) {
 
     saveClanData(clans[i], clanCache, playerCache)
     // saveWarlogData(clans[i], clanCache, playerCache, true)
@@ -281,5 +281,3 @@ const buildWarPlayersRecords = (warId, clanTag, participants) => {
 
   return warPlayersRecords
 }
-
-module.exports = { Client }

@@ -1,7 +1,6 @@
 import Sequelize from 'sequelize'
-import {} from 'dotenv'
-
-// dotenv.config()
+import dotenv from 'dotenv'
+dotenv.config()
 
 const {
   DB_USERNAME,
