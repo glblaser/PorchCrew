@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "webpack.config.js",
+  "type": "module",
   "scripts": {
     "test": "jest",
     "start": "webpack -d --watch & live-server --port=3099 --watch=dist --open=dist",
@@ -29,12 +30,15 @@
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
+    "esm": "^3.2.25",
     "express": "^4.17.0",
+    "lodash": "^4.17.15",
     "node-cache": "^5.1.0",
     "pg": "^7.18.1",
     "pg-hstore": "^2.3.3",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "request-rate-limiter": "^2.0.3",
     "sequelize": "^5.21.4"
   },
   "devDependencies": {

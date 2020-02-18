@@ -1,8 +1,8 @@
-const { sequelize } = require('./db.js');
-const Sequelize = require('Sequelize');
+import { sequelize } from './db.js'
+import Sequelize from 'Sequelize'
 
 
-const Player = sequelize.define('player', {
+export const Player = sequelize.define('player', {
   // attributes
   tag: {
     type: Sequelize.STRING,
@@ -67,7 +67,7 @@ const Player = sequelize.define('player', {
   // options
 });
 
-const Current_Deck = sequelize.define('current_deck', {
+export const Current_Deck = sequelize.define('current_deck', {
   // attributes
   playerTag: {
     type: Sequelize.STRING,
@@ -102,7 +102,7 @@ const Current_Deck = sequelize.define('current_deck', {
   // options
 });
 
-const Player_Card = sequelize.define('player_card', {
+export const Player_Card = sequelize.define('player_card', {
   // attributes
   tag: {
     type: Sequelize.STRING,
@@ -124,7 +124,7 @@ const Player_Card = sequelize.define('player_card', {
   // options
 });
 
-const Clan = sequelize.define('clan', {
+export const Clan = sequelize.define('clan', {
   // attributes
   tag: {
     type: Sequelize.STRING,
@@ -174,7 +174,7 @@ const Clan = sequelize.define('clan', {
   // options
 });
 
-const Clan_Player = sequelize.define('clan_player', {
+export const Clan_Player = sequelize.define('clan_player', {
   // attributes
   clanTag: {
     type: Sequelize.STRING
@@ -215,7 +215,7 @@ const Clan_Player = sequelize.define('clan_player', {
   // options
 });
 
-const Clan_War_Player = sequelize.define('clan_war_player', {
+export const Clan_War_Player = sequelize.define('clan_war_player', {
   // attributes
   warId: {
     type: Sequelize.STRING,
@@ -252,7 +252,7 @@ const Clan_War_Player = sequelize.define('clan_war_player', {
   // options
 });
 
-const Clan_War = sequelize.define('clan_war', {
+export const Clan_War = sequelize.define('clan_war', {
   // attributes
   warId: {
     type: Sequelize.STRING,
@@ -292,4 +292,4 @@ const Clan_War = sequelize.define('clan_war', {
   // options
 });
 
-module.exports = { Player, Current_Deck, Player_Card, Clan, Clan_Player, Clan_War_Player, Clan_War }
+// module.exports = { Player, Current_Deck, Player_Card, Clan, Clan_Player, Clan_War_Player, Clan_War }

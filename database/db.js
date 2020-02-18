@@ -1,5 +1,7 @@
-const Sequelize = require('sequelize');
-require('dotenv').config();
+import Sequelize from 'sequelize'
+import {} from 'dotenv'
+
+// dotenv.config()
 
 const {
   DB_USERNAME,
@@ -9,7 +11,7 @@ const {
   DB_PORT
 } = process.env;
 
-const sequelize = new Sequelize(DB_DATABASE, DB_USERNAME, DB_PASSWORD, {
+export const sequelize = new Sequelize(DB_DATABASE, DB_USERNAME, DB_PASSWORD, {
   host: DB_HOSTNAME,
   dialect: 'postgres',
   logging: false
@@ -23,5 +25,3 @@ const sequelize = new Sequelize(DB_DATABASE, DB_USERNAME, DB_PASSWORD, {
 //   .catch(err => {
 //     console.error('Unable to connect to the database:', err);
 //   });
-
-module.exports = { sequelize }

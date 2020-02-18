@@ -1,10 +1,22 @@
-const axios = require('axios');
-require('dotenv').config()
+import {} from 'dotenv'
+import axios from 'axios'
+import _ from 'lodash'
+import { apiTokenVendor } from './throttler.js'
 
-const authHeader = { headers: { Authorization: 'Bearer: ' + process.env.API_KEY_HOME } }
-const cardDictionary = {}
+const authHeader = { headers: { Authorization: 'Bearer: ' + process.env.API_KEY_GRANT } }
+export const cardDictionary = {}
 
-const fetchCards = () => {
+export const tokenTest = async () => {
+  // setTimeout(tokenTest, 3)
+
+  for (let i=1; i<=10; i++) {
+    let token = apiTokenVendor.getToken()
+    console.log(token)
+    token=''
+  }
+}
+
+export const fetchCards = () => {
   return axios.get(`https://api.clashroyale.com/v1/cards`, authHeader)
     .then(res => {
       return res.data.items;
@@ -12,7 +24,7 @@ const fetchCards = () => {
     .catch(err => console.log(err));
 }
 
-const fetchPlayerData = (tag='#9VJ9RJL0U') => {
+export const fetchPlayerData = (tag='#9VJ9RJL0U') => {
   tag = encodeURIComponent(tag)
   return axios.get(`https://api.clashroyale.com/v1/players/${tag}`, authHeader)
     .then(res => {
@@ -21,7 +33,7 @@ const fetchPlayerData = (tag='#9VJ9RJL0U') => {
     .catch(err => console.log(err));
 };
 
-const populateCardDictionary = async () => {
+export const populateCardDictionary = async () => {
   const cards = await fetchCards();
   const rarities = {
     13: 'common',
@@ -30,7 +42,6 @@ const populateCardDictionary = async () => {
     5: 'legendary'
   }
   cards.forEach(card => {
-    let rarity = 
     cardDictionary[card.id] = {
       name: card.name,
       maxLevel: card.maxLevel,
@@ -40,7 +51,7 @@ const populateCardDictionary = async () => {
   })
 }
 
-const fetchClanData = (tag='#9VUPUQJP') => {
+export const fetchClanData = (tag='#9VUPUQJP') => {
   tag = encodeURIComponent(tag)
   return axios.get(`https://api.clashroyale.com/v1/clans/${tag}`, authHeader)
     .then(res => {
@@ -49,7 +60,7 @@ const fetchClanData = (tag='#9VUPUQJP') => {
     .catch(err => console.log(err));
 }
 
-const fetchClanWarlogData = (tag='9VUPUQJP') => {
+export const fetchClanWarlogData = (tag='9VUPUQJP') => {
   tag = encodeURIComponent(tag)
   return axios.get(`https://api.clashroyale.com/v1/clans/${tag}/warlog`, authHeader)
     .then(res => {
@@ -58,4 +69,4 @@ const fetchClanWarlogData = (tag='9VUPUQJP') => {
     .catch(err => console.log(err));
 }
 
-module.exports = { fetchClanData, fetchPlayerData, populateCardDictionary, cardDictionary, fetchClanWarlogData };
+// export default { fetchClanData, fetchPlayerData, populateCardDictionary, cardDictionary, fetchClanWarlogData, tokenTest };

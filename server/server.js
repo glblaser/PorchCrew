@@ -1,12 +1,14 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const path = require('path');
-const app = express();
-require('dotenv').config()
-const { populateCardDictionary } = require('../database/clashapi.js');
-const  { Client } = require('../database/helpers.js')
-const caches = require('../server/cache.js')
+import dotenv from 'dotenv'
+import express from 'express'
+import bodyParser from 'body-parser'
+import path from 'path'
 
+import { populateCardDictionary } from '../database/clashapi.js'
+import  { Client } from '../database/helpers.js'
+import caches from '../server/cache.js'
+import { tokenTest } from '../database/clashapi.js'
+
+const app = express();
 const port = process.env.PORT || 3099;
 
 app.use(express.static("dist"));
@@ -16,8 +18,29 @@ app.use(
   })
 );
 
+console.log(process.env)
+
+// import esm from 'esm'
+// import RequestRateLimiter, { RequestsRequestHandler } from 'request-rate-limiter';
+ 
+// const limiter = new RequestRateLimiter();
+// limiter.setRequestHandler(new RequestsRequestHandler);
+// console.log(RequestRateLimiter)
+ 
+ 
+// just send one request
+// const testLimiter = async () => {
+//   let response = await limiter.request('testRequest');
+//   console.log(response)
+// }
+
+// testLimiter()
+
+
 const client = Client(caches)
-// client.initCache()
+client.initCache() 
+
+// tokenTest()
 
 // test()
 // client.savePlayerData(['#9VJ9RJL0U'])
@@ -29,7 +52,7 @@ const client = Client(caches)
 // client.savePlayerCards()
 // client.savePlayerData(['#PGJQ80JV9', '#9U9Q9YJU'])
 // client.saveClanData('#8YLJ8UL2')
-client.saveWarlogData('#8YLJ8UL2')
+// client.saveWarlogData('#8YLJ8UL2')
 // client.savePlayerData(['#9VJ9RJL0U', '#8CG2P29R0', '#VVJCVC98'])
 
 
