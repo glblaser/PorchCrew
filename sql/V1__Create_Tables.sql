@@ -25,7 +25,7 @@ CREATE TABLE players (
   )
 );
 
-CREATE TABLE battlelogs (
+CREATE TABLE battles (
   "createdAt" timestamptz,
   "updatedAt" timestamptz,
   "battleId" varchar UNIQUE NOT NULL,
@@ -84,7 +84,7 @@ CREATE TABLE battlelogs (
   "player2Card7Level" int,
   "player2Card8Id" varchar,
   "player2Card8Level" int,
-  CONSTRAINT pk_battlelog PRIMARY KEY (
+  CONSTRAINT pk_battles PRIMARY KEY (
     "battleId"
   )
 );

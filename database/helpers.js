@@ -1,4 +1,4 @@
-import { fetchClanData, fetchPlayerData, populateCardDictionary, cardDictionary, fetchClanWarlogData } from './clashapi.js'
+import { fetchClanData, fetchPlayerData, fetchBattleLog, populateCardDictionary, cardDictionary, fetchClanWarlogData } from './clashapi.js'
 import { updatePlayer, bulkUpdatePlayers, updateCurrentDeck, bulkUpdateCurrentDecks, updatePlayerCards, updateClan, updateClanPlayers, updateClanWars, updateClanWarPlayers, getInitPlayerCache, getInitClanCache } from './query.js'
 import moment from 'moment'
 import _ from 'lodash'
