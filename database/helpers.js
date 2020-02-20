@@ -180,6 +180,7 @@ const _savePlayerData = async (tags=['#PLQLR82YQ'], playerCache) => {
 
 const _buildBattles = (dataArray, playerTag) => {
   let allPlayers = []
+  let allClans = new Set()
 
   const battles = _.flatten(dataArray.map(data => {
     const existingKeysInData = ["type", "isLadderTournament", "deckSelection"]
@@ -212,18 +213,20 @@ const _buildBattles = (dataArray, playerTag) => {
 
       battle.playerTag = playerData.tag
       battle.teammateTag = teammateTag
-      battle.playerStartingTrophies = playerData.startingTrophies
-      battle.playerTrophyChange = playerData.trophyChange 
-      battle.playerCrowns = playerData.crowns 
-      battle.playerKingTowerHitPoints = playerData.kingTowerHitPoints
-      battle.playerPrincessTower1HitPoints = playerData.princessTowersHitPoints ? playerData.princessTowersHitPoints[0] : undefined
-      battle.playerPrincessTower2HitPoints = playerData.princessTowersHitPoints ? playerData.princessTowersHitPoints[1] : undefined
-      battle.playerIsWinner = isWinner
-      battle.playerClanTag = playerData.clan.tag
+      battle.startingTrophies = playerData.startingTrophies
+      battle.trophyChange = playerData.trophyChange 
+      battle.crowns = playerData.crowns 
+      battle.kingTowerHitPoints = playerData.kingTowerHitPoints
+      battle.princessTower1HitPoints = playerData.princessTowersHitPoints ? playerData.princessTowersHitPoints[0] : undefined
+      battle.princessTower2HitPoints = playerData.princessTowersHitPoints ? playerData.princessTowersHitPoints[1] : undefined
+      battle.isWinner = isWinner
+      battle.clanTag = playerData.clan.tag
+
+      allClans.add(playerData.clan.tag)
 
       playerData.cards.forEach((card, i) => {
-        battle[`playerCard${i+1}Id`] = card.id
-        battle[`playerCard${i+1}Level`] = card.level + 13 - card.maxLevel
+        battle[`card${i+1}Id`] = card.id
+        battle[`card${i+1}Level`] = card.level + 13 - card.maxLevel
       })
 
       return battle
@@ -248,7 +251,8 @@ const _buildBattles = (dataArray, playerTag) => {
 
   return {
     battles: battles,
-    allPlayers: _.union(_.flatten(allPlayers)).sort()
+    allPlayers: _.union(_.flatten(allPlayers)).sort(),
+    allClans: [...allClans]
   }
 }
 
