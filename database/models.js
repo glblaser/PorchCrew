@@ -290,6 +290,124 @@ export const Clan_War = sequelize.define('clan_war', {
   }
 }, {
   // options
-});
+})
+
+export const Battle = sequelize.define('battle', {
+  // attributes
+  battleId: {
+    type: Sequelize.STRING,
+    primaryKey: true,
+    allowNull: false
+  },
+  type: {
+    type: Sequelize.STRING
+  },
+  battleTime: {
+    type: Sequelize.DATE
+  },
+  isLadderTournament: {
+    type: Sequelize.BOOLEAN
+  },
+  arenaId: {
+    type: Sequelize.INTEGER
+  },
+  arenaName: {
+    type: Sequelize.STRING
+  },
+  gameModeId: {
+    type: Sequelize.INTEGER
+  },
+  gameModeName: {
+    type: Sequelize.STRING
+  },
+  deckSelection: {
+    type: Sequelize.STRING
+  },
+  isTie: {
+    type: Sequelize.BOOLEAN
+  },
+  playerTag: {
+    type: Sequelize.STRING,
+    primaryKey: true,
+    allowNull: false
+  },
+  teammateTag: {
+    type: Sequelize.STRING
+  },
+  playerStartingTrophies: {
+    type: Sequelize.INTEGER
+  },
+  playerTrophyChange: {
+    type: Sequelize.INTEGER
+  },
+  playerCrowns: {
+    type: Sequelize.INTEGER
+  },
+  playerKingTowerHitPoints: {
+    type: Sequelize.INTEGER
+  },
+  playerPrincessTower1HitPoints: {
+    type: Sequelize.INTEGER
+  },
+  playerPrincessTower2HitPoints: {
+    type: Sequelize.INTEGER
+  },
+  playerIsWinner: {
+    type: Sequelize.BOOLEAN
+  },
+  playerClanTag: {
+    type: Sequelize.STRING
+  },
+  playerCard1Id: {
+    type: Sequelize.STRING
+  },
+  playerCard1Level: {
+    type: Sequelize.INTEGER
+  },
+  playerCard2Id: {
+    type: Sequelize.STRING
+  },
+  playerCard2Level: {
+    type: Sequelize.INTEGER
+  },
+  playerCard3Id: {
+    type: Sequelize.STRING
+  },
+  playerCard3Level: {
+    type: Sequelize.INTEGER
+  },
+  playerCard4Id: {
+    type: Sequelize.STRING
+  },
+  playerCard4Level: {
+    type: Sequelize.INTEGER
+  },
+  playerCard5Id: {
+    type: Sequelize.STRING
+  },
+  playerCard5Level: {
+    type: Sequelize.INTEGER
+  },
+  playerCard6Id: {
+    type: Sequelize.STRING
+  },
+  playerCard6Level: {
+    type: Sequelize.INTEGER
+  },
+  playerCard7Id: {
+    type: Sequelize.STRING
+  },
+  playerCard7Level: {
+    type: Sequelize.INTEGER
+  },
+  playerCard8Id: {
+    type: Sequelize.STRING
+  },
+  playerCard8Level: {
+    type: Sequelize.INTEGER
+  }
+}, {
+  // options
+})
 
 // module.exports = { Player, Current_Deck, Player_Card, Clan, Clan_Player, Clan_War_Player, Clan_War }

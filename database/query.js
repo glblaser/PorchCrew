@@ -1,7 +1,15 @@
-import { Player, Current_Deck, Player_Card, Clan, Clan_Player, Clan_War_Player, Clan_War } from '../database/models.js'
+import { Player, Current_Deck, Player_Card, Clan, Clan_Player, Clan_War_Player, Clan_War, Battle } from '../database/models.js'
 
 import moment from "moment"
 import sequelize from 'sequelize'
+
+export const updateBattle = (battles) => {
+  Battle.bulkCreate(battles, {
+    ignoreDuplicates: true
+  })
+  .then(console.log)
+    .catch(err => console.log('Error updating battles: ;', err))
+}
 
 export const updatePlayer = (player) => {
   Player.upsert(player)
