@@ -1,5 +1,16 @@
-import { fetchClanData, fetchPlayerData, fetchBattleLog, populateCardDictionary, cardDictionary, fetchClanWarlogData } from './clashapi.js'
-import { updatePlayer, bulkUpdatePlayers, updateCurrentDeck, bulkUpdateCurrentDecks, updatePlayerCards, updateClan, updateClanPlayers, updateClanWars, updateClanWarPlayers, getInitPlayerCache, getInitClanCache } from './query.js'
+import { fetchClanData, fetchPlayerData, fetchBattlelog, populateCardDictionary, cardDictionary, fetchClanWarlogData } from './clashapi.js'
+import { updatePlayer,
+  bulkUpdatePlayers, 
+  updateBattle,
+  updateCurrentDeck, 
+  bulkUpdateCurrentDecks, 
+  updatePlayerCards, 
+  updateClan, 
+  updateClanPlayers, 
+  updateClanWars, 
+  updateClanWarPlayers, 
+  getInitPlayerCache, 
+  getInitClanCache } from './query.js'
 import moment from 'moment'
 import _ from 'lodash'
 
@@ -112,8 +123,8 @@ const _buildBulkDecks = (players) => {
 }
 
 const _buildPlayer = (data) => {
-  const keysICareAbout = ["tag", "name", "expLevel", "trophies", "bestTrophies", "wins", "losses", "battleCount", "threeCrownWins", "challengeCardsWon", "challengeMaxWins", "tournamentBattleCount", "role", "donations", "donationsReceived", "totalDonations", "warDayWins", "clanCardsCollected"]
-  const props = Object.entries(data).filter( e => keysICareAbout.includes(e[0]) )
+  const existingKeysInData = ["tag", "name", "expLevel", "trophies", "bestTrophies", "wins", "losses", "battleCount", "threeCrownWins", "challengeCardsWon", "challengeMaxWins", "tournamentBattleCount", "role", "donations", "donationsReceived", "totalDonations", "warDayWins", "clanCardsCollected"]
+  const props = Object.entries(data).filter( e => existingKeysInData.includes(e[0]) )
   const player = Object.fromEntries(props)
 
   player.clanTag = data.clan.tag
@@ -167,9 +178,94 @@ const _savePlayerData = async (tags=['#PLQLR82YQ'], playerCache) => {
   }
 }
 
+const _buildBattles = (dataArray, playerTag) => {
+  let allPlayers = []
+
+  const battles = _.flatten(dataArray.map(data => {
+    const existingKeysInData = ["type", "isLadderTournament", "deckSelection"]
+    const props = Object.entries(data).filter( e => existingKeysInData.includes(e[0]) )
+
+    const _buildBattleIdAndAddPlayers = () => {
+      const teamPlayerA = data.team[0].tag
+      const teamPlayerB = data.team[1] ? data.team[1].tag : undefined
+      const opponentPlayerA = data.opponent[0].tag
+      const opponentPlayerB = data.opponent[1] ? data.opponent[1].tag : undefined
+      const sortedPlayers = [teamPlayerA, teamPlayerB, opponentPlayerA, opponentPlayerB].filter(e => e !== undefined).sort()
+
+      allPlayers.push(sortedPlayers)
+
+      return _.concat(sortedPlayers,[data.battleTime]).join('.')
+    }
+
+    const battleId = _buildBattleIdAndAddPlayers()
+    const isTie = (data.team[0].crowns === data.opponent[0].crowns)
+
+    const _buildBattleRecord = (playerData, isWinner=false, teammateTag=undefined) => {
+      const battle = Object.fromEntries(props)
+      battle.battleId = battleId
+      battle.battleTime = moment.utc(data.battleTime).format()
+      battle.arenaId = data.arena.id
+      battle.arenaName = data.arena.name
+      battle.gameModeId = data.gameMode.id
+      battle.gameModeName = data.gameMode.name
+      battle.isTie = isTie
+
+      battle.playerTag = playerData.tag
+      battle.teammateTag = teammateTag
+      battle.playerStartingTrophies = playerData.startingTrophies
+      battle.playerTrophyChange = playerData.trophyChange 
+      battle.playerCrowns = playerData.crowns 
+      battle.playerKingTowerHitPoints = playerData.kingTowerHitPoints
+      battle.playerPrincessTower1HitPoints = playerData.princessTowersHitPoints ? playerData.princessTowersHitPoints[0] : undefined
+      battle.playerPrincessTower2HitPoints = playerData.princessTowersHitPoints ? playerData.princessTowersHitPoints[1] : undefined
+      battle.playerIsWinner = isWinner
+      battle.playerClanTag = playerData.clan.tag
+
+      playerData.cards.forEach((card, i) => {
+        battle[`playerCard${i+1}Id`] = card.id
+        battle[`playerCard${i+1}Level`] = card.level + 13 - card.maxLevel
+      })
+
+      return battle
+    }
+
+    let battles = []
+
+    const teamIsWinner = data.team[0].crowns > data.opponent[0].crowns
+    const opponentIsWinner = data.team[0].crowns < data.opponent[0].crowns
+
+    battles.push(_buildBattleRecord(data.team[0], teamIsWinner, data.team[1] ? data.team[1].tag : undefined))
+    if (data.team[1]) {
+      battles.push(_buildBattleRecord(data.team[1], teamIsWinner, data.team[0].tag))
+    }
+    battles.push(_buildBattleRecord(data.opponent[0], opponentIsWinner, data.opponent[1] ? data.opponent[1].tag : undefined))
+    if (data.opponent[1]) {
+      battles.push(_buildBattleRecord(data.opponent[1], opponentIsWinner, data.opponent[0].tag))
+    }
+   
+    return battles
+  }))
+
+  return {
+    battles: battles,
+    allPlayers: _.union(_.flatten(allPlayers)).sort()
+  }
+}
+
+export const _saveBattleData = async (tag='#PLQLR82YQ', playerCache) => {
+  if (!playerCache.get(tag) && tag != undefined) {
+    const data = await fetchBattlelog(tag)
+    const battlesRecords = _buildBattles(data)
+    updateBattle(battlesRecords.battles)
+    playerCache.set(tag, true)
+  } else {
+    return true
+  }
+}
+
 const _buildClan = (data) => {
-  const keysICareAbout = ["tag", "name", "type", "description", "badgeId", "clanScore", "clanWarTrophies", "requiredTrophies", "donationsPerWeek", "members"]
-  const props = Object.entries(data).filter( e => keysICareAbout.includes(e[0]) )
+  const existingKeysInData = ["tag", "name", "type", "description", "badgeId", "clanScore", "clanWarTrophies", "requiredTrophies", "donationsPerWeek", "members"]
+  const props = Object.entries(data).filter( e => existingKeysInData.includes(e[0]) )
   const clan = Object.fromEntries(props)
 
   clan.locationId = data.location.id

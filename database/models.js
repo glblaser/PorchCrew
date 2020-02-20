@@ -299,171 +299,113 @@ export const Battle = sequelize.define('battle', {
     primaryKey: true,
     allowNull: false
   },
-  type:  {
-      type: Sequelize.STRING
-    },
-  battleTime:  {
-      type: Sequelize.DATE
-    },
-  isLadderTournament:  {
-      type: Sequelize.BOOLEAN
-    },
-  arenaId:  {
-      type: Sequelize.INTEGER
-    },
-  arenaName:  {
-      type: Sequelize.STRING
-    },
-  gameModeId:  {
-      type: Sequelize.INTEGER
-    },
-  gameModeName:  {
-      type: Sequelize.STRING
-    },
-  deckSelection:  {
-      type: Sequelize.STRING
-    },
-  isTie:  {
-      type: Sequelize.BOOLEAN
-    },
-  player1Tag:  {
-      type: Sequelize.STRING
-    },
-  player1StartingTrophies:  {
-      type: Sequelize.INTEGER
-    },
-  player1Crowns:  {
-      type: Sequelize.INTEGER
-    },
-  player1KingTowerHitPoints:  {
-      type: Sequelize.INTEGER
-    },
-  player1KingTowerLevel:  {
-      type: Sequelize.INTEGER
-    },
-  player1IsWinner:  {
-      type: Sequelize.BOOLEAN
-    },
-  player1ClanTag:  {
-      type: Sequelize.STRING
-    },
-  player1Card1Id:  {
-      type: Sequelize.STRING
-    },
-  player1Card1Level:  {
-      type: Sequelize.INTEGER
-    },
-  player1Card2Id:  {
-      type: Sequelize.STRING
-    },
-  player1Card2Level:  {
-      type: Sequelize.INTEGER
-    },
-  player1Card3Id:  {
-      type: Sequelize.STRING
-    },
-  player1Card3Level:  {
-      type: Sequelize.INTEGER
-    },
-  player1Card4d:  {
-      type: Sequelize.STRING
-    },
-  player1Card4Level:  {
-      type: Sequelize.INTEGER
-    },
-  player1Card5Id:  {
-      type: Sequelize.STRING
-    },
-  player1Card5Level:  {
-      type: Sequelize.INTEGER
-    },
-  player1Card6Id:  {
-      type: Sequelize.STRING
-    },
-  player1Card6Level:  {
-      type: Sequelize.INTEGER
-    },
-  player1Card7Id:  {
-      type: Sequelize.STRING
-    },
-  player1Card7Level:  {
-      type: Sequelize.INTEGER
-    },
-  player1Card8Id:  {
-      type: Sequelize.STRING
-    },
-  player1Card8Level:  {
-      type: Sequelize.INTEGER
-    },
-  player2Tag:  {
-      type: Sequelize.STRING
-    },
-  player2StartingTrophies:  {
-      type: Sequelize.INTEGER
-    },
-  player2Crowns:  {
-      type: Sequelize.INTEGER
-    },
-  player2KingTowerHitPoints:  {
-      type: Sequelize.INTEGER
-    },
-  player2KingTowerLevel:  {
-      type: Sequelize.INTEGER
-    },
-  player2IsWinner:  {
-      type: Sequelize.BOOLEAN
-    },
-  player2ClanTag:  {
-      type: Sequelize.STRING
-    },
-  player2Card1Id:  {
-      type: Sequelize.STRING
-    },
-  player2Card1Level:  {
-      type: Sequelize.INTEGER
-    },
-  player2Card2Id:  {
-      type: Sequelize.STRING
-    },
-  player2Card2Level:  {
-      type: Sequelize.INTEGER
-    },
-  player2Card3Id:  {
-      type: Sequelize.STRING
-    },
-  player2Card3Level:  {
-      type: Sequelize.INTEGER
-    },
-  player2Card4d:  {
-      type: Sequelize.STRING
-    },
-  player2Card4Level:  {
-      type: Sequelize.INTEGER
-    },
-  player2Card5Id:  {
-      type: Sequelize.STRING
-    },
-  player2Card5Level:  {
-      type: Sequelize.INTEGER
-    },
-  player2Card6Id:  {
-      type: Sequelize.STRING
-    },
-  player2Card6Level:  {
-      type: Sequelize.INTEGER
-    },
-  player2Card7Id:  {
-      type: Sequelize.STRING
-    },
-  player2Card7Level:  {
-      type: Sequelize.INTEGER
-    },
-  player2Card8Id:  {
-      type: Sequelize.STRING
-    },
-  player2Card8Level:  {
-      type: Sequelize.INTEGER
-    }
+  type: {
+    type: Sequelize.STRING
+  },
+  battleTime: {
+    type: Sequelize.DATE
+  },
+  isLadderTournament: {
+    type: Sequelize.BOOLEAN
+  },
+  arenaId: {
+    type: Sequelize.INTEGER
+  },
+  arenaName: {
+    type: Sequelize.STRING
+  },
+  gameModeId: {
+    type: Sequelize.INTEGER
+  },
+  gameModeName: {
+    type: Sequelize.STRING
+  },
+  deckSelection: {
+    type: Sequelize.STRING
+  },
+  isTie: {
+    type: Sequelize.BOOLEAN
+  },
+  playerTag: {
+    type: Sequelize.STRING,
+    primaryKey: true,
+    allowNull: false
+  },
+  teammateTag: {
+    type: Sequelize.STRING
+  },
+  playerStartingTrophies: {
+    type: Sequelize.INTEGER
+  },
+  playerTrophyChange: {
+    type: Sequelize.INTEGER
+  },
+  playerCrowns: {
+    type: Sequelize.INTEGER
+  },
+  playerKingTowerHitPoints: {
+    type: Sequelize.INTEGER
+  },
+  playerPrincessTower1HitPoints: {
+    type: Sequelize.INTEGER
+  },
+  playerPrincessTower2HitPoints: {
+    type: Sequelize.INTEGER
+  },
+  playerIsWinner: {
+    type: Sequelize.BOOLEAN
+  },
+  playerClanTag: {
+    type: Sequelize.STRING
+  },
+  playerCard1Id: {
+    type: Sequelize.STRING
+  },
+  playerCard1Level: {
+    type: Sequelize.INTEGER
+  },
+  playerCard2Id: {
+    type: Sequelize.STRING
+  },
+  playerCard2Level: {
+    type: Sequelize.INTEGER
+  },
+  playerCard3Id: {
+    type: Sequelize.STRING
+  },
+  playerCard3Level: {
+    type: Sequelize.INTEGER
+  },
+  playerCard4Id: {
+    type: Sequelize.STRING
+  },
+  playerCard4Level: {
+    type: Sequelize.INTEGER
+  },
+  playerCard5Id: {
+    type: Sequelize.STRING
+  },
+  playerCard5Level: {
+    type: Sequelize.INTEGER
+  },
+  playerCard6Id: {
+    type: Sequelize.STRING
+  },
+  playerCard6Level: {
+    type: Sequelize.INTEGER
+  },
+  playerCard7Id: {
+    type: Sequelize.STRING
+  },
+  playerCard7Level: {
+    type: Sequelize.INTEGER
+  },
+  playerCard8Id: {
+    type: Sequelize.STRING
+  },
+  playerCard8Level: {
+    type: Sequelize.INTEGER
+  }
 }, {
   // options
 })
