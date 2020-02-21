@@ -1,13 +1,14 @@
 import { Player, Current_Deck, Player_Card, Clan, Clan_Player, Clan_War_Player, Clan_War, Battle } from '../database/models.js'
+import { sequelize } from './db.js'
 
 import moment from "moment"
-import sequelize from 'sequelize'
+import Sequelize from 'sequelize'
 
 export const updateBattle = (battles) => {
   Battle.bulkCreate(battles, {
     ignoreDuplicates: true
   })
-  .then(console.log)
+  // .then(console.log)
     .catch(err => console.log('Error updating battles: ;', err))
 }
 
@@ -87,7 +88,7 @@ export const getInitPlayerCache = () => {
     attributes: ['tag', 'updatedAt'],
     where: {
       updatedAt: {
-        [sequelize.Op.gte]: moment().subtract(1, 'hours').toDate()
+        [Sequelize.Op.gte]: moment().subtract(1, 'hours').toDate()
       }
     }
   })
@@ -98,10 +99,19 @@ export const getInitClanCache = () => {
     attributes: ['tag', 'updatedAt'],
     where: {
       updatedAt: {
-        [sequelize.Op.gte]: moment().subtract(1, 'days').toDate()
+        [Sequelize.Op.gte]: moment().subtract(1, 'days').toDate()
       }
     }
   })
 }
 
-// module.exports = { updatePlayer, bulkUpdatePlayers, updateCurrentDeck, bulkUpdateCurrentDecks, updatePlayerCards, updateClan, updateClanPlayers, updateClanWars, updateClanWarPlayers, getInitPlayerCache, getInitClanCache };
+//get all player tags updated in last hour with more than 20 occurences
+export const getInitBattleCache = async () => {
+  const timeMinusHour = moment().subtract(1, 'hours').format()
+
+  const queryStr = `SELECT "playerTag", MIN("updatedAt") as "updatedAt" FROM battles WHERE "updatedAt" >= '${timeMinusHour}' GROUP BY "playerTag" HAVING COUNT("playerTag") >= 20;`
+
+  return sequelize.query(queryStr)
+}
+
+// module.exports = { updatePlayer, bulkUpdatePlayers, updateCurrentDeck, bulkUpdateCurrentDecks, updatePlayerCards, updateClan, updateClanPlayers, updateClanWars, updateClanWarPlayers, getInitPlayerCache, getInitClanCache, getInitBattleCache };
