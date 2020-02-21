@@ -10,49 +10,59 @@ import { updatePlayer,
   updateClanWars, 
   updateClanWarPlayers, 
   getInitPlayerCache, 
-  getInitClanCache } from './query.js'
+  getInitClanCache,
+  getInitBattleCache } from './query.js'
 import moment from 'moment'
 import _ from 'lodash'
 
 
-export const Client = ({ playerCache, clanCache }) => {
+export const Client = ({ playerCache, clanCache, battleCache }) => {
   return {
-    initCache: () => {_initCache(playerCache, clanCache)},
+    initCache: () => {_initCache(playerCache, clanCache, battleCache)},
     savePlayer: (tag='#PLQLR82YQ') => {_savePlayer(tag, playerCache)},
     saveDeck: (tag='#PLQLR82YQ') => {_saveDeck(tag, playerCache)},
     savePlayerCards: (tag='#PLQLR82YQ') => {_savePlayerCards(tag, playerCache)},
-    savePlayerData: (tags=['#PLQLR82YQ']) => {_savePlayerData(tags, playerCache)},
+    savePlayerData: (tags=['#PLQLR82YQ']) => {return _savePlayerData(tags, playerCache)},
+    saveBattleData: (tag='#GLV2YPG9', force=false) => {return _saveBattleData(tag, playerCache, force)},
     saveClanData: (tag='#9VUPUQJP') => {return _saveClanData(tag, clanCache, playerCache)},
-    saveWarlogData: (tag='#9VUPUQJP') => {return _saveWarlogData(tag, clanCache, playerCache)}
+    saveWarlogData: (tag='#9VUPUQJP', force=false) => {return _saveWarlogData(tag, clanCache, playerCache, force)}
   }
 }
 
-const _initCache = async (playerCache, clanCache) => {
-  let playerCacheData = await getInitPlayerCache()
-  playerCache.mset(playerCacheData.map(row => row.dataValues)
-    .map(row => {
-      //ttl is 1 hour minus the difference between 'now' and last update
-      let ttl = 3600 - moment().diff(moment(row.updatedAt), 'seconds')
-      return {
-        key: row.tag,
-        val: true,
-        ttl: ttl
-      }
-    })
-  )
+const _initCache = async (playerCache, clanCache, battleCache) => {
+  const playerCacheData = await getInitPlayerCache()
+  playerCache.mset(playerCacheData.map(row => {
+    //ttl is 1 hour minus the difference between 'now' and last update
+    let ttl = 3600 - moment().diff(moment(row.dataValues.updatedAt), 'seconds')
+    return {
+      key: row.tag,
+      val: true,
+      ttl: ttl
+    }
+  }))
 
-  let clanCacheData = await getInitClanCache()
-  clanCache.mset(clanCacheData.map(row => row.dataValues)
-    .map(row => {
-      //ttl is 1 day minus the difference between 'now' and last update
-      let ttl = 86400 - moment().diff(moment(row.updatedAt), 'seconds')
-      return {
-        key: row.tag,
-        val: true,
-        ttl: ttl
-      }
-    })
-  )
+
+  const clanCacheData = await getInitClanCache()
+  clanCache.mset(clanCacheData.map(row => {
+    //ttl is 1 day minus the difference between 'now' and last update
+    let ttl = 86400 - moment().diff(moment(row.dataValues.updatedAt), 'seconds')
+    return {
+      key: row.tag,
+      val: true,
+      ttl: ttl
+    }
+  }))
+
+  const battleCacheData = await getInitBattleCache()
+  battleCache.mset(battleCacheData[0].map(row => {
+    //ttl is 1 hour minus the difference between 'now' and last update
+    let ttl = 3600 - moment().diff(moment(row.updatedAt), 'seconds')
+    return {
+      key: row.playerTag,
+      val: true,
+      ttl: ttl
+    }
+  }))
 }
 
 const _savePlayer = async (tag, playerCache) => {
@@ -145,16 +155,18 @@ const _savePlayerData = async (tags=['#PLQLR82YQ'], playerCache) => {
 
   if (newTags.length === 1) {
     const data = await fetchPlayerData(newTags[0])
-    const playerCards = _buildPlayerCards(data)
 
+    const player = _buildPlayer(data)
+    const playerCards = _buildPlayerCards(data)
     const deck = _buildDeck(data)
 
-    updatePlayer(data)
+    updatePlayer(player)
     updateCurrentDeck(deck)
     updatePlayerCards(playerCards)
 
     playerCache.set(data.tag, true)
 
+    return player
   } else if (newTags.length > 1) {
     const playersData = newTags.map(tag => {
       return fetchPlayerData(tag)
@@ -182,7 +194,7 @@ const _buildBattles = (dataArray, playerTag) => {
   let allPlayers = []
   let allClans = new Set()
 
-  const battles = _.flatten(dataArray.map(data => {
+  const allBattles = _.flatten(dataArray.map(data => {
     const existingKeysInData = ["type", "isLadderTournament", "deckSelection"]
     const props = Object.entries(data).filter( e => existingKeysInData.includes(e[0]) )
 
@@ -220,9 +232,9 @@ const _buildBattles = (dataArray, playerTag) => {
       battle.princessTower1HitPoints = playerData.princessTowersHitPoints ? playerData.princessTowersHitPoints[0] : undefined
       battle.princessTower2HitPoints = playerData.princessTowersHitPoints ? playerData.princessTowersHitPoints[1] : undefined
       battle.isWinner = isWinner
-      battle.clanTag = playerData.clan.tag
+      battle.clanTag = playerData.clan ? playerData.clan.tag : undefined
 
-      allClans.add(playerData.clan.tag)
+      allClans.add(battle.clanTag)
 
       playerData.cards.forEach((card, i) => {
         battle[`card${i+1}Id`] = card.id
@@ -232,36 +244,40 @@ const _buildBattles = (dataArray, playerTag) => {
       return battle
     }
 
-    let battles = []
+    let battleRecords = []
 
     const teamIsWinner = data.team[0].crowns > data.opponent[0].crowns
     const opponentIsWinner = data.team[0].crowns < data.opponent[0].crowns
 
-    battles.push(_buildBattleRecord(data.team[0], teamIsWinner, data.team[1] ? data.team[1].tag : undefined))
+    battleRecords.push(_buildBattleRecord(data.team[0], teamIsWinner, data.team[1] ? data.team[1].tag : undefined))
     if (data.team[1]) {
-      battles.push(_buildBattleRecord(data.team[1], teamIsWinner, data.team[0].tag))
+      battleRecords.push(_buildBattleRecord(data.team[1], teamIsWinner, data.team[0].tag))
     }
-    battles.push(_buildBattleRecord(data.opponent[0], opponentIsWinner, data.opponent[1] ? data.opponent[1].tag : undefined))
+
+    battleRecords.push(_buildBattleRecord(data.opponent[0], opponentIsWinner, data.opponent[1] ? data.opponent[1].tag : undefined))
     if (data.opponent[1]) {
-      battles.push(_buildBattleRecord(data.opponent[1], opponentIsWinner, data.opponent[0].tag))
+      battleRecords.push(_buildBattleRecord(data.opponent[1], opponentIsWinner, data.opponent[0].tag))
     }
    
-    return battles
+    return battleRecords
   }))
 
   return {
-    battles: battles,
+    battles: allBattles,
     allPlayers: _.union(_.flatten(allPlayers)).sort(),
     allClans: [...allClans]
   }
 }
 
-export const _saveBattleData = async (tag='#PLQLR82YQ', playerCache) => {
-  if (!playerCache.get(tag) && tag != undefined) {
+const _saveBattleData = async (tag='#PLQLR82YQ', playerCache, force=false) => {
+  console.log('tag is', tag)
+  if (!playerCache.get(tag) && tag != undefined || force) {
     const data = await fetchBattlelog(tag)
-    const battlesRecords = _buildBattles(data)
+    const battlesRecords = _buildBattles(data, tag)
     updateBattle(battlesRecords.battles)
     playerCache.set(tag, true)
+
+    return battlesRecords
   } else {
     return true
   }
