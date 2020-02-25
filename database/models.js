@@ -210,6 +210,9 @@ export const Clan_Player = sequelize.define('clan_player', {
   },
   donationsReceived: {
     type: Sequelize.INTEGER
+  },
+  currentMember: {
+    type: Sequelize.BOOLEAN
   }
 }, {
   // options
