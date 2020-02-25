@@ -1,4 +1,9 @@
 import RequestRateLimiter from 'request-rate-limiter';
+import axios from 'axios'
+import dotenv from 'dotenv'
+dotenv.config()
+
+const authHeader = { headers: { Authorization: 'Bearer: ' + process.env.API_KEY_HOME } }
 
 class MyRequestHandler {
   // this method is th eonly required interface to implement
@@ -7,15 +12,21 @@ class MyRequestHandler {
   // return an instance of the BackoffError when the limiter 
   // needs to back off
   async request(requestConfig) {
-      const response = true;
+      // console.log(requestConfig)
+      const response = axios.get(requestConfig, authHeader)
+      .then(res => {
+        // console.log(res.data)
+        return res.data;
+      }) 
+      .catch(err => console.log(err));
 
-      if (response.statusCode === 429) throw new BackoffError(`Need to nack off guys!`);
+      if (response.statusCode === 429) throw new BackoffError(`Need to back off guys!`);
       else return response;
   }
 }
  
 export const limiter = new RequestRateLimiter({
-  backoffTime: 1, //length of time to backoff if statusCode = 429
+  backoffTime: 2, //length of time to backoff if statusCode = 429
   requestRate: 20, //requests per interval
   interval: 1, //interval in seconds
   timeout: 3600, //time requests stay in queue in seconds

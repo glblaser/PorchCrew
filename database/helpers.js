@@ -107,7 +107,7 @@ const _buildBulkPlayerCards = (players) => {
 const _savePlayerCards = async (tag='#PLQLR82YQ', playerCache) => {
   if (!playerCache.get(tag) && tag != undefined) {
     const data = await fetchPlayerData(tag);
-    const playerCards = _buildPlayerCards(data.tag, data.cards)
+    const playerCards = _buildPlayerCards(data)
     
     updatePlayerCards(playerCards)
     
@@ -166,13 +166,13 @@ const _savePlayerData = async (tags=['#PLQLR82YQ'], playerCache) => {
 
     playerCache.set(data.tag, true)
 
-    return player
+    return [player]
   } else if (newTags.length > 1) {
     const playersData = newTags.map(tag => {
       return fetchPlayerData(tag)
     })
-
-    Promise.all(playersData)
+    
+    let allPlayers = Promise.all(playersData)
       .then(players => {
         const bulkDecks = _buildBulkDecks(players)
         bulkUpdateCurrentDecks(bulkDecks)
@@ -182,9 +182,13 @@ const _savePlayerData = async (tags=['#PLQLR82YQ'], playerCache) => {
 
         const bulkPlayerCards = _buildBulkPlayerCards(players)
         updatePlayerCards(bulkPlayerCards)
+
+        return bulkPlayers
       })
 
-     playerCache.mset(newTags.map(tag => {return {key: tag, val: true}}))
+    playerCache.mset(newTags.map(tag => {return {key: tag, val: true}}))
+    
+    return allPlayers
   } else {
     return true
   }
@@ -192,6 +196,7 @@ const _savePlayerData = async (tags=['#PLQLR82YQ'], playerCache) => {
 
 const _buildBattles = (dataArray, playerTag) => {
   let allPlayers = []
+  let addedPlayers = new Set()
   let allClans = new Set()
 
   const allBattles = _.flatten(dataArray.map(data => {
@@ -205,7 +210,7 @@ const _buildBattles = (dataArray, playerTag) => {
       const opponentPlayerB = data.opponent[1] ? data.opponent[1].tag : undefined
       const sortedPlayers = [teamPlayerA, teamPlayerB, opponentPlayerA, opponentPlayerB].filter(e => e !== undefined).sort()
 
-      allPlayers.push(sortedPlayers)
+      // allPlayers.push(sortedPlayers)
 
       return _.concat(sortedPlayers,[data.battleTime]).join('.')
     }
@@ -234,12 +239,27 @@ const _buildBattles = (dataArray, playerTag) => {
       battle.isWinner = isWinner
       battle.clanTag = playerData.clan ? playerData.clan.tag : undefined
 
-      allClans.add(battle.clanTag)
+      if (battle.clanTag) {
+        allClans.add(battle.clanTag)
+      }
 
       playerData.cards.forEach((card, i) => {
         battle[`card${i+1}Id`] = card.id
         battle[`card${i+1}Level`] = card.level + 13 - card.maxLevel
       })
+
+      if (!addedPlayers.has(playerData.tag)) {
+        const endingTrophies = battle.startingTrophies ? battle.startingTrophies + (battle.trophyChange ? battle.trophyChange : 0) : undefined
+ 
+        const player = {
+          playerTag: battle.playerTag,
+          trophies: endingTrophies
+        }
+        if (endingTrophies) {
+          addedPlayers.add(playerData.tag)
+        }
+        allPlayers.push(player)
+      }
 
       return battle
     }
@@ -264,13 +284,12 @@ const _buildBattles = (dataArray, playerTag) => {
 
   return {
     battles: allBattles,
-    allPlayers: _.union(_.flatten(allPlayers)).sort(),
+    allPlayers: _.union(_.flatten(allPlayers)),
     allClans: [...allClans]
   }
 }
 
 const _saveBattleData = async (tag='#PLQLR82YQ', playerCache, force=false) => {
-  console.log('tag is', tag)
   if (!playerCache.get(tag) && tag != undefined || force) {
     const data = await fetchBattlelog(tag)
     const battlesRecords = _buildBattles(data, tag)
@@ -313,14 +332,13 @@ const _saveClanData = async (tag='#9VUPUQJP', clanCache, playerCache) => {
 
     const clan = _buildClan(data)
     const clanPlayers = _buildClanPlayersArray(data.tag, data.memberList)
-    const playerTags = data.memberList.map(member => member.tag)
 
     updateClan(clan)
     updateClanPlayers(clanPlayers)
 
     clanCache.set(tag, true)
 
-    return playerTags  
+    return clanPlayers  
   } else {
     return true
   }
