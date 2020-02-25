@@ -1,9 +1,10 @@
 import RequestRateLimiter from 'request-rate-limiter';
 import axios from 'axios'
+import { keyGenerator } from './config.js'
 import dotenv from 'dotenv'
 dotenv.config()
 
-const authHeader = { headers: { Authorization: 'Bearer: ' + process.env.API_KEY_HOME } }
+const numOfKeys = keyGenerator.authKeyNames.length
 
 class MyRequestHandler {
   // this method is th eonly required interface to implement
@@ -13,6 +14,13 @@ class MyRequestHandler {
   // needs to back off
   async request(requestConfig) {
       // console.log(requestConfig)
+
+      const key = keyGenerator.getKey()
+      const authHeader = {
+        headers: { 
+          Authorization: 'Bearer: ' + key
+        }
+      }
       const response = axios.get(requestConfig, authHeader)
       .then(res => {
         // console.log(res.data)
@@ -27,9 +35,9 @@ class MyRequestHandler {
  
 export const limiter = new RequestRateLimiter({
   backoffTime: 2, //length of time to backoff if statusCode = 429
-  requestRate: 20, //requests per interval
+  requestRate: 20 * numOfKeys, //requests per interval
   interval: 1, //interval in seconds
-  timeout: 3600, //time requests stay in queue in seconds
+  timeout: 3600 * numOfKeys, //time requests stay in queue in seconds
 })
 
 limiter.setRequestHandler(new MyRequestHandler());

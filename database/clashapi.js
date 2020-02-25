@@ -2,28 +2,7 @@
 // dotenv.config()
 import axios from 'axios'
 import _ from 'lodash'
-import { limiter, limitTest } from './rateLimiter.js'
-
-// const authHeader = { headers: { Authorization: 'Bearer: ' + process.env.API_KEY_HOME } }
-
-/***********************
- * For dev use.  Delete for prod.
- */
-// import ip from "public-ip"
-// const apiKeyNames = {
-//   "75.87.1.110": "API_KEY_BUZZMILL",
-//   "66.68.63.55": "API_KEY_HOME"
-// }
-
-// export const _initAuthHeader = async () => {
-//   const apiKeyName = apiKeyNames[await ip.v4()]
-//   console.log(apiKeyName)
-//   authHeader.headers.Authorization = 'Bearer: ' + process.env[apiKeyName]
-//   console.log(authHeader.headers.Authorization)
-// } 
-
-// _initAuthHeader()
-/***************************/
+import { limiter } from './rateLimiter.js'
 
 export const cardDictionary = {}
 
