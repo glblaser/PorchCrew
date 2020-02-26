@@ -24,7 +24,7 @@ export const Client = ({ playerCache, clanCache, battleCache }) => {
     savePlayerCards: (tag='#PLQLR82YQ') => {_savePlayerCards(tag, playerCache)},
     savePlayerData: (tags=['#PLQLR82YQ'], force=false) => {return _savePlayerData(tags, playerCache, force)},
     saveBattleData: (tag='#GLV2YPG9', force=false) => {return _saveBattleData(tag, battleCache, force)},
-    saveClanData: (tag='#9VUPUQJP', force=false) => {return _saveClanData(tag, clanCache, playerCache, force)},
+    saveClanData: (tag='#9VUPUQJP', force=false) => {return _saveClanData(tag, clanCache, force)},
     saveWarlogData: (tag='#9VUPUQJP', force=false) => {return _saveWarlogData(tag, clanCache, playerCache, force)}
   }
 }
@@ -190,7 +190,7 @@ const _savePlayerData = async (tags=['#PLQLR82YQ'], playerCache, force=false) =>
     
     return allPlayers
   } else {
-    return true
+    return []
   }
 }
 
@@ -327,8 +327,8 @@ const _buildClanPlayersArray = (clantag, players) => {
   })
 }
 
-const _saveClanData = async (tag='#9VUPUQJP', clanCache, playerCache, force=false) => {
-  if (!clanCache.get(tag) && tag != undefined) {
+const _saveClanData = async (tag='#9VUPUQJP', clanCache, force=false) => {
+  if ((!clanCache.get(tag) && tag != undefined) || force) {
     const data = await fetchClanData(tag)
 
     const clan = _buildClan(data)
@@ -341,7 +341,7 @@ const _saveClanData = async (tag='#9VUPUQJP', clanCache, playerCache, force=fals
 
     return clanPlayers  
   } else {
-    return true
+    return []
   }
 }
 
@@ -401,7 +401,7 @@ const _saveWarlogData = async (tag='#9VUPUQJP', clanCache, playerCache, force=fa
 
     return { allOpponents, allPlayers }
   } else {
-    return true
+    return {}
   }
 }
 

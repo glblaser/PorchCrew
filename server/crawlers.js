@@ -22,7 +22,7 @@ export const crawlPorchCrew = async () => {
   const members = await client.saveClanData(pcId, true)
   const warlog = await client.saveWarlogData(pcId, true)
 
-  const recentMembers = members.map(member => member.tag)
+  const memberTags = members.map(member => member.tag)
   // .filter(member => {
   //   const hourAgo = moment().subtract(1, 'hours')
   //   const recent = hourAgo.isBefore(member.lastSeen)
@@ -30,8 +30,8 @@ export const crawlPorchCrew = async () => {
   //   return recent
   // }).map(member => member.tag)
 
-  recentMembers.forEach(member => {
+  memberTags.forEach(member => {
     client.saveBattleData(member, true)
   })
-  client.savePlayerData(recentMembers, true)
+  client.savePlayerData(memberTags, true)
 }
