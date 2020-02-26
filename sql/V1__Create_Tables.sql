@@ -134,6 +134,7 @@ CREATE TABLE clan_players (
   "previousClanRank" int,
   "donations" int,
   "donationsReceived" int,
+  "currentMember" boolean,
   CONSTRAINT pk_clan_players_clanTag_playerTag PRIMARY KEY (
     "playerTag"
   )

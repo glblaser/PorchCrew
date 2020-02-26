@@ -22,9 +22,9 @@ export const Client = ({ playerCache, clanCache, battleCache }) => {
     savePlayer: (tag='#PLQLR82YQ') => {_savePlayer(tag, playerCache)},
     saveDeck: (tag='#PLQLR82YQ') => {_saveDeck(tag, playerCache)},
     savePlayerCards: (tag='#PLQLR82YQ') => {_savePlayerCards(tag, playerCache)},
-    savePlayerData: (tags=['#PLQLR82YQ']) => {return _savePlayerData(tags, playerCache)},
-    saveBattleData: (tag='#GLV2YPG9', force=false) => {return _saveBattleData(tag, playerCache, force)},
-    saveClanData: (tag='#9VUPUQJP') => {return _saveClanData(tag, clanCache, playerCache)},
+    savePlayerData: (tags=['#PLQLR82YQ'], force=false) => {return _savePlayerData(tags, playerCache, force)},
+    saveBattleData: (tag='#GLV2YPG9', force=false) => {return _saveBattleData(tag, battleCache, force)},
+    saveClanData: (tag='#9VUPUQJP', force=false) => {return _saveClanData(tag, clanCache, force)},
     saveWarlogData: (tag='#9VUPUQJP', force=false) => {return _saveWarlogData(tag, clanCache, playerCache, force)}
   }
 }
@@ -150,9 +150,9 @@ const _buildBulkPlayers = (players) => {
   return _.flatten(allPlayers)
 }
 
-const _savePlayerData = async (tags=['#PLQLR82YQ'], playerCache) => {
-  const newTags = tags.filter(tag => !playerCache.has(tag))
-
+const _savePlayerData = async (tags=['#PLQLR82YQ'], playerCache, force=false) => {
+  const newTags = force ? tags : tags.filter(tag => !playerCache.has(tag))
+  
   if (newTags.length === 1) {
     const data = await fetchPlayerData(newTags[0])
 
@@ -190,7 +190,7 @@ const _savePlayerData = async (tags=['#PLQLR82YQ'], playerCache) => {
     
     return allPlayers
   } else {
-    return true
+    return []
   }
 }
 
@@ -289,12 +289,12 @@ const _buildBattles = (dataArray, playerTag) => {
   }
 }
 
-const _saveBattleData = async (tag='#PLQLR82YQ', playerCache, force=false) => {
-  if (!playerCache.get(tag) && tag != undefined || force) {
+const _saveBattleData = async (tag='#PLQLR82YQ', battleCache, force=false) => {
+  if ((!battleCache.get(tag) && tag != undefined) || force) {
     const data = await fetchBattlelog(tag)
     const battlesRecords = _buildBattles(data, tag)
     updateBattle(battlesRecords.battles)
-    playerCache.set(tag, true)
+    battleCache.set(tag, true)
 
     return battlesRecords
   } else {
@@ -321,13 +321,14 @@ const _buildClanPlayersArray = (clantag, players) => {
     player.clanTag = clantag
     player.playerTag = player.tag
     player.lastSeen = moment.utc(player.lastSeen).format()
+    player.currentMember = true
 
     return player
   })
 }
 
-const _saveClanData = async (tag='#9VUPUQJP', clanCache, playerCache) => {
-  if (!clanCache.get(tag) && tag != undefined) {
+const _saveClanData = async (tag='#9VUPUQJP', clanCache, force=false) => {
+  if ((!clanCache.get(tag) && tag != undefined) || force) {
     const data = await fetchClanData(tag)
 
     const clan = _buildClan(data)
@@ -340,7 +341,7 @@ const _saveClanData = async (tag='#9VUPUQJP', clanCache, playerCache) => {
 
     return clanPlayers  
   } else {
-    return true
+    return []
   }
 }
 
@@ -400,7 +401,7 @@ const _saveWarlogData = async (tag='#9VUPUQJP', clanCache, playerCache, force=fa
 
     return { allOpponents, allPlayers }
   } else {
-    return true
+    return {}
   }
 }
 
