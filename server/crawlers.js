@@ -22,16 +22,18 @@ export const crawlPorchCrew = async () => {
   const members = await client.saveClanData(pcId, true)
   const warlog = await client.saveWarlogData(pcId, true)
 
-  const memberTags = members.map(member => member.tag)
-  // .filter(member => {
-  //   const hourAgo = moment().subtract(1, 'hours')
-  //   const recent = hourAgo.isBefore(member.lastSeen)
+  if (members) {
+    const memberTags = members.map(member => member.tag)
+    // .filter(member => {
+    //   const hourAgo = moment().subtract(1, 'hours')
+    //   const recent = hourAgo.isBefore(member.lastSeen)
 
-  //   return recent
-  // }).map(member => member.tag)
+    //   return recent
+    // }).map(member => member.tag)
 
-  memberTags.forEach(member => {
-    client.saveBattleData(member, true)
-  })
-  client.savePlayerData(memberTags, true)
+    memberTags.forEach(member => {
+      client.saveBattleData(member, true)
+    })
+    client.savePlayerData(memberTags, true)
+  }
 }

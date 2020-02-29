@@ -26,7 +26,10 @@ class MyRequestHandler {
         // console.log(res.data)
         return res.data;
       }) 
-      .catch(err => console.log(err));
+      .catch(err => {
+        // console.log("err is ", err)
+        return false
+      });
 
       if (response.statusCode === 429) throw new BackoffError(`Need to back off guys!`);
       else return response;

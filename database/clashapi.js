@@ -1,6 +1,3 @@
-// import dotenv from 'dotenv'
-// dotenv.config()
-import axios from 'axios'
 import _ from 'lodash'
 import { limiter } from './rateLimiter.js'
 
@@ -14,14 +11,18 @@ export const populateCardDictionary = async () => {
     8: 'epic',
     5: 'legendary'
   }
-  cards.items.forEach(card => {
-    cardDictionary[card.id] = {
-      name: card.name,
-      maxLevel: card.maxLevel,
-      rarity: rarities[card.maxLevel],
-      iconUrl: card.iconUrls.medium
-    }
-  })
+  if (cards) {
+    cards.items.forEach(card => {
+      cardDictionary[card.id] = {
+        name: card.name,
+        maxLevel: card.maxLevel,
+        rarity: rarities[card.maxLevel],
+        iconUrl: card.iconUrls.medium
+      }
+    })
+    return true
+  }
+  return false
 }
 
 export const fetchCards = async () => {
