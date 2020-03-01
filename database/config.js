@@ -1,15 +1,6 @@
-import ip from 'public-ip'
+// import ip from 'public-ip'
 import dotenv from 'dotenv'
 dotenv.config()
-
-/*
- * For dev use.  Delete for prod.
-
-const apiKeysByIp = {
-  "75.87.1.110": "API_KEY_BUZZMILL",
-  "66.68.63.55": "API_KEY_HOME"
-}
-*/
 
 export const {
   PORT,
@@ -23,7 +14,7 @@ export const {
 class apiAuthKeyGenerator {
   constructor() {
     this.counter = 0,
-    this.authKeyNames = ["API_KEY_RADIO", 'API_KEY_COFFEE']
+    this.authKeyNames = ["API_KEY_HOME", 'API_KEY_COFFEE']
   }
 
   getKey() {
@@ -35,6 +26,15 @@ class apiAuthKeyGenerator {
 
 export const keyGenerator = new apiAuthKeyGenerator()
 
+/*
+ * For dev use.  Delete for prod.
+
+const apiKeysByIp = {
+  "75.87.1.110": "API_KEY_BUZZMILL",
+  "66.68.63.55": "API_KEY_HOME"
+}
+*/
+
 // export const _initAuthHeader = async () => {
 //   const apiKeyByIp = apiKeysByIp[await ip.v4()]
 //   // console.log(apiKeyByIp)
@@ -43,3 +43,15 @@ export const keyGenerator = new apiAuthKeyGenerator()
 // } 
 
 // _initAuthHeader()
+
+// const _findAuthKeys = async () => {
+//   const keyNames = ["API_KEY_RADIO", 'API_KEY_COFFEE', 'API_KEY_EASYTIGER', 'API_KEY_GRANT', 'API_KEY_MEDICI', 'API_KEY_JOS', 'API_KEY_HOME', 'API_KEY_BUZZMILL', 'API_KEY_MEC', 'API_KEY_THUNDERBIRD']
+
+//   const authHeader = {
+//     headers: { 
+//       Authorization: 'Bearer: ' + key
+//     }
+//   }
+
+//   const fetchResults = keyNames.forEach(name => return fetchCards(name))
+// }
