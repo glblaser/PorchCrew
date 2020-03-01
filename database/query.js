@@ -40,7 +40,7 @@ export const updateClanWarPlayers = (players) => {
 
 export const bulkUpdatePlayers = (players) => {
   Player.bulkCreate(players, {
-    updateOnDuplicate: ['updatedAt', 'name', 'expLevel', 'trophies', 'bestTrophies', 'wins', 'losses', 'battleCount', 'threeCrownWins', 'challengeCardsWon', 'challengeMaxWins', 'tournamentBattleCount', 'role', 'donations', 'donationsReceived', 'warDayWins', 'clanCardsCollected', 'clanTag'],
+    updateOnDuplicate: ['updatedAt', 'name', 'expLevel', 'trophies', 'bestTrophies', 'wins', 'losses', 'battleCount', 'threeCrownWins', 'challengeCardsWon', 'challengeMaxWins', 'tournamentBattleCount', 'role', 'donations', 'donationsReceived', 'warDayWins', 'clanCardsCollected', 'clanTag']
     // returning: true
   })
     // .then(console.log)
@@ -77,7 +77,7 @@ export const updateClan = (clan) => {
 
 export const updateClanPlayers = (memberList) => {
   Clan_Player.bulkCreate(memberList, {
-    updateOnDuplicate: ['updatedAt', 'clanTag', 'name', 'role', 'lastSeen', 'expLevel', 'trophies', 'clanRank', 'previousClanRank', 'donations', 'donationsReceived']
+    updateOnDuplicate: ['updatedAt', 'clanTag', 'name', 'role', 'lastSeen', 'expLevel', 'trophies', 'clanRank', 'previousClanRank', 'donations', 'donationsReceived', 'currentMember']
   })
     // .then(console.log)
     .catch(err => console.log('Error updating clan_players: ', err))
