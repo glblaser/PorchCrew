@@ -35,5 +35,13 @@ export const crawlPorchCrew = async () => {
       client.saveBattleData(member, true)
     })
     client.savePlayerData(memberTags, true)
+    
+    console.log('PC updated at', moment().local().format())
+  } else {
+    console.log('PC update failed at', moment().local().format())
   }
+
+  if (warlog) {
+    console.log('warlog updated')
+  } else console.log('warlog update failed')
 }
