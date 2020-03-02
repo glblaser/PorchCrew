@@ -11,7 +11,9 @@ import { fetchClanData, fetchPlayerData, fetchBattlelog, populateCardDictionary,
 import  { Client } from '../database/helpers.js'
 import { playerCache, clanCache, battleCache } from './cache.js'
 const client = Client({ playerCache, clanCache, battleCache })
-import { crawlBattles } from './crawlers.js'
+import { crawlBattles, crawlPorchCrew } from './crawlers.js'
+
+import { porchCrewCron } from './cron.js'
 
 const app = express();
 const port = PORT || 3099;
@@ -25,6 +27,7 @@ app.use(
 
 populateCardDictionary()
 // client.initCache() 
+porchCrewCron.start()
 
 // tokenTest()
 
@@ -39,7 +42,7 @@ populateCardDictionary()
 // client.saveDeck()
 // client.savePlayerCards()
 // client.savePlayerData(['#PGJQ80JV9'])
-// client.savePlayerData(['#PGJQ80JV9', '#9U9Q9YJU'])
+client.savePlayerData(['#PGJQ80JV9', '#9U9Q9YJU'])
 // client.saveClanData('#8YLJ8UL2')
 // client.saveWarlogData('#20280RVQ')
 
@@ -48,13 +51,14 @@ const test = async () => {
   // console.log(await client.savePlayerData(['#9VJ9RJL0U']))
   // console.log(await client.saveClanData('#9VUPUQJP'))
   // console.log(await client.savePlayerData(['#PGJQ80JV9', '#9U9Q9YJU']))
-  crawlBattles('#2GGR2GPQ0')
+  // crawlBattles('#2GGR2GPQ0')
+  crawlPorchCrew()
 
   // const tester = _findApiKeyName()
   // console.log(tester)
 }
 
-// test()
+test()
 
 // battleCache.on( "del", ( key, value ) => {
 //   console.log('key is ', key, 'value is ', value)
