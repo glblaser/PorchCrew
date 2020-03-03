@@ -39,6 +39,7 @@ CREATE TABLE battles (
   "deckSelection" varchar,
   "isTie" boolean,
   "playerTag" varchar NOT NULL,
+  "playerName" varchar,
   "teammateTag" varchar,
   "startingTrophies" int,
   "trophyChange" int,

@@ -334,6 +334,9 @@ export const Battle = sequelize.define('battle', {
     primaryKey: true,
     allowNull: false
   },
+  playerName: {
+    type: Sequelize.STRING
+  },
   teammateTag: {
     type: Sequelize.STRING
   },

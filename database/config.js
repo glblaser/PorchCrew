@@ -14,7 +14,7 @@ export const {
 class apiAuthKeyGenerator {
   constructor() {
     this.counter = 0,
-    this.authKeyNames = ["API_KEY_RADIO", 'API_KEY_COFFEE']
+    this.authKeyNames = ["API_KEY_NORTH"]
   }
 
   getKey() {
