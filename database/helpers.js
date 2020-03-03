@@ -136,7 +136,7 @@ const _buildPlayer = (data) => {
   const props = Object.entries(data).filter( e => existingKeysInData.includes(e[0]) )
   const player = Object.fromEntries(props)
 
-  player.clanTag = data.clan.tag
+  player.clanTag = data.clan ? data.clan.tag : undefined
 
   return player
 }
@@ -234,6 +234,7 @@ const _buildBattles = (dataArray, playerTag) => {
       battle.isTie = isTie
 
       battle.playerTag = playerData.tag
+      battle.playerName = playerData.name
       battle.teammateTag = teammateTag
       battle.startingTrophies = playerData.startingTrophies
       battle.trophyChange = playerData.trophyChange 

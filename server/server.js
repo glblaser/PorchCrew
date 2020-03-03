@@ -26,7 +26,7 @@ app.use(
 );
 
 populateCardDictionary()
-// client.initCache() 
+client.initCache() 
 porchCrewCron.start()
 
 // tokenTest()
@@ -51,7 +51,7 @@ const test = async () => {
   // console.log(await client.savePlayerData(['#9VJ9RJL0U']))
   // console.log(await client.saveClanData('#9VUPUQJP'))
   // console.log(await client.savePlayerData(['#PGJQ80JV9', '#9U9Q9YJU']))
-  // crawlBattles('#2GGR2GPQ0')
+  // crawlBattles('#2QJJLJUJJ')
   crawlPorchCrew()
 
   // const tester = _findApiKeyName()
