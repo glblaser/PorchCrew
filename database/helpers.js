@@ -23,6 +23,7 @@ export const Client = ({ playerCache, clanCache, battleCache }) => {
     savePlayerCards: (tag='#PLQLR82YQ') => {_savePlayerCards(tag, playerCache)},
     savePlayerData: (tags=['#PLQLR82YQ'], force=false) => {return _savePlayerData(tags, playerCache, force)},
     saveBattleData: (tag='#GLV2YPG9', force=false) => {return _saveBattleData(tag, battleCache, force)},
+    getBattleOpponents: (tag='#GLV2YPG9', force=false) => {return _getBattleOpponents(tag, battleCache, force)},
     saveClanData: (tag='#9VUPUQJP', force=false) => {return _saveClanData(tag, clanCache, force)},
     saveWarlogData: (tag='#9VUPUQJP', force=false) => {return _saveWarlogData(tag, clanCache, playerCache, force)}
   }
@@ -324,6 +325,20 @@ const _saveBattleData = async (tag='#PLQLR82YQ', battleCache, force=false) => {
       updateBattle(battlesRecords.battles)
       battleCache.set(tag, true)
   
+      return battlesRecords
+    }
+    return false
+  }
+  return false
+}
+
+const _getBattleOpponents = async (tag='#PLQLR82YQ', battleCache, force=false) => {
+  if ((!battleCache.get(tag) && tag != undefined) || force) {
+    const data = await fetchBattlelog(tag)
+    if (data) {
+      const battlesRecords = _buildBattles(data, tag)
+      battleCache.set(tag, true)
+
       return battlesRecords
     }
     return false
