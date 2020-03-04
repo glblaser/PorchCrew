@@ -20,6 +20,14 @@ CREATE TABLE players (
   "warDayWins" int,
   "clanCardsCollected" int,
   "clanTag" varchar,
+  "currentSeasonBestTrophies" int,
+  "previousSeasonId" varchar,
+  "previousSeasonTrophies" int,
+  "previousSeasonBestTrophies" int,
+  "bestSeasonId" varchar,
+  "bestSeasonTrophies" int,
+  "currentFavouriteCardId" int,
+  "starPoints" int,
   CONSTRAINT pk_players PRIMARY KEY (
     "tag"
   )

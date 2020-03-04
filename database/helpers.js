@@ -132,11 +132,31 @@ const _buildBulkDecks = (players) => {
 }
 
 const _buildPlayer = (data) => {
-  const existingKeysInData = ["tag", "name", "expLevel", "trophies", "bestTrophies", "wins", "losses", "battleCount", "threeCrownWins", "challengeCardsWon", "challengeMaxWins", "tournamentBattleCount", "role", "donations", "donationsReceived", "totalDonations", "warDayWins", "clanCardsCollected"]
+  const existingKeysInData = ["tag", "name", "expLevel", "trophies", "bestTrophies", "wins", "losses", "battleCount", "threeCrownWins", "challengeCardsWon", "challengeMaxWins", "tournamentBattleCount", "role", "donations", "donationsReceived", "totalDonations", "warDayWins", "clanCardsCollected", "starPoints"]
   const props = Object.entries(data).filter( e => existingKeysInData.includes(e[0]) )
   const player = Object.fromEntries(props)
 
   player.clanTag = data.clan ? data.clan.tag : undefined
+
+  if (data.leagueStatistics) {
+    const currentSeason = data.leagueStatistics.currentSeason
+    player.currentSeasonBestTrophies = currentSeason ? currentSeason.bestTrophies : undefined
+
+    const previousSeason = data.leagueStatistics.previousSeason
+    if (previousSeason) {
+      player.previousSeasonId = previousSeason.id
+      player.previousSeasonTrophies = previousSeason.trophies
+      player.previousSeasonBestTrophies = previousSeason.bestTrophies
+    }
+  
+    const bestSeason = data.leagueStatistics.bestSeason
+    if (bestSeason) {
+      player.bestSeasonId = bestSeason.id
+      player.bestSeasonTrophies = bestSeason.trophies
+    }
+  }
+  
+  player.currentFavouriteCardId = data.currentFavouriteCard.id
 
   return player
 }

@@ -62,6 +62,30 @@ export const Player = sequelize.define('player', {
   },
   clanTag: {
     type: Sequelize.STRING
+  },
+  currentSeasonBestTrophies: {
+    type: Sequelize.INTEGER
+  },
+  previousSeasonId: {
+    type: Sequelize.STRING
+  },
+  previousSeasonTrophies: {
+    type: Sequelize.INTEGER
+  },
+  previousSeasonBestTrophies: {
+    type: Sequelize.INTEGER
+  },
+  bestSeasonId: {
+    type: Sequelize.STRING
+  },
+  bestSeasonTrophies: {
+    type: Sequelize.INTEGER
+  },
+  currentFavouriteCardId: {
+    type: Sequelize.INTEGER
+  },
+  starPoints: {
+    type: Sequelize.INTEGER
   }
 }, {
   // options
