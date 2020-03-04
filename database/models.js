@@ -332,6 +332,9 @@ export const Battle = sequelize.define('battle', {
   battleTime: {
     type: Sequelize.DATE
   },
+  tournamentTag: {
+    type: Sequelize.STRING
+  },
   isLadderTournament: {
     type: Sequelize.BOOLEAN
   },

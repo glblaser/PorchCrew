@@ -247,6 +247,7 @@ const _buildBattles = (dataArray, playerTag) => {
       const battle = Object.fromEntries(props)
       battle.battleId = battleId
       battle.battleTime = moment.utc(data.battleTime).format()
+      battle.tournamentTag = data.tournamentTag ? data.tournamentTag : undefined
       battle.arenaId = data.arena.id
       battle.arenaName = data.arena.name
       battle.gameModeId = data.gameMode.id

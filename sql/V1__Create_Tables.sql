@@ -39,6 +39,7 @@ CREATE TABLE battles (
   "battleId" varchar NOT NULL,
   "type" varchar,
   "battleTime" timestamptz,
+  "tournamentTag" varchar,
   "isLadderTournament" boolean,
   "arenaId" int,
   "arenaName" varchar,
