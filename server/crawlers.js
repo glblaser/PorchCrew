@@ -18,6 +18,21 @@ export const crawlBattles = async (tag = '#PLQLR82YQ') => {
   })
 }
 
+export const crawlBattlesSavePlayerOnly = async (tag = '#PLQLR82YQ') => {
+  const { allPlayers, allClans } = await client.getBattleOpponents(tag)
+  
+  const newPlayerTags = allPlayers
+    ? allPlayers.filter(player => (player.trophies != undefined && player.trophies >= 5800)).map(e => e.playerTag) 
+    : [] 
+
+  client.savePlayerData(newPlayerTags)
+  
+  console.log(newPlayerTags)
+  newPlayerTags.forEach(playerTag => {
+    crawlBattles(playerTag)
+  })
+}
+
 export const crawlPorchCrew = async () => {
   const pcId = '#9VUPUQJP'
   const members = await client.saveClanData(pcId, true)
