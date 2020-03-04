@@ -27,7 +27,7 @@ class MyRequestHandler {
         return res.data;
       }) 
       .catch(err => {
-        console.log("err is ", err)
+        // console.log("err is ", err)
         return false
       });
 

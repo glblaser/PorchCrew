@@ -49,10 +49,17 @@ client.savePlayerData(['#PGJQ80JV9', '#9U9Q9YJU'])
 const test = async () => {
   // const tester = updateBattle([{battleId: 'test5'}, {battleId: 'test6'}, {battleId: 'test7'}])
   // console.log(await client.savePlayerData(['#9VJ9RJL0U']))
-  // console.log(await client.saveClanData('#9VUPUQJP'))
+  // const clan = await fetchClanWarlogData('#9VUPUQJP')
+  // const keys = Object.keys(clan.items[0])
+  // console.log(keys)
+  
+  
+  // console.log(await fetchClanData('#9VUPUQJP'))
+
+
   // console.log(await client.savePlayerData(['#PGJQ80JV9', '#9U9Q9YJU']))
-  // crawlBattles('#2QJJLJUJJ')
-  crawlPorchCrew()
+  crawlBattles('#G8Y8UUL0')
+  // crawlPorchCrew()
 
   // const tester = _findApiKeyName()
   // console.log(tester)

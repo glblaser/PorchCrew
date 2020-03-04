@@ -7,7 +7,7 @@ export const crawlBattles = async (tag = '#PLQLR82YQ') => {
   const { allPlayers, allClans } = await client.saveBattleData(tag)
   
   const newPlayerTags = allPlayers
-    ? allPlayers.filter(player => (player.trophies != undefined && player.trophies >= 5600)).map(e => e.playerTag) 
+    ? allPlayers.filter(player => (player.trophies != undefined && player.trophies >= 5800)).map(e => e.playerTag) 
     : [] 
 
   client.savePlayerData(newPlayerTags)
