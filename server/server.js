@@ -11,7 +11,7 @@ import { fetchClanData, fetchPlayerData, fetchBattlelog, populateCardDictionary,
 import  { Client } from '../database/helpers.js'
 import { playerCache, clanCache, battleCache } from './cache.js'
 const client = Client({ playerCache, clanCache, battleCache })
-import { crawlBattles, crawlPorchCrew } from './crawlers.js'
+import { crawlBattles, crawlBattlesSavePlayerOnly, crawlPorchCrew } from './crawlers.js'
 
 import { porchCrewCron } from './cron.js'
 
@@ -58,8 +58,8 @@ const test = async () => {
 
 
   // console.log(await client.savePlayerData(['#PGJQ80JV9', '#9U9Q9YJU']))
-  crawlBattles('#G8Y8UUL0')
-  // crawlPorchCrew()
+  // crawlBattlesSavexPlayerOnly('#LC8GU2CR')
+  crawlPorchCrew()
 
   // const tester = _findApiKeyName()
   // console.log(tester)
