@@ -314,6 +314,9 @@ export const Clan_War = sequelize.define('clan_war', {
   },
   standing: {
     type: Sequelize.INTEGER
+  },
+  trophyChange: {
+    type: Sequelize.INTEGER
   }
 }, {
   // options
