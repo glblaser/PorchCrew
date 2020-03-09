@@ -4,6 +4,31 @@ import { sequelize } from './db.js'
 import moment from "moment"
 import Sequelize from 'sequelize'
 
+export const getClanwWarPlayers = (warId, clanTag) => {
+  return Clan_War_Player.findAll({
+    raw: true,
+    where: {
+      warId: warId,
+      clanTag: clanTag
+    },
+    order: [
+      ['name', 'ASC']
+    ]
+  })
+}
+
+export const getClanWars = (tag) => {
+  return Clan_War.findAll({
+    raw: true,
+    where: {
+      tag: tag
+    },
+    order: [
+      ['createdDate', 'DESC']
+    ]
+  })
+}
+
 export const updateBattle = (battles) => {
   Battle.bulkCreate(battles, {
     ignoreDuplicates: true
