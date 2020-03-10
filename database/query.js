@@ -30,7 +30,7 @@ export const getClanWars = (tag) => {
 }
 
 export const getClan = (tag) => {
-  return Clan.findAll({
+  return Clan.findOne({
     raw: true,
     where: {
       tag: tag

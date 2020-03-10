@@ -14,7 +14,7 @@ import { porchCrewCron } from './cron.js'
 const app = express();
 const port = PORT || 3099;
 
-app.use(express.static('dist'));
+app.use('/', express.static('dist'));
 app.use(
   bodyParser.json({
     strict: false

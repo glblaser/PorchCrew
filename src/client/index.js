@@ -1,18 +1,19 @@
-// src/index.js
 import m from 'mithril'
-import UserList from '../views/UserList'
-import UserForm from '../views/UserForm'
+// import UserList from '../views/UserList'
+// import UserForm from '../views/UserForm'
 import Layout from '../views/Layout'
+import ClanInfo from '../views/ClanInfo'
 
-m.route(document.body, '/list', {
-  '/list': {
+
+m.route(document.body, '/', {
+  '/': {
     render: () => {
-        return m(Layout, m(UserList))
+        return m(Layout)
     }
   },
-  '/edit/:id': {
-    render: (vnode) => {
-        return m(Layout, m(UserForm, vnode.attrs))
+  '/clan': {
+    render: () => {
+        return m(Layout, m(ClanInfo))
     }
   }
 })

@@ -4,8 +4,8 @@ export default {
     view: (vnode) => {
         return m("main.layout", [
             m("nav.menu", [
-                m(m.route.Link, {href: "/list"}, "Clans"),
-                m(m.route.Link, {href: "/list"}, "Players")
+                m(m.route.Link, {href: "/clan"}, "Clans"),
+                m(m.route.Link, {href: "/player"}, "Players")
             ]),
             m("section", vnode.children)
         ])
