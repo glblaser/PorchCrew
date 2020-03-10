@@ -7,7 +7,7 @@ export default {
                 m(m.route.Link, {href: "/clan"}, "Clans"),
                 m(m.route.Link, {href: "/player"}, "Players")
             ]),
-            m("section", vnode.children)
+            m("div.container", vnode.children)
         ])
     }
 }

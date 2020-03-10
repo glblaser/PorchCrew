@@ -1,4 +1,5 @@
 import express from 'express'
+import cors from 'cors'
 import bodyParser from 'body-parser'
 import path from 'path'
 import { PORT } from '../conf/config.js'
@@ -14,6 +15,7 @@ import { porchCrewCron } from './cron.js'
 const app = express();
 const port = PORT || 3099;
 
+app.use(cors())
 app.use('/', express.static('dist'));
 app.use(
   bodyParser.json({

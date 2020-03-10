@@ -2,18 +2,18 @@ import m from 'mithril'
 // import UserList from '../views/UserList'
 // import UserForm from '../views/UserForm'
 import Layout from '../views/Layout'
-import ClanInfo from '../views/ClanInfo'
+import { ClanView } from '../views/ClanView'
+import { ClanClient } from '../models/ClanClient'
+import 'bootstrap'
+import 'bootstrap/dist/css/bootstrap.css' // Import precompiled Bootstrap css
+import '@fortawesome/fontawesome-free/css/all.css'
 
+
+
+const clanClient = ClanClient('localhost', 3099)
 
 m.route(document.body, '/', {
-  '/': {
-    render: () => {
-        return m(Layout)
-    }
-  },
-  '/clan': {
-    render: () => {
-        return m(Layout, m(ClanInfo))
-    }
-  }
+  '/': { view: () => m(Layout) },
+  '/clan': { view: () => m(Layout, m(ClanView, { clanClient }))},
+  '/clan/:clanTag' : { view: () => m(Layout, m(ClanView, { clanClient, clanTag: m.route.param('clanTag') }))}
 })
