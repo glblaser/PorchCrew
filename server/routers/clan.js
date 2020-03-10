@@ -6,17 +6,30 @@ const client = Client({ playerCache, clanCache, battleCache })
 
 const router = express.Router();
 
-router.get('/wars/:clanTag', (req, res) => {
+router.get('/:clanTag', (req, res) => {
+  const clanTag = '#' + req.params.clanTag
+  
+  client.saveClanData(clanTag)
+    .then(results => {
+      return client.getClanData(clanTag)
+      // add handling results === false (need to update saveClanData())
+    })
+    .then(clan => {
+      res.json(clan)
+    })
+    .catch(err => {
+      console.log(err)
+      res.end()
+    })
+})
+
+router.get('/:clanTag/wars', (req, res) => {
   const clanTag = '#' + req.params.clanTag
   
   client.saveWarlogData(clanTag)
     .then(results => {
-      // if (results ===  false) { 
-        
-      // } else {
-        console.log(results)
-        return client.getWarlogData(clanTag)
-      // }
+      return client.getWarlogData(clanTag)
+      // add handling results === false (need to update saveWarlogData())
     })
     .then(wars => {
       res.json(wars)

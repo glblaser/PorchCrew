@@ -1,7 +1,7 @@
 import express from 'express'
 import bodyParser from 'body-parser'
 import path from 'path'
-import { PORT } from '../database/config.js'
+import { PORT } from '../conf/config.js'
 
 import { populateCardDictionary } from '../database/clashapi.js'
 
@@ -29,6 +29,7 @@ populateCardDictionary()
 client.initCache()
 porchCrewCron.start()
 
+//for spot testing
 import { scripts } from './_testers.js'
 
 scripts()
