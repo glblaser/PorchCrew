@@ -1,8 +1,8 @@
 import RequestRateLimiter from 'request-rate-limiter';
 import axios from 'axios'
-import { keyGenerator } from './config.js'
-import dotenv from 'dotenv'
-dotenv.config()
+import { keyGenerator } from '../conf/config.js'
+// import dotenv from 'dotenv'
+// dotenv.config()
 
 const numOfKeys = keyGenerator.authKeyNames.length
 

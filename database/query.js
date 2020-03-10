@@ -29,6 +29,15 @@ export const getClanWars = (tag) => {
   })
 }
 
+export const getClan = (tag) => {
+  return Clan.findAll({
+    raw: true,
+    where: {
+      tag: tag
+    }
+  })  
+}
+
 export const updateBattle = (battles) => {
   Battle.bulkCreate(battles, {
     ignoreDuplicates: true
