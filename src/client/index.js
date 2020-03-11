@@ -10,12 +10,12 @@ import '@fortawesome/fontawesome-free/css/all.css'
 
 const clanClient = ClanClient('localhost', 3099)
 
-const layout = (content, attrs) => {7
-  return { view: () => m(Layout, content, attrs) }
+const layout = (view, viewAttrs) => {7
+  return { view: () => m(Layout, m(view, viewAttrs)) }
 }
 
 m.route(document.body, '/', {
   '/': { view: () => m(Layout) },
-  '/clan': layout(m(ClanView, { clanClient })),
-  '/clan/:clanTag' : { view: () => m(Layout, m(ClanView, { clanClient, clanTag: m.route.param('clanTag') }))}
+  '/clan': layout(ClanView, { clanClient }),
+  '/clan/:clanTag': layout(ClanView, { clanClient })
 })

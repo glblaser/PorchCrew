@@ -19,7 +19,7 @@ router.get('/:clanTag', (req, res) => {
     })
     .catch(err => {
       console.log(err)
-      res.end()
+      res.status(404).send('Not found')
     })
 })
 
