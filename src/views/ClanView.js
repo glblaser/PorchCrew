@@ -1,12 +1,19 @@
 import m from 'mithril'
 
 export const ClanView = ({ attrs: { clanClient, clanTag }}) => {
-  let clan = {
-    name: '...'
-  }
+  let clan = {}
  
   const validateSearchInput = () => {
     return searchBar.length > 0
+  }
+  
+  const updateClanTag = (e) => {
+    clanTag = e.target.value
+    if (clanTag.length > 4) {
+      searchButton.dom.classList.remove('d-none')
+    } else {
+      searchButton.dom.classList.add('d-none')
+    }
   }
 
   const setClanTag = () => {
@@ -15,6 +22,14 @@ export const ClanView = ({ attrs: { clanClient, clanTag }}) => {
       m.route.set('/clan/:clanTag', {clanTag: tag})  
     }
   }
+
+  const searchBtnAttrs = {
+    onclick: setClanTag,
+    type: 'submit',
+    class: 'btn btn-primary'
+  }
+
+  const searchButton = m('button', searchBtnAttrs, m('i.fa.fa-search'))
 
   const loadClan = () => {
     clanClient.loadClan(clanTag)
@@ -33,23 +48,16 @@ export const ClanView = ({ attrs: { clanClient, clanTag }}) => {
     },
     view: (vNode) => {
       const searchBarAttrs = {
-        oninput: (e) => clanTag = e.target.value,
+        oninput: updateClanTag,
         placeholder: 'Clan Tag',
         type: 'text',  
         value: clanTag
-      }
-      const searchBtnAttrs = {
-        onclick: setClanTag,
-        type: 'submit',
-        class: 'btn btn-primary' + (clanTag ? '' : ' d-none')
       }
       return m('div', 
         m('form.inline', 
           m('div.input-group', 
             m('input.form-control', searchBarAttrs)
-            , m('button', searchBtnAttrs, 
-                m('i.fa.fa-search')
-              )
+            , searchButton
           )
         ),
         m('h5', clan.name)
