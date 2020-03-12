@@ -2,6 +2,24 @@ body {
   /* background-color: #F0EAD6; */
 }
 
+#clanView, #searchbar, #clanSummaryView {
+  margin-left: 0px;
+  margin-top: 5px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.clanInfo {
+  margin-top: 5px;
+}
+
+.dropdown {
+  float: left;
+}
+
 .search {
   padding: 10px;
   font-size: 17px;
