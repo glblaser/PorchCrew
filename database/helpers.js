@@ -2,6 +2,7 @@ import { fetchClanData, fetchPlayerData, fetchBattlelog, populateCardDictionary,
 import { getClan,
   getClanWars,
   getClanwWarPlayers,
+  getCollections,
   updatePlayer,
   bulkUpdatePlayers, 
   updateBattle,
@@ -31,7 +32,8 @@ export const Client = ({ playerCache, clanCache, battleCache }) => {
     saveWarlogData: (tag='#9VUPUQJP', force=false) => {return _saveWarlogData(tag, clanCache, playerCache, force)},
     getWarlogData: (tag='#9VUPUQJP') => {return _getWarlogData(tag)},
     getClanWarPlayersData: (warId, clanTag) => {return _getClanWarPlayersData(warId, clanTag)},
-    getClanData: (tag='#9VUPUQJP') => { return _getClanData(tag)}
+    getClanData: (tag='#9VUPUQJP') => {return _getClanData(tag)},
+    getCollectionsData: (tag='#9VUPUQJP') => {return _getCollectionsData(tag)}
   }
 }
 
@@ -443,6 +445,11 @@ const _buildWarlogRecords = (clanTag, data) => {
     allOpponents: [...allOpponents],
     allPlayers: warPlayerRecords.map(record => record.playerTag)
   }
+}
+
+const _getCollectionsData = async (tag='#9VUPUQJP') => {
+  const collections = await getCollections(tag)
+  return collections
 }
 
 const _getClanWarPlayersData = async (warId, clanTag) => {
