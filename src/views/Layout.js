@@ -15,7 +15,7 @@ export const Layout = () => {
       class: 'navbar-toggler mr-auto',
       'data-toggle': 'collapse',
       'data-target': '#menu',
-      'aria-controls': 'basicExampleNav',
+      'aria-controls': 'expandable',
       'aria-expanded': 'false',
       'aria-label': 'Toggle navigation'
     }

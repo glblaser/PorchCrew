@@ -7,7 +7,7 @@ export const ClanClient = (host, port) => {
   return {
     loadClan: (clanTag) => {
       return m.request({
-        method: "GET",
+        method: 'GET',
         url: `http://${host}:${port}/clan/${clanTag}`,
       })
     }

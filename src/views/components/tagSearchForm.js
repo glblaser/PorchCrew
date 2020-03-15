@@ -2,7 +2,6 @@ import m from 'mithril'
 
 
 export const tagSearchForm = (searchFn) => {
-  console.log('created tagSearchFrom')
   let tag = ''
   let loading = false
   let error = false
@@ -24,7 +23,6 @@ export const tagSearchForm = (searchFn) => {
   }
 
   const setTag = () => {
-    console.log('tag is', tag)
     if (tag && tag.length > 4) {
       tag = tag.replace('#', '')
       searchFn(tag)
@@ -32,7 +30,6 @@ export const tagSearchForm = (searchFn) => {
   }
 
   const renderTagInput = () => {
-    console.log('rendering tag')
     const attrs = {
       oninput: updateTag,
       placeholder: 'Search...',
@@ -51,8 +48,6 @@ export const tagSearchForm = (searchFn) => {
   }
 
   const renderSearchForm = () => {
-    console.log('render searchform')
-
     return m('form#searchbar.inline.row', 
       m('div.md-form.my-0',
         m('div.input-group', 
@@ -67,7 +62,6 @@ export const tagSearchForm = (searchFn) => {
 
   return {
     view: (vNode) => {
-      console.log('tag search form . view')
       return renderSearchForm()
     }
   }

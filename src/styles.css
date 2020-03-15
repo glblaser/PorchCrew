@@ -2,14 +2,26 @@ body {
   /* background-color: #F0EAD6; */
 }
 
-#clanView, #searchbar, #clanSummaryView {
+#clanView, #searchbar {
   margin-left: 0px;
-  margin-top: 5px;
+  margin-top: 10px;
+}
+
+#clanSummaryView {
+  margin-top: 15px;
+}
+
+.tab-content {
+  padding: 5px;
 }
 
 .row {
   display: flex;
   align-items: center;
+}
+
+.tabs {
+  background-color: 2196F3;
 }
 
 .clanInfo {
