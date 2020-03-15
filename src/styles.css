@@ -1,0 +1,58 @@
+body {
+  /* background-color: #F0EAD6; */
+}
+
+#clanView, #searchbar {
+  margin-left: 0px;
+  margin-top: 10px;
+}
+
+#clanSummaryView {
+  margin-top: 15px;
+}
+
+.tab-content {
+  padding: 5px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+}
+
+.tabs {
+  background-color: 2196F3;
+}
+
+.clanInfo {
+  margin-top: 5px;
+}
+
+.dropdown {
+  float: left;
+}
+
+.search {
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid grey;
+  width: 30%;
+  height: 25px;
+  background: #f1f1f1;
+}
+
+.button {
+  width: 10%;
+  height: 45px;
+  padding: 10px;
+  background: #2196F3;
+  color: white;
+  font-size: 17px;
+  border: 1px solid grey;
+  border-left: none;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: #0b7dda;
+}

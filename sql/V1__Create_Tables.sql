@@ -180,6 +180,7 @@ CREATE TABLE clan_wars (
   "wins" int,
   "crowns" int,
   "standing" int,
+  "trophyChange" int,
   CONSTRAINT pk_clan_wars_warId_tag PRIMARY KEY (
     "warId", "tag"
   )

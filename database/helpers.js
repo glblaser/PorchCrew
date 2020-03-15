@@ -1,5 +1,8 @@
 import { fetchClanData, fetchPlayerData, fetchBattlelog, populateCardDictionary, cardDictionary, fetchClanWarlogData } from './clashapi.js'
-import { updatePlayer,
+import { getClan,
+  getClanWars,
+  getClanwWarPlayers,
+  updatePlayer,
   bulkUpdatePlayers, 
   updateBattle,
   updateCurrentDeck, 
@@ -25,7 +28,10 @@ export const Client = ({ playerCache, clanCache, battleCache }) => {
     saveBattleData: (tag='#GLV2YPG9', force=false) => {return _saveBattleData(tag, battleCache, force)},
     getBattleOpponents: (tag='#GLV2YPG9', force=false) => {return _getBattleOpponents(tag, battleCache, force)},
     saveClanData: (tag='#9VUPUQJP', force=false) => {return _saveClanData(tag, clanCache, force)},
-    saveWarlogData: (tag='#9VUPUQJP', force=false) => {return _saveWarlogData(tag, clanCache, playerCache, force)}
+    saveWarlogData: (tag='#9VUPUQJP', force=false) => {return _saveWarlogData(tag, clanCache, playerCache, force)},
+    getWarlogData: (tag='#9VUPUQJP') => {return _getWarlogData(tag)},
+    getClanWarPlayersData: (warId, clanTag) => {return _getClanWarPlayersData(warId, clanTag)},
+    getClanData: (tag='#9VUPUQJP') => { return _getClanData(tag)}
   }
 }
 
@@ -370,6 +376,11 @@ const _buildClanPlayersArray = (clantag, players) => {
   })
 }
 
+const _getClanData = async (tag='#9VUPUQJP') => {
+  const clan = await getClan(tag)
+  return clan
+}
+
 const _saveClanData = async (tag='#9VUPUQJP', clanCache, force=false) => {
   if ((!clanCache.get(tag) && tag != undefined) || force) {
     const data = await fetchClanData(tag)
@@ -393,15 +404,15 @@ const _buildWarlogRecords = (clanTag, data) => {
   let warPlayerRecords = []
   const allOpponents = new Set()
   
-  const clanWarRecords = data.map(war => {
+  const clanWarRecords = data.map((war, i) => {
     const warRecord =   {
       tag: clanTag,
       seasonId: war.seasonId,
-      createdDate: moment.utc(war.createdDate).format()
+      createdDate: moment.utc(war.createdDate).format(),
     }
     const clans = []
 
-    war.standings.forEach(({ clan }, ind) => {
+    war.standings.forEach(({ clan, trophyChange }, ind) => {
       clans.push(clan.tag)
       if (clan.tag === clanTag) {
         warRecord.clanScore = clan.clanScore
@@ -410,6 +421,7 @@ const _buildWarlogRecords = (clanTag, data) => {
         warRecord.wins = clan.wins
         warRecord.crowns = clan.crowns
         warRecord.standing = ind + 1
+        warRecord.trophyChange = trophyChange
       }
     })
 
@@ -431,6 +443,20 @@ const _buildWarlogRecords = (clanTag, data) => {
     allOpponents: [...allOpponents],
     allPlayers: warPlayerRecords.map(record => record.playerTag)
   }
+}
+
+const _getClanWarPlayersData = async (warId, clanTag) => {
+  const members = await getClanwWarPlayers(warId, clanTag)
+  return members
+}
+
+const _getWarlogData = async (tag='#9VUPUQJP') => {
+  const clanWars = await getClanWars(tag)
+  return Promise.all(clanWars.map(async (war) => {
+    const members = await _getClanWarPlayersData(war.warId, tag)
+    war.members = members
+    return war
+  }))
 }
 
 const _saveWarlogData = async (tag='#9VUPUQJP', clanCache, playerCache, force=false) => {
