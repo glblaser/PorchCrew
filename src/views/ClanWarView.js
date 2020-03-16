@@ -1,11 +1,11 @@
 import m from 'mithril'
 
-export const ClanWarContentView = ({ attrs: { clan, warClient }}) => {
+export const ClanWarView = ({ attrs: { clan, warClient }}) => {
   
-  const renderClanWarContentView = () => {
+  const renderClanWarView = () => {
     return m('div', {
       id: 'clan-war',
-      class: 'tab-pane fade',
+      class: 'tab-pane fade col-sm-12 show active',
       role: 'tabpanel',
       'aria-labelledby': 'clan-war-tab'
       }, 'Clan war content')
@@ -14,7 +14,7 @@ export const ClanWarContentView = ({ attrs: { clan, warClient }}) => {
 
   return {
     view: ({ attrs: { clan, warClient }}) => {
-      return renderClanWarContentView()
+      return renderClanWarView()
     }
   }
 }
