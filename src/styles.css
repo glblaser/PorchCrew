@@ -20,6 +20,10 @@ body {
   align-items: center;
 }
 
+.total {
+  font-weight: bold;
+}
+
 .tabs {
   background-color: 2196F3;
 }
@@ -55,4 +59,8 @@ body {
 
 .button:hover {
   background: #0b7dda;
+}
+
+th {
+  font-size: 18px;
 }
