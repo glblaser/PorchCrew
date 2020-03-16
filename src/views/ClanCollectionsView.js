@@ -8,6 +8,7 @@ export const ClanCollectionsView = ({ attrs: { clan, warClient }}) => {
     .then(res => {
       if (res != null) {
         collections = res
+        return true
       }
     })
     .catch(err => console.log('error is', err))
@@ -16,7 +17,7 @@ export const ClanCollectionsView = ({ attrs: { clan, warClient }}) => {
   const renderCollectionsTableHead = () => {
     const thAttrs = (heading) => {
       return {
-        // class: 'sorting_asc',
+        class: 'player',
         // tabindex: '0',
         // 'aria-controls': 'collectionsTable',
         // rowspan: '1',
@@ -53,22 +54,36 @@ export const ClanCollectionsView = ({ attrs: { clan, warClient }}) => {
 
     const renderCollectionsRows = () => {
       const rows = []
+      const clanTotals = [0,0,0,0,0,0,0,0,0,0]
 
       if (collections[0]) {
         for (let index=0; index<collections.length; index+=10) {
-          let row = [m('td', collections[index].name)]
+          const row = [m('td.player', collections[index].name)]
           let total = 0
 
           for (let i=index; i<index+10; i++) {
-            total += collections[i].cardsEarned
-            row.push(m('td', collections[i].cardsEarned))
+            const cardsEarned = collections[i].cardsEarned
+            
+            total += cardsEarned
+            clanTotals[i-index] += cardsEarned
+            row.push(m('td', cardsEarned))
           }
           total = total != 0 ? total : null
           rows.push(m('tr', row, m('td.total', total)))
         }
+
+        const totalsRow = [m('td', 'Total')]
+        clanTotals.forEach((ele) => {
+          totalsRow.push(m('td', ele))
+        })
+
+        const totalTotals = clanTotals.reduce((a, b) => a + b, 0)
+        totalsRow.push(m('td', totalTotals))
+
+        rows.push(m('tr#collectionTotals.total', totalsRow))
       }
 
-      return rows
+      return rows 
     }
 
     return m('tbody', renderCollectionsRows())

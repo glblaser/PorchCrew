@@ -70,7 +70,7 @@ export const ClanTabsView = () => {
 
   return {
     oninit: () => {
-      console.log('clantabsview loaded')
+      // console.log('clantabsview loaded')
     },
     view: ({ attrs: { clan, warClient }}) => {
       return renderClanTabsView(clan, warClient)
