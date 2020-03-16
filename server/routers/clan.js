@@ -40,4 +40,21 @@ router.get('/:clanTag/wars', (req, res) => {
     })
 })
 
+router.get('/:clanTag/collections', (req, res) => {
+  const clanTag = '#' + req.params.clanTag
+  
+  client.saveWarlogData(clanTag)
+    .then(results => {
+      return client.getCollectionsData(clanTag)
+      // add handling results === false (need to update saveWarlogData())
+    })
+    .then(collections => {
+      res.json(collections)
+    })
+    .catch(err => {
+      console.log(err)
+      res.end()
+    })
+})
+
 export default router

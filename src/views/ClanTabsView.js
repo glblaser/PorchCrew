@@ -7,7 +7,7 @@ export const ClanTabsView = () => {
     return m('div#clan-tabs.nav.nav-tabs[role="tablist"]', 
       m('a', { 
         id: 'clan-info-tab',
-        class: 'nav-item nav-link active',
+        class: 'nav-item nav-link',
         href: '#clan-info',
         'data-toggle': "tab",
         'aria-controls': "clan-info",
@@ -15,7 +15,7 @@ export const ClanTabsView = () => {
       }, 'Info'),
       m('a', {
         id: 'clan-collections-tab',
-        class: 'nav-item nav-link',
+        class: 'nav-item nav-link active',
         href: '#clan-collections',
         'data-toggle': 'tab',
         'aria-controls': 'clan-collections',
@@ -44,7 +44,7 @@ export const ClanTabsView = () => {
     return m('div#clan-tabs-content.tab-content',
       m('div', {
         id: 'clan-info',
-        class: 'tab-pane fade show active',
+        class: 'tab-pane fade',
         role: 'tabpanel',
         'aria-labelledby': 'clan-info-tab'
       }, 'Clan info content'),
@@ -70,7 +70,7 @@ export const ClanTabsView = () => {
 
   return {
     oninit: () => {
-      console.log('clantabsview loaded')
+      // console.log('clantabsview loaded')
     },
     view: ({ attrs: { clan, warClient }}) => {
       return renderClanTabsView(clan, warClient)
