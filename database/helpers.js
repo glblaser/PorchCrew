@@ -448,8 +448,9 @@ const _buildWarlogRecords = (clanTag, data) => {
 }
 
 const _getCollectionsData = async (tag='#9VUPUQJP') => {
-  const collections = await getCollections(tag)
-  return collections
+  const collectionsData = await getCollections(tag)
+
+  return collectionsData
 }
 
 const _getClanWarPlayersData = async (warId, clanTag) => {

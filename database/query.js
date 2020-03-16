@@ -17,7 +17,7 @@ export const getCollections = async (clanTag) => {
         from
           clan_wars
         where
-          "tag"='#9VUPUQJP'
+          "tag"='${clanTag}'
         order by "createdDate" desc
         limit 10) as ten_clan_wars
         cross join 
@@ -40,7 +40,8 @@ export const getCollections = async (clanTag) => {
     on
       all_wars_players."warId" = clan_war_players."warId"
     and
-      all_wars_players."playerTag" = clan_war_players."playerTag";`
+      all_wars_players."playerTag" = clan_war_players."playerTag"
+    order by upper(all_wars_players.name), "createdDate" DESC`
 
   return sequelize.query(queryStr, {type: Sequelize.QueryTypes.SELECT})
 }
