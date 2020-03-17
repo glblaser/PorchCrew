@@ -2,7 +2,12 @@ import m from 'mithril'
 import _ from 'lodash'
 
 export const ClanWarView = ({ attrs: { clan, warClient }}) => {
-  let warDays = []  
+  let warDays = []
+  const clanTotals = {
+    numOfBattles: [0,0,0,0,0,0,0,0,0,0],
+    played: [0,0,0,0,0,0,0,0,0,0],
+    wins: [0,0,0,0,0,0,0,0,0,0]
+  }
 
   const renderWarTable = () => {
 
@@ -31,12 +36,37 @@ export const ClanWarView = ({ attrs: { clan, warClient }}) => {
     }
 
     const renderWarTableBody = () => {
-      const renderWarRows = () => {
-        const warDaysChunked = _.chunk(warDays, 10)
-        console.log(warDaysChunked)
-      }
+      if (warDays[0]) {
+        const renderWarRows = () => {
+          const warDaysChunked = _.chunk(warDays, 10)
 
-      return m('tbody', renderWarRows())
+          const renderedWarRows = warDaysChunked.map(playerRecords => {
+            const name = playerRecords[0].name
+            let total = 0
+
+            const warRow = playerRecords.map((warDay, i) => {
+              clanTotals.numOfBattles[i] += warDay.numOfBattles
+              clanTotals.played[i] += warDay.played
+              clanTotals.wins[i] += warDay.wins
+              total += warDay.wins
+
+              return m('td', warDay.wins)
+            })
+
+            console.log('clanTotals is', clanTotals)
+            const renderedWarRow = m('tr',  
+              m('td', name),
+              warRow,
+              m('td', total))
+
+            return renderedWarRow
+          })
+
+          return renderedWarRows
+        }
+
+        return m('tbody', renderWarRows())
+      }
     }
 
 
