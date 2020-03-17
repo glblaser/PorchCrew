@@ -4,8 +4,8 @@ import _ from 'lodash'
 export const ClanWarView = ({ attrs: { clan, warClient }}) => {
   let warDays = []
   const clanTotals = {
-    numOfBattles: [0,0,0,0,0,0,0,0,0,0],
-    played: [0,0,0,0,0,0,0,0,0,0],
+    numberOfBattles: [0,0,0,0,0,0,0,0,0,0],
+    battlesPlayed: [0,0,0,0,0,0,0,0,0,0],
     wins: [0,0,0,0,0,0,0,0,0,0]
   }
 
@@ -42,22 +42,32 @@ export const ClanWarView = ({ attrs: { clan, warClient }}) => {
 
           const renderedWarRows = warDaysChunked.map(playerRecords => {
             const name = playerRecords[0].name
-            let total = 0
+            const playerTotal = {
+              wins: 0,
+              battlesPlayed: 0,
+              numberOfBattles: 0
+            }
 
             const warRow = playerRecords.map((warDay, i) => {
-              clanTotals.numOfBattles[i] += warDay.numOfBattles
-              clanTotals.played[i] += warDay.played
+              clanTotals.numberOfBattles[i] += warDay.numberOfBattles
+              clanTotals.battlesPlayed[i] += warDay.battlesPlayed
               clanTotals.wins[i] += warDay.wins
-              total += warDay.wins
+              playerTotal.numberOfBattles += warDay.numberOfBattles
+              playerTotal.battlesPlayed += warDay.battlesPlayed
+              playerTotal.wins += warDay.wins
 
-              return m('td', warDay.wins)
+              const record = warDay.numberOfBattles ? warDay.wins + ' / ' + warDay.battlesPlayed + ' / ' + warDay.numberOfBattles : null
+
+              return m('td', record)
             })
 
-            console.log('clanTotals is', clanTotals)
+            
+            const totalRecord = playerTotal.numberOfBattles ? playerTotal.wins + ' / ' + playerTotal.battlesPlayed + ' / ' + playerTotal.numberOfBattles : null
+
             const renderedWarRow = m('tr',  
-              m('td', name),
+              m('td.player', name),
               warRow,
-              m('td', total))
+              m('td.total', totalRecord))
 
             return renderedWarRow
           })
