@@ -3,17 +3,6 @@ import m from 'mithril'
 export const ClanCollectionsView = ({ attrs: { clan, warClient }}) => {
   let collections = []
 
-  const loadCollections = (clan, warClient) => {
-    warClient.loadCollections(clan.tag)
-    .then(res => {
-      if (res != null) {
-        collections = res
-        return true
-      }
-    })
-    .catch(err => console.log('error is', err))
-  }
-
   const renderCollectionsTableHead = () => {
     const thAttrs = (heading) => {
       return {
@@ -108,6 +97,17 @@ export const ClanCollectionsView = ({ attrs: { clan, warClient }}) => {
       role: 'tabpanel',
       'aria-labelledby': 'clan-collections-tab'
     }, renderCollectionsTable())
+  }
+
+  const loadCollections = (clan, warClient) => {
+    warClient.loadCollections(clan.tag)
+    .then(res => {
+      if (res != null) {
+        collections = res
+        return true
+      }
+    })
+    .catch(err => console.log('error is', err))
   }
 
   return {
