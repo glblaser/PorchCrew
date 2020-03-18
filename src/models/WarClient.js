@@ -20,6 +20,13 @@ export const WarClient = (host, port) => {
         method: 'GET',
         url: `http://${host}:${port}/clan/${tag}/collections`,
       })
+    },
+    loadWarDays: (clanTag) => {
+      const tag = clanTag.replace('#', '')
+      return m.request({
+        method: 'GET',
+        url: `http://${host}:${port}/clan/${tag}/war`,
+      })
     }
   }
 }
