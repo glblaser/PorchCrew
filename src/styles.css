@@ -65,7 +65,7 @@ table {
   margin-top: 10px;
 }
 
-thead, #collectionTotals {
+thead, tfoot, #collectionTotals {
   font-size: 18px;
   background-color: #007bff;
   color: white;

@@ -6,7 +6,16 @@ export const ClanWarView = ({ attrs: { clan, warClient }}) => {
   const clanTotals = {
     numberOfBattles: [0,0,0,0,0,0,0,0,0,0],
     battlesPlayed: [0,0,0,0,0,0,0,0,0,0],
-    wins: [0,0,0,0,0,0,0,0,0,0]
+    wins: [0,0,0,0,0,0,0,0,0,0],
+    numberOfBattlesTotal: () => {
+      return clanTotals.numberOfBattles.reduce((a, b) => a + b, 0)
+    },
+    battlesPlayedTotal: () => {
+      return clanTotals.battlesPlayed.reduce((a, b) => a + b, 0)
+    },
+    winsTotal: () => {
+      return clanTotals.wins.reduce((a, b) => a + b, 0)
+    },
   }
 
   const renderWarTable = () => {
@@ -64,18 +73,39 @@ export const ClanWarView = ({ attrs: { clan, warClient }}) => {
             
             const totalRecord = playerTotal.numberOfBattles ? playerTotal.wins + ' / ' + playerTotal.battlesPlayed + ' / ' + playerTotal.numberOfBattles : null
 
-            const renderedWarRow = m('tr',  
+            return m('tr',  
               m('td.player', name),
               warRow,
               m('td.total', totalRecord))
-
-            return renderedWarRow
-          })
+            })
 
           return renderedWarRows
         }
 
         return m('tbody', renderWarRows())
+      }
+    }
+
+    const renderWarTableFooter = () => {
+      if (warDays[0]) {
+        const renderWarFooter = () => {
+          const totalsRow = [m('td', 'Totals')]
+          if(clanTotals.numberOfBattles[0] != undefined) {
+            clanTotals.numberOfBattles.forEach((clanTotal, i) => {
+              const record = clanTotals.wins[i] + ' / ' + clanTotals.battlesPlayed[i]  + ' / ' + clanTotals.numberOfBattles[i]
+              totalsRow.push(m('td', record))
+            })
+          }
+
+          const totalTotalsRecord = clanTotals.winsTotal() + ' / ' + clanTotals.battlesPlayedTotal()  + ' / ' + clanTotals.numberOfBattlesTotal()
+
+          return m('tr',
+            totalsRow,
+            m('td', totalTotalsRecord)
+          )
+        }
+
+        return m('tfoot.total', renderWarFooter())
       }
     }
 
@@ -86,7 +116,8 @@ export const ClanWarView = ({ attrs: { clan, warClient }}) => {
       style: 'width:100%'
       },
       renderWarTableHead(),
-      renderWarTableBody()
+      renderWarTableBody(),
+      renderWarTableFooter()
     ) 
   }
 
