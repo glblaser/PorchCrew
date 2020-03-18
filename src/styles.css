@@ -7,6 +7,10 @@ body {
   margin-top: 10px;
 }
 
+.missedWar {
+  background-color: #ff9994;
+}
+
 #clanSummaryView {
   margin-top: 15px;
 }
@@ -20,8 +24,9 @@ body {
   align-items: center;
 }
 
-.total, .player, .clanTotal {
+tbody .total, tbody .player, .clanTotal {
   font-weight: bold;
+  font-size: .9rem;
 }
 
 .tabs {
@@ -66,11 +71,13 @@ table {
 }
 
 thead, tfoot, #collectionTotals {
-  font-size: 18px;
+  font-size: 1rem;
   background-color: #007bff;
   color: white;
+  font-weight: bold;
 }
 
 tbody {
+  font-size: .85rem;
   color: #15508f;
 }
