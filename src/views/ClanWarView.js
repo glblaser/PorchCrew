@@ -65,18 +65,22 @@ export const ClanWarView = ({ attrs: { clan, warClient }}) => {
               playerTotal.battlesPlayed += warDay.battlesPlayed
               playerTotal.wins += warDay.wins
 
+              const missedWar = warDay.numberOfBattles - warDay.battlesPlayed > 0
+
               const record = warDay.numberOfBattles ? warDay.wins + ' / ' + warDay.battlesPlayed + ' / ' + warDay.numberOfBattles : null
 
-              return m('td', record)
+              return m('td', { class: missedWar ? 'missedWar' : '' }, record)
             })
 
             
             const totalRecord = playerTotal.numberOfBattles ? playerTotal.wins + ' / ' + playerTotal.battlesPlayed + ' / ' + playerTotal.numberOfBattles : null
 
+            const missedWar = playerTotal.numberOfBattles - playerTotal.battlesPlayed > 0
+
             return m('tr',  
               m('td.player', name),
               warRow,
-              m('td.total', totalRecord))
+              m('td.total', { class: missedWar ? 'missedWar' : '' }, totalRecord))
             })
 
           return renderedWarRows
