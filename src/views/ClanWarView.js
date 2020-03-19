@@ -3,23 +3,23 @@ import _ from 'lodash'
 
 export const ClanWarView = ({ attrs: { clan, warClient }}) => {
   let warDays = []
-  const clanTotals = {
-    numberOfBattles: [0,0,0,0,0,0,0,0,0,0],
-    battlesPlayed: [0,0,0,0,0,0,0,0,0,0],
-    wins: [0,0,0,0,0,0,0,0,0,0],
-    numberOfBattlesTotal: () => {
-      return _.sum(clanTotals.numberOfBattles)
-    },
-    battlesPlayedTotal: () => {
-      return _.sum(clanTotals.battlesPlayed)
-    },
-    winsTotal: () => {
-      return _.sum(clanTotals.wins)
-    },
-  }
 
   const renderWarTable = () => {
-
+    const clanTotals = {
+      numberOfBattles: [0,0,0,0,0,0,0,0,0,0],
+      battlesPlayed: [0,0,0,0,0,0,0,0,0,0],
+      wins: [0,0,0,0,0,0,0,0,0,0],
+      numberOfBattlesTotal: () => {
+        return _.sum(clanTotals.numberOfBattles)
+      },
+      battlesPlayedTotal: () => {
+        return _.sum(clanTotals.battlesPlayed)
+      },
+      winsTotal: () => {
+        return _.sum(clanTotals.wins)
+      },
+    }
+    
     const renderWarTableHead = () => {
       const renderDateHeaders = () => {
         const dates = []
