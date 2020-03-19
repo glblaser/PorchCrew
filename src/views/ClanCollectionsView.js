@@ -4,7 +4,7 @@ import _ from 'lodash'
 export const ClanCollectionsView = ({ attrs: { clan, warClient }}) => {
   let collections = []
 
-  const renderCollectionsTable = () => {
+  const renderCollectionsTable = (clan) => {
     const clanTotals = [0,0,0,0,0,0,0,0,0,0]
 
     const renderCollectionsTableHead = () => {
@@ -23,9 +23,9 @@ export const ClanCollectionsView = ({ attrs: { clan, warClient }}) => {
 
       return m('thead',
         m('tr',  
-          m('th', 'Player'),
+          m('th.player', 'Player'),
           renderDateHeaders(),
-          m('th', 'Total')
+          m('th.total', 'Total')
         )
       )
     }
@@ -56,6 +56,22 @@ export const ClanCollectionsView = ({ attrs: { clan, warClient }}) => {
       return m('tbody', renderedCollectionRows)
     }
 
+    const renderCollectionsTableFooter = () => {
+      const totalsRow = clanTotals.map(total => {
+        return m('td', total)
+      })
+
+      const totalTotal = _.sum(clanTotals)
+
+      return m('tfoot', 
+        m('tr',
+        m('td.player', clan.name),
+        totalsRow,
+        m('td.total', totalTotal)
+        )
+      )
+    }
+
     if (collections[0]) {
       return m('table', {
         id: 'collectionsTable',
@@ -63,18 +79,19 @@ export const ClanCollectionsView = ({ attrs: { clan, warClient }}) => {
         style: 'width:100%'
         },
         renderCollectionsTableHead(),
-        renderCollectionsTableBody()
+        renderCollectionsTableBody(),
+        renderCollectionsTableFooter()
       )
     }
   }
 
-  const renderClanCollectionsView = () => {
+  const renderClanCollectionsView = (clan) => {
     return m('div', {
       id: 'clan-collections',
       class: 'tab-pane fade col-sm-12 show active',
       role: 'tabpanel',
       'aria-labelledby': 'clan-collections-tab'
-    }, renderCollectionsTable())
+    }, renderCollectionsTable(clan))
   }
 
   const loadCollections = (clan, warClient) => {
@@ -93,7 +110,7 @@ export const ClanCollectionsView = ({ attrs: { clan, warClient }}) => {
       loadCollections(clan, warClient)
     },
     view: ({ attrs: { clan, warClient }}) => {
-      return renderClanCollectionsView()
+      return renderClanCollectionsView(clan)
     }
   }
 }
