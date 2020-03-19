@@ -65,9 +65,9 @@ export const ClanCollectionsView = ({ attrs: { clan, warClient }}) => {
 
       return m('tfoot', 
         m('tr',
-        m('td.player', clan.name),
-        totalsRow,
-        m('td.total', totalTotal)
+          m('td.player', clan.name),
+          totalsRow,
+          m('td.total', totalTotal)
         )
       )
     }
