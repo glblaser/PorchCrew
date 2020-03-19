@@ -205,13 +205,13 @@ export const updatePlayerCards = (records) => {
 }
 
 export const updateClan = (clan) => {
-  Clan.upsert(clan)
+  return Clan.upsert(clan)
     // .then(console.log)
     .catch(err => console.log('Error updating clans: ', err))
 }
 
 export const updateClanPlayers = (memberList) => {
-  Clan_Player.bulkCreate(memberList, {
+  return Clan_Player.bulkCreate(memberList, {
     updateOnDuplicate: ['updatedAt', 'clanTag', 'name', 'role', 'lastSeen', 'expLevel', 'trophies', 'clanRank', 'previousClanRank', 'donations', 'donationsReceived', 'currentMember']
   })
     // .then(console.log)

@@ -392,8 +392,8 @@ const _saveClanData = async (tag='#9VUPUQJP', clanCache, force=false) => {
       const clan = _buildClan(data)
       const clanPlayers = _buildClanPlayersArray(data.tag, data.memberList)
   
-      updateClan(clan)
-      updateClanPlayers(clanPlayers)
+      await updateClan(clan)
+      await updateClanPlayers(clanPlayers)
   
       clanCache.set(tag, true)
   
