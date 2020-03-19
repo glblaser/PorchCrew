@@ -1,9 +1,11 @@
 import m from 'mithril'
+import _ from 'lodash'
 
 export const ClanCollectionsView = ({ attrs: { clan, warClient }}) => {
   let collections = []
 
   const renderCollectionsTable = () => {
+    const clanTotals = [0,0,0,0,0,0,0,0,0,0]
 
     const renderCollectionsTableHead = () => {
       const renderDateHeaders = () => {
@@ -29,42 +31,29 @@ export const ClanCollectionsView = ({ attrs: { clan, warClient }}) => {
     }
 
     const renderCollectionsTableBody = () => {
+      const collectionsChunked = _.chunk(collections, 10)
 
-      const renderCollectionsRows = () => {
-        const rows = []
-        const clanTotals = [0,0,0,0,0,0,0,0,0,0]
+      const renderedCollectionRows = collectionsChunked.map(playerRecords => {
+        const name = playerRecords[0].name
+        let playerTotal = 0
 
-        if (collections[0]) {
-          for (let index=0; index<collections.length; index+=10) {
-            const row = [m('td.player', collections[index].name)]
-            let total = 0
+        const collectionsResults = playerRecords.map((collection, i) => {
+          const cardsEarned = collection.cardsEarned
 
-            for (let i=index; i<index+10; i++) {
-              const cardsEarned = collections[i].cardsEarned
-              
-              total += cardsEarned
-              clanTotals[i-index] += cardsEarned
-              row.push(m('td', cardsEarned))
-            }
-            total = total != 0 ? total : null
-            rows.push(m('tr', row, m('td.total', total)))
-          }
+          clanTotals[i] += cardsEarned
+          playerTotal += cardsEarned
 
-          const totalsRow = [m('td', 'Total')]
-          clanTotals.forEach((ele) => {
-            totalsRow.push(m('td', ele))
-          })
+          return (m('td', cardsEarned))
+        })
 
-          const totalTotals = clanTotals.reduce((a, b) => a + b, 0)
-          totalsRow.push(m('td', totalTotals))
+        return m('tr',
+          m('td.player', name),
+          collectionsResults,
+          m('td.total', playerTotal)
+        )
+      })
 
-          rows.push(m('tr#collectionTotals.total', totalsRow))
-        }
-
-        return rows 
-      }
-
-      return m('tbody', renderCollectionsRows())
+      return m('tbody', renderedCollectionRows)
     }
 
     if (collections[0]) {

@@ -82,8 +82,9 @@ export const ClanWarView = ({ attrs: { clan, warClient }}) => {
         return m('tr',  
           m('td.player', name),
           warRow,
-          m('td.total', { class: missedWar ? 'missedWar' : '' }, totalRecord))
-        })
+          m('td.total', { class: missedWar ? 'missedWar' : '' }, totalRecord)
+        )
+      })
 
       return m('tbody', renderedWarRows)
     }
