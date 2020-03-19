@@ -8,13 +8,13 @@ export const ClanWarView = ({ attrs: { clan, warClient }}) => {
     battlesPlayed: [0,0,0,0,0,0,0,0,0,0],
     wins: [0,0,0,0,0,0,0,0,0,0],
     numberOfBattlesTotal: () => {
-      return clanTotals.numberOfBattles.reduce((a, b) => a + b, 0)
+      return _.sum(clanTotals.numberOfBattles)
     },
     battlesPlayedTotal: () => {
-      return clanTotals.battlesPlayed.reduce((a, b) => a + b, 0)
+      return _.sum(clanTotals.battlesPlayed)
     },
     winsTotal: () => {
-      return clanTotals.wins.reduce((a, b) => a + b, 0)
+      return _.sum(clanTotals.wins)
     },
   }
 
@@ -92,30 +92,29 @@ export const ClanWarView = ({ attrs: { clan, warClient }}) => {
 
     const renderWarTableFooter = () => {
       if (warDays[0]) {
-        const renderWarFooter = () => {
-          const totalsRow = [m('td', 'Totals')]
-          if(clanTotals.numberOfBattles[0] != undefined) {
-            clanTotals.numberOfBattles.forEach((clanTotal, i) => {
-              const record = clanTotals.wins[i] + ' / ' + clanTotals.battlesPlayed[i]  + ' / ' + clanTotals.numberOfBattles[i]
-              totalsRow.push(m('td', record))
-            })
-          }
-
-          const totalTotalsRecord = clanTotals.winsTotal() + ' / ' + clanTotals.battlesPlayedTotal()  + ' / ' + clanTotals.numberOfBattlesTotal()
-
-          return m('tr',
-            totalsRow,
-            m('td', totalTotalsRecord)
-          )
+        const totalsRow = []
+        
+        if(clanTotals.numberOfBattles[0] != undefined) {
+          clanTotals.numberOfBattles.forEach((clanTotal, i) => {
+            const record = clanTotals.wins[i] + ' / ' + clanTotals.battlesPlayed[i]  + ' / ' + clanTotals.numberOfBattles[i]
+            totalsRow.push(m('td', record))
+          })
         }
 
-        return m('tfoot.total', renderWarFooter())
+        const totalTotalsRecord = clanTotals.winsTotal() + ' / ' + clanTotals.battlesPlayedTotal()  + ' / ' + clanTotals.numberOfBattlesTotal()
+
+        return m('tfoot', 
+          m('tr',
+          m('td', 'Totals'),
+          totalsRow,
+          m('td', totalTotalsRecord)
+          )
+        )
       }
     }
 
-
     return m('table', {
-      id: 'warTable',
+      id: 'clanWarTable',
       class: 'table table-striped',
       style: 'width:100%'
       },
