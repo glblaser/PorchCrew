@@ -78,7 +78,7 @@ const _initCache = async (playerCache, clanCache, battleCache) => {
 const _savePlayer = async (tag, playerCache) => {
   if (!playerCache.get(tag) && tag != undefined) {
     const data = await fetchPlayerData(tag);
-    updatePlayer(data)
+    await updatePlayer(data)
     playerCache.set(tag, true)
   } else {
     return true
@@ -88,7 +88,7 @@ const _savePlayer = async (tag, playerCache) => {
 const _saveDeck = async (tag, playerCache) => {
   if (!playerCache.get(tag) && tag != undefined) {
     const data = await fetchPlayerData(tag);
-    updateCurrentDeck(data)
+    await updateCurrentDeck(data)
     playerCache.set(tag, true)
   } else {
     return true
@@ -119,7 +119,7 @@ const _savePlayerCards = async (tag='#PLQLR82YQ', playerCache) => {
     const data = await fetchPlayerData(tag);
     const playerCards = _buildPlayerCards(data)
     
-    updatePlayerCards(playerCards)
+    await updatePlayerCards(playerCards)
     
     playerCache.set(tag, true)
   } else {
@@ -191,9 +191,9 @@ const _savePlayerData = async (tags=['#PLQLR82YQ'], playerCache, force=false) =>
       const playerCards = _buildPlayerCards(data)
       const deck = _buildDeck(data)
 
-      updatePlayer(player)
-      updateCurrentDeck(deck)
-      updatePlayerCards(playerCards)
+      await updatePlayer(player)
+      await updateCurrentDeck(deck)
+      await updatePlayerCards(playerCards)
 
       playerCache.set(data.tag, true)
 
@@ -332,7 +332,7 @@ const _saveBattleData = async (tag='#PLQLR82YQ', battleCache, force=false) => {
     const data = await fetchBattlelog(tag)
     if (data) {
       const battlesRecords = _buildBattles(data, tag)
-      updateBattle(battlesRecords.battles)
+      await updateBattle(battlesRecords.battles)
       battleCache.set(tag, true)
   
       return battlesRecords
@@ -392,8 +392,8 @@ const _saveClanData = async (tag='#9VUPUQJP', clanCache, force=false) => {
       const clan = _buildClan(data)
       const clanPlayers = _buildClanPlayersArray(data.tag, data.memberList)
   
-      updateClan(clan)
-      updateClanPlayers(clanPlayers)
+      await updateClan(clan)
+      await updateClanPlayers(clanPlayers)
   
       clanCache.set(tag, true)
   
@@ -481,8 +481,8 @@ const _saveWarlogData = async (tag='#9VUPUQJP', clanCache, playerCache, force=fa
     if (data) {
       const { clanWarRecords, warPlayerRecords, allOpponents, allPlayers } = _buildWarlogRecords(tag, data.items)
 
-      updateClanWars(clanWarRecords)
-      updateClanWarPlayers(warPlayerRecords)
+      await updateClanWars(clanWarRecords)
+      await updateClanWarPlayers(warPlayerRecords)
       
       clanCache.set(tag, true)
 

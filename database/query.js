@@ -140,7 +140,7 @@ export const getClan = (tag) => {
 }
 
 export const updateBattle = (battles) => {
-  Battle.bulkCreate(battles, {
+  return Battle.bulkCreate(battles, {
     ignoreDuplicates: true
   })
   // .then(console.log)
@@ -148,7 +148,7 @@ export const updateBattle = (battles) => {
 }
 
 export const updatePlayer = (player) => {
-  Player.upsert(player)
+  return Player.upsert(player)
     // .then(res => {
     //   if (res[1] === true) {
     //     console.log(`Player ${res[0].dataValues.tag} created`)
@@ -158,7 +158,7 @@ export const updatePlayer = (player) => {
 }
 
 export const updateClanWars = (wars) => {
-  Clan_War.bulkCreate(wars, {
+  return Clan_War.bulkCreate(wars, {
     ignoreDuplicates: true
   })
     // .then(res => console.log(res[0]))
@@ -166,7 +166,7 @@ export const updateClanWars = (wars) => {
 }
 
 export const updateClanWarPlayers = (players) => {
-  Clan_War_Player.bulkCreate(players, {
+  return Clan_War_Player.bulkCreate(players, {
     ignoreDuplicates: true
   })
   // .then(console.log)
@@ -174,7 +174,7 @@ export const updateClanWarPlayers = (players) => {
 }
 
 export const bulkUpdatePlayers = (players) => {
-  Player.bulkCreate(players, {
+  return Player.bulkCreate(players, {
     updateOnDuplicate: ['updatedAt', 'name', 'expLevel', 'trophies', 'bestTrophies', 'wins', 'losses', 'battleCount', 'threeCrownWins', 'challengeCardsWon', 'challengeMaxWins', 'tournamentBattleCount', 'role', 'donations', 'donationsReceived', 'warDayWins', 'clanCardsCollected', 'clanTag']
     // returning: true
   })
@@ -183,13 +183,13 @@ export const bulkUpdatePlayers = (players) => {
 }
 
 export const updateCurrentDeck = (deck) => {
-  Current_Deck.upsert(deck)
+  return Current_Deck.upsert(deck)
     // .then(console.log)
     .catch(err => console.log('Error updating current_decks: ', err))
 }
 
 export const bulkUpdateCurrentDecks = (decks) => {
-  Current_Deck.bulkCreate(decks, {
+  return Current_Deck.bulkCreate(decks, {
     updateOnDuplicate: ['updatedAt', 'card1Id', 'card2Id', 'card3Id', 'card4Id', 'card5Id', 'card6Id', 'card7Id', 'card8Id']
   })
     // .then(console.log)
@@ -197,7 +197,7 @@ export const bulkUpdateCurrentDecks = (decks) => {
 }
 
 export const updatePlayerCards = (records) => {
-  Player_Card.bulkCreate(records, {
+  return Player_Card.bulkCreate(records, {
     updateOnDuplicate: ['updatedAt', 'cardLeve', 'cardCount']
   })
     // .then(console.log)
@@ -205,13 +205,13 @@ export const updatePlayerCards = (records) => {
 }
 
 export const updateClan = (clan) => {
-  Clan.upsert(clan)
+  return Clan.upsert(clan)
     // .then(console.log)
     .catch(err => console.log('Error updating clans: ', err))
 }
 
 export const updateClanPlayers = (memberList) => {
-  Clan_Player.bulkCreate(memberList, {
+  return Clan_Player.bulkCreate(memberList, {
     updateOnDuplicate: ['updatedAt', 'clanTag', 'name', 'role', 'lastSeen', 'expLevel', 'trophies', 'clanRank', 'previousClanRank', 'donations', 'donationsReceived', 'currentMember']
   })
     // .then(console.log)
