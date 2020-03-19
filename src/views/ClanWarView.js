@@ -19,7 +19,7 @@ export const ClanWarView = ({ attrs: { clan, warClient }}) => {
         return _.sum(clanTotals.wins)
       },
     }
-    
+
     const renderWarTableHead = () => {
       const renderDateHeaders = () => {
         const dates = []
@@ -55,16 +55,21 @@ export const ClanWarView = ({ attrs: { clan, warClient }}) => {
         }
 
         const warRow = playerRecords.map((warDay, i) => {
-          clanTotals.numberOfBattles[i] += warDay.numberOfBattles
-          clanTotals.battlesPlayed[i] += warDay.battlesPlayed
-          clanTotals.wins[i] += warDay.wins
-          playerTotal.numberOfBattles += warDay.numberOfBattles
-          playerTotal.battlesPlayed += warDay.battlesPlayed
-          playerTotal.wins += warDay.wins
+          const numberOfBattles = warDay.numberOfBattles
+          const battlesPlayed = warDay.battlesPlayed
+          const wins = warDay.wins
 
-          const missedWar = warDay.numberOfBattles - warDay.battlesPlayed > 0
+          clanTotals.numberOfBattles[i] += numberOfBattles
+          clanTotals.battlesPlayed[i] += battlesPlayed
+          clanTotals.wins[i] += wins
+          
+          playerTotal.numberOfBattles += numberOfBattles
+          playerTotal.battlesPlayed += battlesPlayed
+          playerTotal.wins += wins
 
-          const record = warDay.numberOfBattles ? warDay.wins + ' / ' + warDay.battlesPlayed + ' / ' + warDay.numberOfBattles : null
+          const missedWar = numberOfBattles - battlesPlayed > 0
+
+          const record = numberOfBattles ? wins + ' / ' + battlesPlayed + ' / ' + numberOfBattles : null
 
           return m('td', { class: missedWar ? 'missedWar' : '' }, record)
         })
