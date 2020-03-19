@@ -46,7 +46,10 @@ router.get('/:clanTag/wars', (req, res) => {
 router.get('/:clanTag/collections', (req, res) => {
   const clanTag = '#' + req.params.clanTag
   
-  client.saveWarlogData(clanTag)
+  client.saveClanData(clanTag)
+    .then(results => {
+      return client.saveWarlogData(clanTag, true)
+    })
     .then(results => {
       return client.getCollectionsData(clanTag)
       // add handling results === false (need to update saveWarlogData())
@@ -63,7 +66,10 @@ router.get('/:clanTag/collections', (req, res) => {
 router.get('/:clanTag/war', (req, res) => {
   const clanTag = '#' + req.params.clanTag
   
-  client.saveWarlogData(clanTag)
+  client.saveClanData(clanTag)
+    .then(results => {
+      return client.saveWarlogData(clanTag, true)
+    })
     .then(results => {
       return client.getWarData(clanTag)
       // add handling results === false (need to update saveWarlogData())
