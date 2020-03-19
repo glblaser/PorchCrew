@@ -24,13 +24,11 @@ export const ClanWarView = ({ attrs: { clan, warClient }}) => {
       const renderDateHeaders = () => {
         const dates = []
 
-        if (warDays[0]) {
-          for (let i=0; i<10; i++) {
-            const date = new Date(warDays[i].createdDate)
-            const month = date.toLocaleString('default', { month: 'short' })
-            const day = date.getDate() 
-            dates.push(m('th', month + ' ' + day))
-          }
+        for (let i=0; i<10; i++) {
+          const date = new Date(warDays[i].createdDate)
+          const month = date.toLocaleString('default', { month: 'short' })
+          const day = date.getDate() 
+          dates.push(m('th', month + ' ' + day))
         }
 
         return dates
@@ -46,83 +44,81 @@ export const ClanWarView = ({ attrs: { clan, warClient }}) => {
     }
 
     const renderWarTableBody = () => {
-      if (warDays[0]) {
-        const renderWarRows = () => {
-          const warDaysChunked = _.chunk(warDays, 10)
+      const renderWarRows = () => {
+        const warDaysChunked = _.chunk(warDays, 10)
 
-          const renderedWarRows = warDaysChunked.map(playerRecords => {
-            const name = playerRecords[0].name
-            const playerTotal = {
-              wins: 0,
-              battlesPlayed: 0,
-              numberOfBattles: 0
-            }
+        const renderedWarRows = warDaysChunked.map(playerRecords => {
+          const name = playerRecords[0].name
+          const playerTotal = {
+            wins: 0,
+            battlesPlayed: 0,
+            numberOfBattles: 0
+          }
 
-            const warRow = playerRecords.map((warDay, i) => {
-              clanTotals.numberOfBattles[i] += warDay.numberOfBattles
-              clanTotals.battlesPlayed[i] += warDay.battlesPlayed
-              clanTotals.wins[i] += warDay.wins
-              playerTotal.numberOfBattles += warDay.numberOfBattles
-              playerTotal.battlesPlayed += warDay.battlesPlayed
-              playerTotal.wins += warDay.wins
+          const warRow = playerRecords.map((warDay, i) => {
+            clanTotals.numberOfBattles[i] += warDay.numberOfBattles
+            clanTotals.battlesPlayed[i] += warDay.battlesPlayed
+            clanTotals.wins[i] += warDay.wins
+            playerTotal.numberOfBattles += warDay.numberOfBattles
+            playerTotal.battlesPlayed += warDay.battlesPlayed
+            playerTotal.wins += warDay.wins
 
-              const missedWar = warDay.numberOfBattles - warDay.battlesPlayed > 0
+            const missedWar = warDay.numberOfBattles - warDay.battlesPlayed > 0
 
-              const record = warDay.numberOfBattles ? warDay.wins + ' / ' + warDay.battlesPlayed + ' / ' + warDay.numberOfBattles : null
+            const record = warDay.numberOfBattles ? warDay.wins + ' / ' + warDay.battlesPlayed + ' / ' + warDay.numberOfBattles : null
 
-              return m('td', { class: missedWar ? 'missedWar' : '' }, record)
-            })
+            return m('td', { class: missedWar ? 'missedWar' : '' }, record)
+          })
 
-            
-            const totalRecord = playerTotal.numberOfBattles ? playerTotal.wins + ' / ' + playerTotal.battlesPlayed + ' / ' + playerTotal.numberOfBattles : null
+          
+          const totalRecord = playerTotal.numberOfBattles ? playerTotal.wins + ' / ' + playerTotal.battlesPlayed + ' / ' + playerTotal.numberOfBattles : null
 
-            const missedWar = playerTotal.numberOfBattles - playerTotal.battlesPlayed > 0
+          const missedWar = playerTotal.numberOfBattles - playerTotal.battlesPlayed > 0
 
-            return m('tr',  
-              m('td.player', name),
-              warRow,
-              m('td.total', { class: missedWar ? 'missedWar' : '' }, totalRecord))
-            })
+          return m('tr',  
+            m('td.player', name),
+            warRow,
+            m('td.total', { class: missedWar ? 'missedWar' : '' }, totalRecord))
+          })
 
-          return renderedWarRows
-        }
-
-        return m('tbody', renderWarRows())
+        return renderedWarRows
       }
+
+      return m('tbody', renderWarRows())
     }
 
     const renderWarTableFooter = () => {
-      if (warDays[0]) {
-        const totalsRow = []
-        
-        if(clanTotals.numberOfBattles[0] != undefined) {
-          clanTotals.numberOfBattles.forEach((clanTotal, i) => {
-            const record = clanTotals.wins[i] + ' / ' + clanTotals.battlesPlayed[i]  + ' / ' + clanTotals.numberOfBattles[i]
-            totalsRow.push(m('td', record))
-          })
-        }
-
-        const totalTotalsRecord = clanTotals.winsTotal() + ' / ' + clanTotals.battlesPlayedTotal()  + ' / ' + clanTotals.numberOfBattlesTotal()
-
-        return m('tfoot', 
-          m('tr',
-          m('td', 'Totals'),
-          totalsRow,
-          m('td', totalTotalsRecord)
-          )
-        )
+      const totalsRow = []
+      
+      if(clanTotals.numberOfBattles[0] != undefined) {
+        clanTotals.numberOfBattles.forEach((clanTotal, i) => {
+          const record = clanTotals.wins[i] + ' / ' + clanTotals.battlesPlayed[i]  + ' / ' + clanTotals.numberOfBattles[i]
+          totalsRow.push(m('td', record))
+        })
       }
+
+      const totalTotalsRecord = clanTotals.winsTotal() + ' / ' + clanTotals.battlesPlayedTotal()  + ' / ' + clanTotals.numberOfBattlesTotal()
+
+      return m('tfoot', 
+        m('tr',
+        m('td', 'Totals'),
+        totalsRow,
+        m('td', totalTotalsRecord)
+        )
+      )
     }
 
-    return m('table', {
-      id: 'clanWarTable',
-      class: 'table table-striped',
-      style: 'width:100%'
-      },
-      renderWarTableHead(),
-      renderWarTableBody(),
-      renderWarTableFooter()
-    ) 
+    if (warDays[0]) {
+      return m('table', {
+        id: 'clanWarTable',
+        class: 'table table-striped',
+        style: 'width:100%'
+        },
+        renderWarTableHead(),
+        renderWarTableBody(),
+        renderWarTableFooter()
+      ) 
+    }
   }
 
   const renderClanWarView = () => {
