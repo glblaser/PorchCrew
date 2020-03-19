@@ -36,9 +36,9 @@ export const ClanWarView = ({ attrs: { clan, warClient }}) => {
 
       return m('thead',
         m('tr',  
-          m('th', 'Player'),
+          m('th.player', 'Player'),
           renderDateHeaders(),
-          m('th', 'Total')
+          m('th.total', 'Totals')
         )
       )
     }
@@ -89,7 +89,7 @@ export const ClanWarView = ({ attrs: { clan, warClient }}) => {
       return m('tbody', renderedWarRows)
     }
 
-    const renderWarTableFooter = () => {
+    const renderWarTableFooter = (clan) => {
       const totalsRow = []
       
       if(clanTotals.numberOfBattles[0] != undefined) {
@@ -103,9 +103,9 @@ export const ClanWarView = ({ attrs: { clan, warClient }}) => {
 
       return m('tfoot', 
         m('tr',
-        m('td', 'Totals'),
+        m('td.player', clan.name),
         totalsRow,
-        m('td', totalTotalsRecord)
+        m('td.total', totalTotalsRecord)
         )
       )
     }
@@ -118,18 +118,18 @@ export const ClanWarView = ({ attrs: { clan, warClient }}) => {
         },
         renderWarTableHead(),
         renderWarTableBody(),
-        renderWarTableFooter()
+        renderWarTableFooter(clan)
       ) 
     }
   }
 
-  const renderClanWarView = () => {
+  const renderClanWarView = (clan) => {
     return m('div', {
       id: 'clan-war',
       class: 'tab-pane fade col-sm-12',
       role: 'tabpanel',
       'aria-labelledby': 'clan-war-tab'
-      }, renderWarTable())
+      }, renderWarTable(clan))
   }
 
   const loadWarDays = (clan, warClient) => {
@@ -148,7 +148,7 @@ export const ClanWarView = ({ attrs: { clan, warClient }}) => {
       loadWarDays(clan, warClient)
     },
     view: ({ attrs: { clan, warClient }}) => {
-      return renderClanWarView()
+      return renderClanWarView(clan)
     }
   }
 }
