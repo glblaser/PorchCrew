@@ -74,8 +74,8 @@ router.get('/:clanTag/war', (req, res) => {
       return client.getWarData(clanTag)
       // add handling results === false (need to update saveWarlogData())
     })
-    .then(collections => {
-      res.json(collections)
+    .then(war => {
+      res.json(war)
     })
     .catch(err => {
       console.log(err)
