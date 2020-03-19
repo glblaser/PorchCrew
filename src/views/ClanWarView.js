@@ -26,9 +26,10 @@ export const ClanWarView = ({ attrs: { clan, warClient }}) => {
 
         if (warDays[0]) {
           for (let i=0; i<10; i++) {
-            let date = new Date(warDays[i].createdDate)
-            date = date.getMonth()+1 + '/' + date.getDate()
-            dates.push(m('th', date))
+            const date = new Date(warDays[i].createdDate)
+            const month = date.toLocaleString('default', { month: 'short' })
+            const day = date.getDate() 
+            dates.push(m('th', month + ' ' + day))
           }
         }
 
@@ -37,9 +38,9 @@ export const ClanWarView = ({ attrs: { clan, warClient }}) => {
 
       return m('thead',
         m('tr',  
-          m('th.player', 'Player'),
+          m('th', 'Player'),
           renderDateHeaders(),
-          m('th.total', 'Total')
+          m('th', 'Total')
         )
       )
     }
