@@ -1,102 +1,97 @@
 import m from 'mithril'
+import _ from 'lodash'
 
 export const ClanCollectionsView = ({ attrs: { clan, warClient }}) => {
   let collections = []
 
-  const renderCollectionsTableHead = () => {
-    const thAttrs = (heading) => {
-      return {
-        class: 'player',
-        // tabindex: '0',
-        // 'aria-controls': 'collectionsTable',
-        // rowspan: '1',
-        // colspan: '1',
-        // 'aria-label': `${heading}: activate to sort column ascending`,
-        // style: 'width: 125px'
-      }
-    }
-    
-    const renderDateHeaders = () => {
-      const dates = []
+  const renderCollectionsTable = (clan) => {
+    const clanTotals = [0,0,0,0,0,0,0,0,0,0]
 
-      if (collections[0]) {
+    const renderCollectionsTableHead = () => {
+      const renderDateHeaders = () => {
+        const dates = []
+
         for (let i=0; i<10; i++) {
-          let date = new Date(collections[i].createdDate)
-          date = date.getMonth()+1 + '/' + date.getDate()
-          dates.push(m('th', thAttrs(date), date))
+          const date = new Date(collections[i].createdDate)
+          const month = date.toLocaleString('default', { month: 'short' })
+          const day = date.getDate() 
+          dates.push(m('th', month + ' ' + day))
         }
+
+        return dates
       }
 
-      return dates
+      return m('thead',
+        m('tr',  
+          m('th.player', 'Player'),
+          renderDateHeaders(),
+          m('th.total', 'Total')
+        )
+      )
     }
 
-    return m('thead',
-      m('tr',  
-        m('th', thAttrs('Player'), 'Player'),
-        renderDateHeaders(),
-        m('th', thAttrs('Total'), 'Total')
-      )
-    )
-  }
+    const renderCollectionsTableBody = () => {
+      const collectionsChunked = _.chunk(collections, 10)
 
-  const renderCollectionsTableBody = () => {
+      const renderedCollectionRows = collectionsChunked.map(playerRecords => {
+        const name = playerRecords[0].name
+        let playerTotal = 0
 
-    const renderCollectionsRows = () => {
-      const rows = []
-      const clanTotals = [0,0,0,0,0,0,0,0,0,0]
+        const collectionsResults = playerRecords.map((collection, i) => {
+          const cardsEarned = collection.cardsEarned
 
-      if (collections[0]) {
-        for (let index=0; index<collections.length; index+=10) {
-          const row = [m('td.player', collections[index].name)]
-          let total = 0
+          clanTotals[i] += cardsEarned
+          playerTotal += cardsEarned
 
-          for (let i=index; i<index+10; i++) {
-            const cardsEarned = collections[i].cardsEarned
-            
-            total += cardsEarned
-            clanTotals[i-index] += cardsEarned
-            row.push(m('td', cardsEarned))
-          }
-          total = total != 0 ? total : null
-          rows.push(m('tr', row, m('td.total', total)))
-        }
-
-        const totalsRow = [m('td', 'Total')]
-        clanTotals.forEach((ele) => {
-          totalsRow.push(m('td', ele))
+          return (m('td', cardsEarned))
         })
 
-        const totalTotals = clanTotals.reduce((a, b) => a + b, 0)
-        totalsRow.push(m('td', totalTotals))
+        return m('tr',
+          m('td.player', name),
+          collectionsResults,
+          m('td.total', playerTotal)
+        )
+      })
 
-        rows.push(m('tr#collectionTotals.total', totalsRow))
-      }
-
-      return rows 
+      return m('tbody', renderedCollectionRows)
     }
 
-    return m('tbody', renderCollectionsRows())
+    const renderCollectionsTableFooter = () => {
+      const totalsRow = clanTotals.map(total => {
+        return m('td', total)
+      })
+
+      const totalTotal = _.sum(clanTotals)
+
+      return m('tfoot', 
+        m('tr',
+          m('td.player', clan.name),
+          totalsRow,
+          m('td.total', totalTotal)
+        )
+      )
+    }
+
+    if (collections[0]) {
+      return m('table', {
+        id: 'collectionsTable',
+        class: 'table table-striped',
+        style: 'width:100%'
+        },
+        renderCollectionsTableHead(),
+        renderCollectionsTableBody(),
+        renderCollectionsTableFooter()
+      )
+    }
   }
 
-  const renderCollectionsTable = () => {
-    return m('table', {
-      id: 'collectionsTable',
-      class: 'table table-striped',
-      style: 'width:100%'
-      },
-      renderCollectionsTableHead(),
-      renderCollectionsTableBody()
-    )
-  
-  }
-
-  const renderClanCollectionsView = () => {
+  const renderClanCollectionsView = (clan) => {
     return m('div', {
       id: 'clan-collections',
-      class: 'tab-pane fade col-sm-12',
+      class: 'tab-pane fade col-sm-12 show active',
       role: 'tabpanel',
       'aria-labelledby': 'clan-collections-tab'
-    }, renderCollectionsTable())
+    }, renderCollectionsTable(clan))
   }
 
   const loadCollections = (clan, warClient) => {
@@ -115,7 +110,7 @@ export const ClanCollectionsView = ({ attrs: { clan, warClient }}) => {
       loadCollections(clan, warClient)
     },
     view: ({ attrs: { clan, warClient }}) => {
-      return renderClanCollectionsView()
+      return renderClanCollectionsView(clan)
     }
   }
 }

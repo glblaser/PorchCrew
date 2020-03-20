@@ -70,7 +70,7 @@ table {
   margin-top: 10px;
 }
 
-thead, tfoot, #collectionTotals {
+thead, tfoot {
   font-size: 1rem;
   background-color: #007bff;
   color: white;
@@ -80,4 +80,15 @@ thead, tfoot, #collectionTotals {
 tbody {
   font-size: .85rem;
   color: #15508f;
+  border-left: 1px solid #dee2e6;
+  border-right: 1px solid #dee2e6;
+}
+
+.total {
+  border-left: 1px solid #dee2e6;
+  text-align: right;
+}
+
+.player {
+  border-right: 1px solid #dee2e6;
 }
