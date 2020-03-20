@@ -1,6 +1,7 @@
 import m from 'mithril'
 import { ClanWarView } from './ClanWarView'
 import { ClanCollectionsView } from './ClanCollectionsView'
+import { ClanInfoView } from './ClanInfoView'
 
 export const ClanTabsView = () => {
   const renderClanTabs = () => {
@@ -42,12 +43,7 @@ export const ClanTabsView = () => {
 
   const renderClanTabsContent = (clan, warClient) => {
     return m('div#clan-tabs-content.tab-content',
-      m('div', {
-        id: 'clan-info',
-        class: 'tab-pane fade col-sm-12 show active',
-        role: 'tabpanel',
-        'aria-labelledby': 'clan-info-tab'
-      }, 'Clan info content'),
+      m(ClanInfoView, { clan }),
       m(ClanCollectionsView, { clan, warClient }),
       m(ClanWarView, { clan, warClient }),
       m('div', {
