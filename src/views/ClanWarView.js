@@ -1,5 +1,6 @@
 import m from 'mithril'
 import _ from 'lodash'
+import { renderDateHeaders } from './helpers/tableHelper'
 
 export const ClanWarView = ({ attrs: { clan, warClient }}) => {
   let warDays = []
@@ -21,23 +22,10 @@ export const ClanWarView = ({ attrs: { clan, warClient }}) => {
     }
 
     const renderWarTableHead = () => {
-      const renderDateHeaders = () => {
-        const dates = []
-
-        for (let i=0; i<10; i++) {
-          const date = new Date(warDays[i].createdDate)
-          const month = date.toLocaleString('default', { month: 'short' })
-          const day = date.getDate() 
-          dates.push(m('th', month + ' ' + day))
-        }
-
-        return dates
-      }
-
       return m('thead',
         m('tr',  
           m('th.player', 'Player'),
-          renderDateHeaders(),
+          renderDateHeaders(warDays.slice(0,10)),
           m('th.total', 'Totals')
         )
       )

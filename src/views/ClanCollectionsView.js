@@ -1,5 +1,6 @@
 import m from 'mithril'
 import _ from 'lodash'
+import { renderDateHeaders } from './helpers/tableHelper'
 
 export const ClanCollectionsView = ({ attrs: { clan, warClient }}) => {
   let collections = []
@@ -8,23 +9,10 @@ export const ClanCollectionsView = ({ attrs: { clan, warClient }}) => {
     const clanTotals = [0,0,0,0,0,0,0,0,0,0]
 
     const renderCollectionsTableHead = () => {
-      const renderDateHeaders = () => {
-        const dates = []
-
-        for (let i=0; i<10; i++) {
-          const date = new Date(collections[i].createdDate)
-          const month = date.toLocaleString('default', { month: 'short' })
-          const day = date.getDate() 
-          dates.push(m('th', month + ' ' + day))
-        }
-
-        return dates
-      }
-
       return m('thead',
         m('tr',  
           m('th.player', 'Player'),
-          renderDateHeaders(),
+          renderDateHeaders(collections.slice(0,10)),
           m('th.total', 'Total')
         )
       )
