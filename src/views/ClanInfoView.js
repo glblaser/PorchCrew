@@ -3,6 +3,7 @@ import m from 'mithril'
 export const ClanInfoView = ({ attrs: { clan, warClient }}) => {
 
   const renderClanInfoView = (clan) => {
+    console.log(clan)
     return m('div', {
       id: 'clan-info',
       class: 'tab-pane fade col-sm-12 show active',
