@@ -1,6 +1,7 @@
 import m from 'mithril'
 import { ClanWarView } from './ClanWarView'
 import { ClanCollectionsView } from './ClanCollectionsView'
+import { ClanMembersView } from './ClanMembersView'
 
 export const ClanTabsView = () => {
   const renderClanTabs = () => {
@@ -13,6 +14,14 @@ export const ClanTabsView = () => {
         'aria-controls': "clan-info",
         'aria-selected': "true"
       }, 'Info'),
+      m('a', {
+        id: 'clan-members-tab',
+        class: 'nav-item nav-link',
+        href: '#clan-members',
+        'data-toggle': 'tab',
+        'aria-controls': 'clan-members',
+        'aria-selected': 'false'
+      }, 'Members'),
       m('a', {
         id: 'clan-collections-tab',
         class: 'nav-item nav-link active',
@@ -28,15 +37,7 @@ export const ClanTabsView = () => {
         'data-toggle': 'tab',
         'aria-controls': 'clan-war',
         'aria-selected': 'false'
-      }, 'War'),
-      m('a', {
-        id: 'clan-donations-requests-tab',
-        class: 'nav-item nav-link',
-        href: '#clan-donations-requests',
-        'data-toggle': 'tab',
-        'aria-controls': 'clan-donations-requests',
-        'aria-selected': 'false'
-      }, 'Donations/Requests')
+      }, 'War')
     )
   }
 
@@ -50,12 +51,7 @@ export const ClanTabsView = () => {
       }, 'Clan info content'),
       m(ClanCollectionsView, { clan, warClient }),
       m(ClanWarView, { clan, warClient }),
-      m('div', {
-        id: 'clan-donations-requests',
-        class: 'tab-pane fade col-sm-12',
-        role: 'tabpanel',
-        'aria-labelledby': 'clan-donations-requests-tab'
-      }, 'Clan donations/requests content'),
+      m(ClanMembersView, { clan, warClient }),
     )
   }
 
