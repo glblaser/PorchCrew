@@ -1,6 +1,25 @@
 import  { Client } from '../database/helpers.js'
 import { playerCache, clanCache, battleCache } from './cache.js'
 const client = Client({ playerCache, clanCache, battleCache })
+import { getClan,
+  getClanPlayers,
+  getClanWars,
+  getClanwWarPlayers,
+  getClanPlayersWars,
+  getCollections,
+  updatePlayer,
+  bulkUpdatePlayers, 
+  updateBattle,
+  updateCurrentDeck, 
+  bulkUpdateCurrentDecks, 
+  updatePlayerCards, 
+  updateClan, 
+  updateClanPlayers, 
+  updateClanWars, 
+  updateClanWarPlayers, 
+  getInitPlayerCache, 
+  getInitClanCache,
+  getInitBattleCache } from '../database/query.js'
 
 import { crawlBattles, crawlBattlesSavePlayerOnly, crawlPorchCrew } from './crawlers.js'
 
@@ -11,7 +30,7 @@ export const scripts = () => {
   // test()
   // client.savePlayerData(['#9VJ9RJL0U'])
 
-    
+  
   // client.saveClanData()
   // // caches.playerCache.set('#PLQLR82YQ',true)
   // client.savePlayer()
@@ -30,7 +49,7 @@ export const scripts = () => {
     // const keys = Object.keys(clan.items[0])
     // console.log(keys)
     
-    
+    console.log('getClanPlayer is ', await client.getClanPlayersData('#9VUPUQJP'))
     // console.log(await fetchClanData('#9VUPUQJP'))
 
 

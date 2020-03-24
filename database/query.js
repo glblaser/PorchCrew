@@ -4,6 +4,19 @@ import { sequelize } from './db.js'
 import moment from "moment"
 import Sequelize from 'sequelize'
 
+export const getClanPlayers = async (clanTag) => {
+  return Clan_Player.findAll({
+    raw: true,
+    where: {
+      clanTag: clanTag,
+      currentMember: true
+    },
+    order: [
+      ['clanRank', 'ASC']
+    ]
+  })
+}
+
 export const getClanPlayersWars = async (clanTag) => {
   const queryStr = 
     `select
