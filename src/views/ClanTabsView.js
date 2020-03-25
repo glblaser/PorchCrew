@@ -15,7 +15,7 @@ export const ClanTabsView = () => {
         'aria-selected': "true"
       }, 'Info'),
       m('a', {
-        id: 'clan-members-tab',
+        id: 'clan-members-tab active',
         class: 'nav-item nav-link',
         href: '#clan-members',
         'data-toggle': 'tab',
@@ -24,7 +24,7 @@ export const ClanTabsView = () => {
       }, 'Members'),
       m('a', {
         id: 'clan-collections-tab',
-        class: 'nav-item nav-link active',
+        class: 'nav-item nav-link',
         href: '#clan-collections',
         'data-toggle': 'tab',
         'aria-controls': 'clan-collections',
