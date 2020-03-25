@@ -41,7 +41,7 @@ export const ClanTabsView = () => {
     )
   }
 
-  const renderClanTabsContent = (clan, warClient) => {
+  const renderClanTabsContent = (clan, clanClient, warClient) => {
     return m('div#clan-tabs-content.tab-content',
       m('div', {
         id: 'clan-info',
@@ -51,15 +51,15 @@ export const ClanTabsView = () => {
       }, 'Clan info content'),
       m(ClanCollectionsView, { clan, warClient }),
       m(ClanWarView, { clan, warClient }),
-      m(ClanMembersView, { clan, warClient }),
+      m(ClanMembersView, { clan, clanClient }),
     )
   }
 
-  const renderClanTabsView = (clan, warClient) => {
+  const renderClanTabsView = (clan, clanClient, warClient) => {
     if (clan.tag) {
       return m('nav',
         renderClanTabs(),
-        renderClanTabsContent(clan, warClient)
+        renderClanTabsContent(clan, clanClient, warClient)
       )
     }
   }
@@ -68,8 +68,8 @@ export const ClanTabsView = () => {
     oninit: () => {
       // console.log('clantabsview loaded')
     },
-    view: ({ attrs: { clan, warClient }}) => {
-      return renderClanTabsView(clan, warClient)
+    view: ({ attrs: { clan, clanClient, warClient }}) => {
+      return renderClanTabsView(clan, clanClient, warClient)
     }
   }
 }
