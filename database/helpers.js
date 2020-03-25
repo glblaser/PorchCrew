@@ -1,5 +1,6 @@
 import { fetchClanData, fetchPlayerData, fetchBattlelog, populateCardDictionary, cardDictionary, fetchClanWarlogData } from './clashapi.js'
 import { getClan,
+  getClanPlayers,
   getClanWars,
   getClanwWarPlayers,
   getClanPlayersWars,
@@ -34,6 +35,7 @@ export const Client = ({ playerCache, clanCache, battleCache }) => {
     getWarlogData: (tag='#9VUPUQJP') => {return _getWarlogData(tag)},
     getClanWarPlayersData: (warId, clanTag) => {return _getClanWarPlayersData(warId, clanTag)},
     getClanData: (tag='#9VUPUQJP') => {return _getClanData(tag)},
+    getClanPlayersData: (tag) => { return _getClanPlayersData(tag)},
     getCollectionsData: (tag='#9VUPUQJP') => {return _getCollectionsData(tag)},
     getWarData: (tag='#9VUPUQJP') => {return _getWarData(tag)}
   }
@@ -459,6 +461,12 @@ const _getCollectionsData = async (tag='#9VUPUQJP') => {
   const collectionsData = await getCollections(tag)
 
   return collectionsData
+}
+
+const _getClanPlayersData = async (tag) => {
+  const clanPlayersData = await getClanPlayers(tag)
+
+  return clanPlayersData
 }
 
 const _getClanWarPlayersData = async (warId, clanTag) => {
