@@ -15,8 +15,8 @@ export const ClanTabsView = () => {
         'aria-selected': "true"
       }, 'Info'),
       m('a', {
-        id: 'clan-members-tab active',
-        class: 'nav-item nav-link',
+        id: 'clan-members-tab',
+        class: 'nav-item nav-link active',
         href: '#clan-members',
         'data-toggle': 'tab',
         'aria-controls': 'clan-members',
