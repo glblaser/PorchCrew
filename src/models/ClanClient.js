@@ -10,6 +10,13 @@ export const ClanClient = (host, port) => {
         method: 'GET',
         url: `http://${host}:${port}/clan/${clanTag}`,
       })
+    },
+    loadClanMembers: (clanTag) => {
+      const tag = clanTag.replace('#', '')
+      return m.request({
+        method: 'GET',
+        url: `http://${host}:${port}/clan/${tag}/members`,
+      })
     }
   }
 }
