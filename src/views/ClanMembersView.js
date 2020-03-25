@@ -6,7 +6,8 @@ export const ClanMembersView = ({ attrs: { clan, clanClient }}) => {
   let members = []
 
   const convertToDataTable = () => {
-    const membersData = members.map(member => [
+    const membersData = members.map((member, i) => [
+      i+1,
       member.clanRank,
       member.name,
       member.role,
@@ -17,6 +18,7 @@ export const ClanMembersView = ({ attrs: { clan, clanClient }}) => {
     ])
 
     const headings = [
+      { title: ''},
       { title: 'Rank'},
       { title: 'Name', className: 'player' },
       { title: 'Role' },
@@ -31,6 +33,12 @@ export const ClanMembersView = ({ attrs: { clan, clanClient }}) => {
       columns: headings,
       paging: false,
       info: false,
+      "columnDefs": [ {
+        "searchable": false,
+        "orderable": false,
+        "targets": 0
+      }],
+      "order": [[ 1, 'asc' ]],
       "footerCallback": function (row, data, start, end, display) {
         var api = this.api()
          $(api.column(3).footer()).html(
@@ -40,10 +48,15 @@ export const ClanMembersView = ({ attrs: { clan, clanClient }}) => {
     }
 
     $(document).ready(function() {
-      $('#clanMembersTable').DataTable(options)
+      const t = $('#clanMembersTable').DataTable(options)
       $("#clanMembersTable").append(
-        $('<tfoot/>').append( $("#clanMembersTable thead tr").clone() )
-    );
+        $('<tfoot/>').append( $("#clanMembersTable thead tr").clone() ))
+      t.on( 'order.dt search.dt', function () {
+          t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+              cell.innerHTML = i+1;
+          });
+      } ).draw();
+    
     })
     
   }
