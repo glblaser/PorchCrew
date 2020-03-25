@@ -44,8 +44,35 @@ export const ClanMembersView = ({ attrs: { clan, clanClient }}) => {
 
   let members = []
 
-  const testConfig = (el, isinit, context) => {
-    console.log('testconfig and el, isinit, contest is , ', el, isinit, context)
+  const convertToDataTable = () => {
+    const membersData = members.map(member => [
+      member.clanRank,
+      member.name,
+      member.role,
+      member.expLevel,
+      member.trophies,
+      member.donations,
+      member.donationsReceived
+    ])
+
+    const headings = [
+      { title: "Rank" },
+      { title: "Name" },
+      { title: "Role" },
+      { title: "Level" },
+      { title: "Trophies" },
+      { title: "Donations" },
+      { title: "Cards Received" }
+    ]
+
+    const options = {
+      data: membersData,
+      columns: headings
+    }
+    
+    $(document).ready(function() {
+      $('#clanMembersTable').DataTable(options);
+    })
   }
 
   let dataTableMade = false
@@ -56,35 +83,22 @@ export const ClanMembersView = ({ attrs: { clan, clanClient }}) => {
         oncreate: () => {
           console.log(members)
           if (!dataTableMade) {
-            $(document).ready(function() {
-              $('#example').DataTable( {
-                  data: dataSet,
-                  columns: [
-                      { title: "Name" },
-                      { title: "Position" },
-                      { title: "Office" },
-                      { title: "Extn." },
-                      { title: "Start date" },
-                      { title: "Salary" }
-                  ]
-              } );
-            })
+            convertToDataTable()
             dataTableMade = true
           }
         },
         view: () => {
           return m('table', {
-            id: 'example',
+            id: 'clanMembersTable',
             class: 'display',
             width: '100%',
-            config: testConfig()
           })
         }
       }
     } else {
       return {
         view: () => {
-          return m('div', 'test')
+          return m('a','')
         }
       }
     }
@@ -93,7 +107,7 @@ export const ClanMembersView = ({ attrs: { clan, clanClient }}) => {
   const renderClanMembersView = (clan) => {
     return m('div', {
       id: 'clan-members',
-      class: 'tab-pane fade col-sm-12',
+      class: 'tab-pane fade col-sm-12 show active',
       role: 'tabpanel',
       'aria-labelledby': 'clan-members-tab'
     }, 
