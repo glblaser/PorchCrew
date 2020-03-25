@@ -17,8 +17,8 @@ export const ClanMembersView = ({ attrs: { clan, clanClient }}) => {
       member.donationsReceived
     ])
 
-    const headings = [
-      { title: ''},
+    const columns = [
+      { title: '', className: 'indexCol'},
       { title: 'Rank'},
       { title: 'Name', className: 'player' },
       { title: 'Role' },
@@ -30,7 +30,7 @@ export const ClanMembersView = ({ attrs: { clan, clanClient }}) => {
 
     const options = {
       data: membersData,
-      columns: headings,
+      columns: columns,
       paging: false,
       info: false,
       "columnDefs": [ {

@@ -19,10 +19,10 @@ body {
   padding: 5px;
 }
 
-.row {
+/* .row {
   display: flex;
   align-items: center;
-}
+} */
 
 tbody .total, tbody .player, .clanTotal {
   font-weight: bold;
@@ -92,3 +92,12 @@ tbody {
 .player {
   border-right: 1px solid #dee2e6;
 }
+
+.indexCol {
+  background-color: #ddd;
+}
+
+thead .indexCol, tfoot .indexCol {
+  background-color: white;
+}
+
