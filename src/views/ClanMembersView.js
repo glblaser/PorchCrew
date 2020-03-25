@@ -2,7 +2,7 @@ import m from 'mithril'
 import _ from 'lodash'
 import { renderDateHeaders } from './helpers/tableHelper'
 
-export const ClanMembersView = ({ attrs: { clan, warClient }}) => {
+export const ClanMembersView = ({ attrs: { clan, clanClient }}) => {
   const dataSet = [
     [ "Tiger Nixon", "System Architect", "Edinburgh", "5421", "2011/04/25", "$320,800" ],
     [ "Garrett Winters", "Accountant", "Tokyo", "8422", "2011/07/25", "$170,750" ],
@@ -42,12 +42,52 @@ export const ClanMembersView = ({ attrs: { clan, warClient }}) => {
     [ "Unity Butler", "Marketing Designer", "San Francisco", "5384", "2009/12/09", "$85,675" ]
 ]
 
+  let members = []
+
+  const testConfig = (el, isinit, context) => {
+    console.log('testconfig and el, isinit, contest is , ', el, isinit, context)
+  }
+
+  let dataTableMade = false
+  
   const renderClanMembersTable = (clan) => {
-    return m('table', {
-      id: 'example',
-      class: 'display',
-      width: '100%'
-    })
+    if (members.length > 0) {
+      return {
+        oncreate: () => {
+          console.log(members)
+          if (!dataTableMade) {
+            $(document).ready(function() {
+              $('#example').DataTable( {
+                  data: dataSet,
+                  columns: [
+                      { title: "Name" },
+                      { title: "Position" },
+                      { title: "Office" },
+                      { title: "Extn." },
+                      { title: "Start date" },
+                      { title: "Salary" }
+                  ]
+              } );
+            })
+            dataTableMade = true
+          }
+        },
+        view: () => {
+          return m('table', {
+            id: 'example',
+            class: 'display',
+            width: '100%',
+            config: testConfig()
+          })
+        }
+      }
+    } else {
+      return {
+        view: () => {
+          return m('div', 'test')
+        }
+      }
+    }
   }
 
   const renderClanMembersView = (clan) => {
@@ -56,14 +96,17 @@ export const ClanMembersView = ({ attrs: { clan, warClient }}) => {
       class: 'tab-pane fade col-sm-12',
       role: 'tabpanel',
       'aria-labelledby': 'clan-members-tab'
-    }, renderClanMembersTable(clan))
+    }, 
+      m(renderClanMembersTable(clan))
+      // 'test'
+    )
   }
 
-  const loadCollections = (clan, warClient) => {
-    warClient.loadCollections(clan.tag)
+  const loadClanMembers = (clan, warClient) => {
+    clanClient.loadClanMembers(clan.tag)
     .then(res => {
       if (res != null) {
-        collections = res
+        members = res
         return true
       }
     })
@@ -71,24 +114,25 @@ export const ClanMembersView = ({ attrs: { clan, warClient }}) => {
   }
 
   return {
-    oninit: ({ attrs: { clan, warClient }}) => {
-      console.log('in oninit')
-      $(document).ready(function() {
-        $('#example').DataTable( {
-            data: dataSet,
-            columns: [
-                { title: "Name" },
-                { title: "Position" },
-                { title: "Office" },
-                { title: "Extn." },
-                { title: "Start date" },
-                { title: "Salary" }
-            ]
-        } );
-    } )
+    oninit: ({ attrs: { clan, clanClient }}) => {
+      // $(document).ready(function() {
+      //   $('#example').DataTable( {
+      //       data: dataSet,
+      //       columns: [
+      //           { title: "Name" },
+      //           { title: "Position" },
+      //           { title: "Office" },
+      //           { title: "Extn." },
+      //           { title: "Start date" },
+      //           { title: "Salary" }
+      //       ]
+      //   } );
+      // })
+      loadClanMembers(clan, clanClient)
     },
-    view: ({ attrs: { clan, warClient }}) => {
+    view: ({ attrs: { clan, clanClient }}) => {
       return renderClanMembersView(clan)
     }
   }
 }
+
