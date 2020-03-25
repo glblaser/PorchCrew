@@ -8,22 +8,22 @@ export const ClanMembersView = ({ attrs: { clan, clanClient }}) => {
   const convertToDataTable = () => {
     const membersData = members.map((member, i) => [
       i+1,
-      member.clanRank,
       member.name,
       member.role,
       member.expLevel,
       member.trophies,
+      member.clanRank,
       member.donations,
       member.donationsReceived
     ])
 
     const columns = [
       { title: '', className: 'indexCol'},
-      { title: 'Rank'},
       { title: 'Name', className: 'player' },
       { title: 'Role' },
       { title: 'Level' },
       { title: 'Trophies' },
+      { title: 'Rank'},
       { title: 'Donations' },
       { title: 'Cards Received' }
     ]
@@ -31,7 +31,9 @@ export const ClanMembersView = ({ attrs: { clan, clanClient }}) => {
     const options = {
       data: membersData,
       columns: columns,
-      paging: false,
+      // paging: false,
+      pageLength: 50,
+      lengthMenu: [10, 25, 50],
       info: false,
       "columnDefs": [ {
         "searchable": false,
@@ -39,12 +41,16 @@ export const ClanMembersView = ({ attrs: { clan, clanClient }}) => {
         "targets": 0
       }],
       "order": [[ 1, 'asc' ]],
-      "footerCallback": function (row, data, start, end, display) {
-        var api = this.api()
-         $(api.column(3).footer()).html(
-            ' ( $'  + ' total)'
-         );
-    }
+      scrollY: 566,
+      scrollX: true,
+      scrollCollapse: true,
+      paging: false,
+      // "footerCallback": function (row, data, start, end, display) {
+      //   var api = this.api()
+      //    $(api.column(3).footer()).html(
+      //       ' ( $'  + ' total)'
+      //    );
+      // }
     }
 
     $(document).ready(function() {
@@ -67,7 +73,6 @@ export const ClanMembersView = ({ attrs: { clan, clanClient }}) => {
     if (members.length > 0) {
       return {
         oncreate: () => {
-          console.log(members)
           if (!dataTableMade) {
             convertToDataTable()
             dataTableMade = true
@@ -98,11 +103,10 @@ export const ClanMembersView = ({ attrs: { clan, clanClient }}) => {
       'aria-labelledby': 'clan-members-tab'
     }, 
       m(renderClanMembersTable(clan))
-      // 'test'
     )
   }
 
-  const loadClanMembers = (clan, warClient) => {
+  const loadClanMembers = (clan, clanClient) => {
     clanClient.loadClanMembers(clan.tag)
     .then(res => {
       if (res != null) {
@@ -115,19 +119,6 @@ export const ClanMembersView = ({ attrs: { clan, clanClient }}) => {
 
   return {
     oninit: ({ attrs: { clan, clanClient }}) => {
-      // $(document).ready(function() {
-      //   $('#example').DataTable( {
-      //       data: dataSet,
-      //       columns: [
-      //           { title: "Name" },
-      //           { title: "Position" },
-      //           { title: "Office" },
-      //           { title: "Extn." },
-      //           { title: "Start date" },
-      //           { title: "Salary" }
-      //       ]
-      //   } );
-      // })
       loadClanMembers(clan, clanClient)
     },
     view: ({ attrs: { clan, clanClient }}) => {
