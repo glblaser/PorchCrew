@@ -39,7 +39,9 @@ export const ClanMembersView = ({ attrs: { clan, clanClient }}) => {
         "searchable": false,
         "orderable": false,
         "targets": 0
-      }],
+        },
+        { "orderSequence": [ "desc", "asc" ], "targets": [ 2, 3, 4, 5, 6, 7 ] }
+      ],
       "order": [[ 1, 'asc' ]],
       scrollY: 566,
       scrollX: true,
@@ -98,7 +100,7 @@ export const ClanMembersView = ({ attrs: { clan, clanClient }}) => {
   const renderClanMembersView = (clan) => {
     return m('div', {
       id: 'clan-members',
-      class: 'tab-pane fade col-sm-12',
+      class: 'tab-pane fade col-sm-12 show active',
       role: 'tabpanel',
       'aria-labelledby': 'clan-members-tab'
     }, 
