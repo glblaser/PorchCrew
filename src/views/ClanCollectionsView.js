@@ -76,7 +76,7 @@ export const ClanCollectionsView = ({ attrs: { clan, warClient }}) => {
   const renderClanCollectionsView = (clan) => {
     return m('div', {
       id: 'clan-collections',
-      class: 'tab-pane fade col-sm-12',
+      class: 'tab-pane fade col-sm-12 show active',
       role: 'tabpanel',
       'aria-labelledby': 'clan-collections-tab'
     }, renderCollectionsTable(clan))
