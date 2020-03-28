@@ -3,6 +3,7 @@ import { sequelize } from './db.js'
 
 import moment from "moment"
 import Sequelize from 'sequelize'
+const Op = Sequelize.Op
 
 export const getClanPlayers = async (clanTag) => {
   return Clan_Player.findAll({
@@ -15,6 +16,18 @@ export const getClanPlayers = async (clanTag) => {
       ['clanRank', 'ASC']
     ]
   })
+}
+
+export const deactivateOldClanPlayers = async (clanTag, currentPlayers) => {
+  return Clan_Player.update(
+    { currentMember: false },
+    { where: {
+        clanTag: clanTag,
+        currentMember: true,
+        playerTag: { [Op.notIn]: currentPlayers }
+      }
+    }
+  )
 }
 
 export const getClanPlayersWars = async (clanTag) => {
