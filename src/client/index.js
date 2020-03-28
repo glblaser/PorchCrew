@@ -21,5 +21,6 @@ const layout = (view, viewAttrs) => {
 m.route(document.body, '/', {
   '/': layout(),
   '/clan': layout(ClanView, { clanClient, warClient }),
-  '/clan/:clanTag': layout(ClanView, { clanClient, warClient })
+  '/clan/:clanTag': layout(ClanView, { clanClient, warClient }),
+  '/clan/:clanTag/:clanRoute': layout(ClanView, { clanClient, warClient })
 })
