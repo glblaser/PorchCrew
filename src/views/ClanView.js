@@ -3,7 +3,7 @@ import { tagSearchForm } from './components/tagSearchForm'
 import { ClanSummaryView } from './ClanSummaryView'
 import { ClanTabsView } from './ClanTabsView'
 
-export const ClanView = ({ attrs: { clanClient, warClient }}) => {
+export const ClanView = ({ attrs: { clanClient, warClient, clanRoute }}) => {
   let clan = {}
   let loading = false
   let error = false
@@ -44,7 +44,7 @@ export const ClanView = ({ attrs: { clanClient, warClient }}) => {
       return m('div.font-italic.font-semibold', 'No clan loaded')
     } else {
       return m('div', m(ClanSummaryView, { clan }),
-        m(ClanTabsView, { clan, clanClient, warClient })
+        m(ClanTabsView, { clan, clanClient, warClient, clanRoute })
       )
     }
   }
@@ -56,6 +56,7 @@ export const ClanView = ({ attrs: { clanClient, warClient }}) => {
       }
     },
     view: (vNode) => {
+      console.log('vNode is', vNode)
       return m('div#clanView',
         m(searchForm),
         renderClan(clan),
