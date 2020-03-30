@@ -18,7 +18,7 @@ const layout = (view, viewAttrs) => {
     : { view: () => m(Layout) }
 }
 
-m.route.mode = 'pathname'
+m.route.prefix = ''
 
 m.route(document.body, '/', {
   '/': layout(),
