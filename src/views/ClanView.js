@@ -44,7 +44,7 @@ export const ClanView = ({ attrs: { clanClient, warClient }}) => {
       return m('div.font-italic.font-semibold', 'No clan loaded')
     } else {
       return m('div', m(ClanSummaryView, { clan }),
-        m(ClanTabsView, { clan, warClient })
+        m(ClanTabsView, { clan, clanClient, warClient })
       )
     }
   }

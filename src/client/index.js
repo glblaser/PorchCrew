@@ -18,8 +18,13 @@ const layout = (view, viewAttrs) => {
     : { view: () => m(Layout) }
 }
 
+m.route.prefix = ''
+
 m.route(document.body, '/', {
   '/': layout(),
   '/clan': layout(ClanView, { clanClient, warClient }),
-  '/clan/:clanTag': layout(ClanView, { clanClient, warClient })
+  '/clan/:clanTag': layout(ClanView, { clanClient, warClient }),
+  '/clan/:clanTag/members': layout(ClanView, { clanClient, warClient }),
+  '/clan/:clanTag/collections': layout(ClanView, { clanClient, warClient }),
+  '/clan/:clanTag/war': layout(ClanView, { clanClient, warClient })
 })
