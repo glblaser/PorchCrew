@@ -18,6 +18,8 @@ const layout = (view, viewAttrs) => {
     : { view: () => m(Layout) }
 }
 
+m.route.mode = "pathname"
+
 m.route(document.body, '/', {
   '/': layout(),
   '/clan': layout(ClanView, { clanClient, warClient }),
