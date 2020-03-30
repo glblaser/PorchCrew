@@ -1,12 +1,9 @@
 import m from 'mithril'
 import { ClanWarView } from './ClanWarView'
 import { ClanCollectionsView } from './ClanCollectionsView'
-<<<<<<< HEAD
 import { ClanInfoView } from './ClanInfoView'
-=======
 import { ClanMembersView } from './ClanMembersView'
 import _ from 'lodash'
->>>>>>> master
 
 export const ClanTabsView = () => {
   const route = m.route.get()
@@ -19,18 +16,10 @@ export const ClanTabsView = () => {
     return m('div#clan-tabs.nav.nav-tabs[role="tablist"]', 
       m('a', { 
         id: 'clan-info-tab',
-<<<<<<< HEAD
-        class: 'nav-item nav-link active',
-        href: '#clan-info',
-        'data-toggle': "tab",
-        'aria-controls': "clan-info",
-        'aria-selected': "true"
-=======
         class: `nav-item nav-link ${clanTabRoute === 'info' ? 'active' : ''}`,
         onclick: () => {
           m.route.set(baseRoute)
         },
->>>>>>> master
       }, 'Info'),
       m('a', {
         id: 'clan-members-tab',
@@ -41,18 +30,10 @@ export const ClanTabsView = () => {
       }, 'Members'),
       m('a', {
         id: 'clan-collections-tab',
-<<<<<<< HEAD
-        class: 'nav-item nav-link',
-        href: '#clan-collections',
-        'data-toggle': 'tab',
-        'aria-controls': 'clan-collections',
-        'aria-selected': 'false'
-=======
         class: `nav-item nav-link ${clanTabRoute === 'collections' ? 'active' : ''}`,
         onclick: () => {
           m.route.set(baseRoute + '/collections')
         }
->>>>>>> master
       }, 'Collections'),
       m('a', {
         id: 'clan-war-tab',
