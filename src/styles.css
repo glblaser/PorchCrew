@@ -101,3 +101,11 @@ thead .indexCol, tfoot .indexCol {
   background-color: white;
 }
 
+#clan-tabs {
+  color: #007bff;
+}
+
+#clan-tabs a:hover {
+  color: black;
+  cursor: pointer;
+}
