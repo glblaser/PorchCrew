@@ -5,35 +5,38 @@ import { ClanMembersView } from './ClanMembersView'
 import _ from 'lodash'
 
 export const ClanTabsView = () => {
-  const renderClanTabs = (clanTab) => {
-    const route = m.route.get()
-    const baseRoute = _.join(_.split(route, '/', 3),'/')
+  const route = m.route.get()
+  const baseRoute = _.join(_.split(route, '/', 3),'/')
+  let clanTabRoute = _.split(route, '/')[3]
 
+  clanTabRoute = _.includes(['members', 'collections', 'war'], clanTabRoute) ? clanTabRoute : 'info'
+  
+  const renderClanTabs = () => {
     return m('div#clan-tabs.nav.nav-tabs[role="tablist"]', 
       m('a', { 
         id: 'clan-info-tab',
-        class: `nav-item nav-link ${clanTab === 'info' ? 'active' : ''}`,
+        class: `nav-item nav-link ${clanTabRoute === 'info' ? 'active' : ''}`,
         onclick: () => {
           m.route.set(baseRoute)
         },
       }, 'Info'),
       m('a', {
         id: 'clan-members-tab',
-        class: `nav-item nav-link ${clanTab === 'members' ? 'active' : ''}`,
+        class: `nav-item nav-link ${clanTabRoute === 'members' ? 'active' : ''}`,
         onclick: () => {
           m.route.set(baseRoute + '/members')
         }
       }, 'Members'),
       m('a', {
         id: 'clan-collections-tab',
-        class: `nav-item nav-link ${clanTab === 'collections' ? 'active' : ''}`,
+        class: `nav-item nav-link ${clanTabRoute === 'collections' ? 'active' : ''}`,
         onclick: () => {
           m.route.set(baseRoute + '/collections')
         }
       }, 'Collections'),
       m('a', {
         id: 'clan-war-tab',
-        class: `nav-item nav-link ${clanTab === 'war' ? 'active' : ''}`,
+        class: `nav-item nav-link ${clanTabRoute === 'war' ? 'active' : ''}`,
         onclick: () => {
           m.route.set(baseRoute + '/war')
         }
@@ -41,24 +44,20 @@ export const ClanTabsView = () => {
     )
   }
 
-  const renderClanTabsContent = (clan, clanClient, warClient, clanTab) => {
+  const renderClanTabsContent = (clan, clanClient, warClient) => {
 
     const tabs = {
       info: m('div', {
         id: 'clan-info',
-        class: `tab-pane fade col-sm-12 ${clanTab === 'info' ? 'show active' : ''}`,
-        // role: 'tabpanel',
-        // 'aria-labelledby': 'clan-info-tab'
+        class: `tab-pane fade col-sm-12 show active`,
       }, 'Clan info content'),
       members: m(ClanMembersView, { clan, clanClient, }),
       collections: m(ClanCollectionsView, { clan, warClient }),
       war: m(ClanWarView, { clan, warClient })
     }
 
-    console.log('routes[clanTab] is ', tabs[clanTab])
-
     return m('div#clan-tabs-content.tab-content',
-      tabs[clanTab]
+      tabs[clanTabRoute]
     )
 
     // return m('div#clan-tabs-content.tab-content',
@@ -74,11 +73,11 @@ export const ClanTabsView = () => {
     // )
   }
 
-  const renderClanTabsView = (clan, clanClient, warClient, clanRoute) => {
+  const renderClanTabsView = (clan, clanClient, warClient) => {
     if (clan.tag) {
       return m('nav',
-        renderClanTabs(clanRoute),
-        renderClanTabsContent(clan, clanClient, warClient, clanRoute)
+        renderClanTabs(),
+        renderClanTabsContent(clan, clanClient, warClient)
       )
     }
   }
@@ -87,8 +86,8 @@ export const ClanTabsView = () => {
     oninit: () => {
       // console.log('clantabsview loaded')
     },
-    view: ({ attrs: { clan, clanClient, warClient, clanRoute }}) => {
-      return renderClanTabsView(clan, clanClient, warClient, clanRoute)
+    view: ({ attrs: { clan, clanClient, warClient }}) => {
+      return renderClanTabsView(clan, clanClient, warClient)
     }
   }
 }
