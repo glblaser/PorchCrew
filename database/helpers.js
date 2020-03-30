@@ -1,6 +1,7 @@
 import { fetchClanData, fetchPlayerData, fetchBattlelog, populateCardDictionary, cardDictionary, fetchClanWarlogData } from './clashapi.js'
 import { getClan,
   getClanPlayers,
+  deactivateOldClanPlayers,
   getClanWars,
   getClanwWarPlayers,
   getClanPlayersWars,
@@ -393,8 +394,10 @@ const _saveClanData = async (tag='#9VUPUQJP', clanCache, force=false) => {
     if (data) {
       const clan = _buildClan(data)
       const clanPlayers = _buildClanPlayersArray(data.tag, data.memberList)
-  
+      const playerTags = clanPlayers.map(player => player.playerTag)
+      
       await updateClan(clan)
+      await deactivateOldClanPlayers(tag, playerTags)
       await updateClanPlayers(clanPlayers)
   
       clanCache.set(tag, true)

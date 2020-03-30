@@ -3,6 +3,7 @@ import { playerCache, clanCache, battleCache } from './cache.js'
 const client = Client({ playerCache, clanCache, battleCache })
 import { getClan,
   getClanPlayers,
+  deactivateOldClanPlayers,
   getClanWars,
   getClanwWarPlayers,
   getClanPlayersWars,
@@ -49,10 +50,10 @@ export const scripts = () => {
     // const keys = Object.keys(clan.items[0])
     // console.log(keys)
     
-    console.log('getClanPlayer is ', await client.getClanPlayersData('#9VUPUQJP'))
+    // console.log('getClanPlayer is ', await client.getClanPlayersData('#9VUPUQJP'))
     // console.log(await fetchClanData('#9VUPUQJP'))
 
-
+    // console.log(await deactivateOldClanPlayers('#9VUPUQJP'))
     // console.log(await client.savePlayerData(['#PGJQ80JV9', '#9U9Q9YJU']))
     // crawlBattlesSavexPlayerOnly('#LC8GU2CR')
     crawlPorchCrew()

@@ -100,7 +100,7 @@ export const ClanMembersView = ({ attrs: { clan, clanClient }}) => {
   const renderClanMembersView = (clan) => {
     return m('div', {
       id: 'clan-members',
-      class: 'tab-pane fade col-sm-12',
+      class: 'tab-pane fade col-sm-12 show active',
       role: 'tabpanel',
       'aria-labelledby': 'clan-members-tab'
     }, 

@@ -114,7 +114,7 @@ export const ClanWarView = ({ attrs: { clan, warClient }}) => {
   const renderClanWarView = (clan) => {
     return m('div', {
       id: 'clan-war',
-      class: 'tab-pane fade col-sm-12',
+      class: 'tab-pane fade col-sm-12 show active',
       role: 'tabpanel',
       'aria-labelledby': 'clan-war-tab'
       }, renderWarTable(clan))
