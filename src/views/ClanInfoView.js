@@ -4,10 +4,6 @@ import flags from '../imgs/flags/*.png'
 
 export const ClanInfoView = ({ attrs: { clan, warClient }}) => {
 
-
-  // <div class="panel panel-info">
-  // <div class="panel-heading">Panel with panel-info class</div>
-
   const renderClanDescription = (description) => {
     return m('div', { class: 'row' }, 
       m('div', { class: 'col', id: 'clanDescription' }, description)
