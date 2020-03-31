@@ -34,7 +34,7 @@ tbody .total, tbody .player, .clanTotal {
 }
 
 .clanInfo {
-  margin-top: 15px;
+  margin: 15px;
 }
 
 .dropdown {
@@ -115,4 +115,8 @@ thead .indexCol, tfoot .indexCol {
   background: #007bff;
   color: white;
   padding: 10px;
+}
+
+img {
+  margin-top: 3px;
 }

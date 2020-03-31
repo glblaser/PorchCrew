@@ -1,4 +1,6 @@
 import m from 'mithril'
+import imgs from '../imgs/*.png'
+import flags from '../imgs/flags/*.png'
 
 export const ClanInfoView = ({ attrs: { clan, warClient }}) => {
 
@@ -6,45 +8,82 @@ export const ClanInfoView = ({ attrs: { clan, warClient }}) => {
   // <div class="panel panel-info">
   // <div class="panel-heading">Panel with panel-info class</div>
 
+  const renderClanDescription = (description) => {
+    return m('div', { class: 'row' }, 
+      m('div', { class: 'col', id: 'clanDescription' }, description)
+    )
+  }
+
+  const renderClanType = (type) => {
+    return m('div.col-sm-5',
+      m('div', { class: 'row' }, 
+        m('img', { src: imgs.people, style: 'width:auto;height:38px;' }),
+        m('div', { class: 'col' }, 
+          m('h6', 'Type'),
+          m('div', { class: 'text-muted' }, type)
+        )
+      )
+    )
+  }
+
+  const renderRequiredTrophies = (requiredTrophies) => {
+    return m('div.col-sm-5',
+      m('div.row', 
+        m('img', { src: imgs.trophy_small, style: 'width:auto;height:38px;' }),
+        m('div', { class: 'col' },
+          m('h6', 'Required Trophies'),
+          m('div', { class: 'text-muted' }, requiredTrophies)
+        )
+      )
+    )
+  }
+
+  const renderLocation = (locationName) => {
+    return m('div.col-sm-5',
+      m('div.row', 
+        m('img', { src: flags['US'], style: 'width:auto;height:38px;' }),
+        m('div', { class: 'col' },
+          m('h6', 'Location'),
+          m('div', { class: 'text-muted' }, locationName)
+        )
+      )
+    )
+  }
+
+  const renderDonationsPerWeek = (donationsPerWeek) => {
+    return m('div.col-sm-5',
+      m('div.row', 
+        m('img', { src: imgs.cards_small, style: 'width:auto;height:38px;' }),
+        m('div', { class: 'col' },
+          m('h6', 'Weekly Donations'),
+          m('div', { class: 'text-muted' }, donationsPerWeek)
+        )
+      )
+    )
+  }
+
   const renderClanInfoView = (clan) => {
     console.log('clan is ', clan)
     return m('div', {
       id: 'clan-info',
-      class: 'tab-pane fade col-sm-12 show active',
-      role: 'tabpanel',
-      'aria-labelledby': 'clan-info-tab'
+      class: 'col-sm-12',
     }, m('div', { class: 'container clanInfo' }, 
-        m('div', { class: 'row' }, 
-          m('div', { class: 'col', id: 'clanDescription' }, clan.description)
-        ),
-        m('div', { class: 'row clanInfo' }, 
-          m('div', { class: 'col' }, 
-            m('h6', 'Type'),
-            m('div', { class: 'text-muted' }, clan.type)
-          ),
-          m('div', { class: 'col' }, 
-            m('h6', 'Required Trophies'),
-            m('div', { class: 'text-muted' }, clan.requiredTrophies)
-          )
+        renderClanDescription(clan.description),
+        m('div', { class: 'row clanInfo' },
+          renderClanType(clan.type),
+          renderRequiredTrophies(clan.requiredTrophies),
+          m('div.col-sm-2')
         ),
         m('div', { class: 'row clanInfo' },
-          m('div', { class: 'col' },
-            m('h6', 'Location'),
-            m('div', { class: 'text-muted' }, clan.locationName)
-          ),
-          m('div', { class: 'col' },
-            m('h6', 'Weekly Donations'),
-            m('div', { class: 'text-muted' }, clan.donationsPerWeek)
-          )
+          renderLocation(clan.locationName),
+          renderDonationsPerWeek(clan.donationsPerWeek),
+          m('div.col-sm-2')
         )
       )
     )
   }
 
   return {
-    // oninit: ({ attrs: { clan, warClient }}) => {
-    //   loadWarDays(clan, warClient)
-    // },
     view: ({ attrs: { clan }}) => {
       return renderClanInfoView(clan)
     }
