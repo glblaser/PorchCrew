@@ -2,6 +2,10 @@ import m from 'mithril'
 
 export const ClanInfoView = ({ attrs: { clan, warClient }}) => {
 
+
+  // <div class="panel panel-info">
+  // <div class="panel-heading">Panel with panel-info class</div>
+
   const renderClanInfoView = (clan) => {
     console.log('clan is ', clan)
     return m('div', {
@@ -9,25 +13,29 @@ export const ClanInfoView = ({ attrs: { clan, warClient }}) => {
       class: 'tab-pane fade col-sm-12 show active',
       role: 'tabpanel',
       'aria-labelledby': 'clan-info-tab'
-    }, m('div', { class: 'container' }, clan.description),
-      m('div', { class: 'row' }, 
-        m('div', { class: 'col' }, 
-          m('h6', 'Type'),
-          m('div', { class: 'text-muted' }, clan.type)
+    }, m('div', { class: 'container clanInfo' }, 
+        m('div', { class: 'row' }, 
+          m('div', { class: 'col', id: 'clanDescription' }, clan.description)
         ),
-        m('div', { class: 'col' }, 
-          m('h6', 'Required Trophies'),
-          m('div', { class: 'text-muted' }, clan.requiredTrophies)
-        )
-      ),
-      m('div', { class: 'row' },
-        m('div', { class: 'col' },
-          m('h6', 'Location'),
-          m('div', { class: 'text-muted' }, clan.locationName)
+        m('div', { class: 'row clanInfo' }, 
+          m('div', { class: 'col' }, 
+            m('h6', 'Type'),
+            m('div', { class: 'text-muted' }, clan.type)
+          ),
+          m('div', { class: 'col' }, 
+            m('h6', 'Required Trophies'),
+            m('div', { class: 'text-muted' }, clan.requiredTrophies)
+          )
         ),
-        m('div', { class: 'col' },
-          m('h6', 'Weekly Donations'),
-          m('div', { class: 'text-muted' }, clan.donationsPerWeek)
+        m('div', { class: 'row clanInfo' },
+          m('div', { class: 'col' },
+            m('h6', 'Location'),
+            m('div', { class: 'text-muted' }, clan.locationName)
+          ),
+          m('div', { class: 'col' },
+            m('h6', 'Weekly Donations'),
+            m('div', { class: 'text-muted' }, clan.donationsPerWeek)
+          )
         )
       )
     )

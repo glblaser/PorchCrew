@@ -1,4 +1,5 @@
 import m from 'mithril'
+import imgs from '../imgs/*.png'
 
 export const ClanSummaryView = () => {
   
@@ -13,27 +14,36 @@ export const ClanSummaryView = () => {
 
   const renderClanMembers = (members) => {
     return m('div.col-sm-3',
-      m('div.well', 
-        m('h5', 'Members'),
-        m('p.text-muted', `${members}/50`)  
+      m('div', { class: 'row' },
+        m('img', { src: imgs.members, style: 'width:auto;height:50px;' }),
+        m('div.col', 
+          m('h5', 'Members'),
+          m('p.text-muted', `${members}/50`)  
+        )
       )
     )
   }
 
   const renderClanScore = (clanScore) => {
     return m('div.col-sm-3',
-      m('div.well', 
-        m('h5', 'Clan Score'),
-        m('p.text-muted', clanScore)  
+      m('div', { class: 'row' },
+        m('img', { src: imgs.trophy_small, style: 'width:auto;height:50px;' }),
+        m('div.col', 
+          m('h5', 'Clan Score'),
+          m('p.text-muted', clanScore)  
+        )
       )
     )
   }
 
   const renderClanWarTrophies = (clanWarTrophies) => {
     return m('div.col-sm-3',
-      m('div.well', 
-        m('h5', 'War Trophies'),
-        m('p.text-muted', clanWarTrophies)  
+      m('div', { class: 'row' },
+        m('img', { src: imgs.clan_trophy, style: 'width:auto;height:50px;' }),
+        m('div.col', 
+          m('h5', 'War Trophies'),
+          m('p.text-muted', clanWarTrophies)  
+        )
       )
     )
   }
