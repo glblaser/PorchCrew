@@ -48,10 +48,7 @@ export const ClanTabsView = () => {
   const renderClanTabsContent = (clan, clanClient, warClient) => {
 
     const tabs = {
-      info: m('div', {
-        id: 'clan-info',
-        class: `tab-pane fade col-sm-12 show active`,
-      }, 'Clan info content'),
+      info: m(ClanInfoView, { clan }),
       members: m(ClanMembersView, { clan, clanClient, }),
       collections: m(ClanCollectionsView, { clan, warClient }),
       war: m(ClanWarView, { clan, warClient })

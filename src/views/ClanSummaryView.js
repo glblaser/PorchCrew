@@ -14,7 +14,7 @@ export const ClanSummaryView = () => {
   const renderClanMembers = (members) => {
     return m('div.col-sm-3',
       m('div.well', 
-        m('h6', 'Members'),
+        m('h5', 'Members'),
         m('p.text-muted', `${members}/50`)  
       )
     )
@@ -23,7 +23,7 @@ export const ClanSummaryView = () => {
   const renderClanScore = (clanScore) => {
     return m('div.col-sm-3',
       m('div.well', 
-        m('h6', 'Clan Score'),
+        m('h5', 'Clan Score'),
         m('p.text-muted', clanScore)  
       )
     )
@@ -32,7 +32,7 @@ export const ClanSummaryView = () => {
   const renderClanWarTrophies = (clanWarTrophies) => {
     return m('div.col-sm-3',
       m('div.well', 
-        m('h6', 'War Trophies'),
+        m('h5', 'War Trophies'),
         m('p.text-muted', clanWarTrophies)  
       )
     )
