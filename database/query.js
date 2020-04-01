@@ -126,6 +126,19 @@ export const getCollections = async (clanTag) => {
             clan_war_players
           where 
             "clanTag"='${clanTag}'
+          and
+          exists(select *
+          	from 
+	            (select
+	          		"warId"
+	   	        from
+		          clan_wars
+		        where
+		          "tag"='${clanTag}'
+		        order by "createdDate" desc
+	        	limit 10) as warIds
+	        where
+	        	"warId" = clan_war_players."warId")
           union
           select
             "playerTag", "name"
