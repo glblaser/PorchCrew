@@ -32,51 +32,65 @@ export const deactivateOldClanPlayers = async (clanTag, currentPlayers) => {
 
 export const getClanPlayersWars = async (clanTag) => {
   const queryStr = 
-    `select
-      all_wars_players."warId",
-      all_wars_players."createdDate",
-      all_wars_players."playerTag",
-      all_wars_players.name,
-      clan_war_players."battlesPlayed",
-      clan_war_players.wins,
-      clan_war_players."numberOfBattles"
+  `select
+  all_wars_players."warId",
+  all_wars_players."createdDate",
+  all_wars_players."playerTag",
+  all_wars_players.name,
+  clan_war_players."battlesPlayed",
+  clan_war_players.wins,
+  clan_war_players."numberOfBattles"
+from
+  (select 
+    ten_clan_wars."warId",
+    ten_clan_wars."createdDate",
+    players."playerTag",
+    players."name"
+  from
+    (select
+      "warId", "createdDate", tag
     from
+      clan_wars
+    where
+      "tag"='${clanTag}'
+    order by "createdDate" desc
+    limit 10) as ten_clan_wars
+    cross join 
       (select 
-        ten_clan_wars."warId",
-        ten_clan_wars."createdDate",
-        players."playerTag",
-        players."name"
-      from
-        (select
-          "warId", "createdDate", tag
-        from
+        "playerTag", "name"
+      from 
+        clan_war_players
+      where 
+        "clanTag"='${clanTag}'
+      and
+      exists(select *
+        from 
+          (select
+            "warId"
+           from
           clan_wars
         where
           "tag"='${clanTag}'
         order by "createdDate" desc
-        limit 10) as ten_clan_wars
-        cross join 
-          (select 
-            "playerTag", "name"
-          from 
-            clan_war_players
-          where 
-            "clanTag"='${clanTag}'
-          union
-          select
-            "playerTag", "name"
-          from
-            clan_players
-          where 
-            "clanTag"='${clanTag}') as players
-      where "tag"='${clanTag}') as all_wars_players
-    left join
-      clan_war_players
-    on
-      all_wars_players."warId" = clan_war_players."warId"
-    and
-      all_wars_players."playerTag" = clan_war_players."playerTag"
-    order by upper(all_wars_players.name), "createdDate" DESC`
+        limit 10) as warIds
+      where
+        "warId" = clan_war_players."warId")
+      union
+      select
+        "playerTag", "name"
+      from
+        clan_players
+      where 
+        "clanTag"='${clanTag}') as players
+  where "tag"='${clanTag}') as all_wars_players
+left join
+  clan_war_players
+on
+  all_wars_players."warId" = clan_war_players."warId"
+and
+  all_wars_players."playerTag" = clan_war_players."playerTag"
+order by upper(all_wars_players.name), "createdDate" DESC
+`
 
   return sequelize.query(queryStr, {type: Sequelize.QueryTypes.SELECT})
 }
@@ -112,6 +126,19 @@ export const getCollections = async (clanTag) => {
             clan_war_players
           where 
             "clanTag"='${clanTag}'
+          and
+          exists(select *
+          	from 
+	            (select
+	          		"warId"
+	   	        from
+		          clan_wars
+		        where
+		          "tag"='${clanTag}'
+		        order by "createdDate" desc
+	        	limit 10) as warIds
+	        where
+	        	"warId" = clan_war_players."warId")
           union
           select
             "playerTag", "name"
