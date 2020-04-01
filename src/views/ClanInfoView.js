@@ -34,10 +34,12 @@ export const ClanInfoView = ({ attrs: { clan, warClient }}) => {
     )
   }
 
-  const renderLocation = (locationName) => {
+  const renderLocation = ({ locationName, locationCountryCode }) => {
+    const flag = flags[locationCountryCode] ? flags[locationCountryCode] : flags.Globe
+
     return m('div.col-sm-5',
       m('div.row', 
-        m('img', { src: flags['US'], style: 'width:auto;height:38px;' }),
+        m('img', { src: flag, style: 'width:auto;height:38px;' }),
         m('div', { class: 'col' },
           m('h6', 'Location'),
           m('div', { class: 'text-muted' }, locationName)
@@ -71,7 +73,7 @@ export const ClanInfoView = ({ attrs: { clan, warClient }}) => {
           m('div.col-sm-2')
         ),
         m('div', { class: 'row clanInfo' },
-          renderLocation(clan.locationName),
+          renderLocation(clan),
           renderDonationsPerWeek(clan.donationsPerWeek),
           m('div.col-sm-2')
         )

@@ -61,3 +61,15 @@ export const crawlPorchCrew = async () => {
     console.log('warlog updated')
   } else console.log('warlog update failed')
 }
+
+export const crawlClans = async (tag = '#9VUPUQJP') => {
+  const { allOpponents } = await client.saveWarlogData(tag)
+  if (allOpponents) {
+    allOpponents.forEach(tag => {
+      client.saveClanData(tag)
+    })
+    allOpponents.forEach(tag => {
+      crawlClans(tag)
+    })
+  }
+}
