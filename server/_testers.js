@@ -22,7 +22,7 @@ import { getClan,
   getInitClanCache,
   getInitBattleCache } from '../database/query.js'
 
-import { crawlBattles, crawlBattlesSavePlayerOnly, crawlPorchCrew } from './crawlers.js'
+import { crawlBattles, crawlBattlesSavePlayerOnly, crawlPorchCrew, crawlClans } from './crawlers.js'
 
 export const scripts = () => {
 
@@ -56,6 +56,7 @@ export const scripts = () => {
     // console.log(await deactivateOldClanPlayers('#9VUPUQJP'))
     // console.log(await client.savePlayerData(['#PGJQ80JV9', '#9U9Q9YJU']))
     // crawlBattlesSavexPlayerOnly('#LC8GU2CR')
+    // crawlClans('#99R2VRQ')
     crawlPorchCrew()
     const warlogData = await client.getWarlogData()
     // console.log(warlogData)

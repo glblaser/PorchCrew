@@ -28,7 +28,7 @@ import * as router from './routers/index.js'
 app.use('/clan/', router.clan);
 
 populateCardDictionary()
-client.initCache()
+// client.initCache()
 porchCrewCron.start()
 
 //for spot testing
