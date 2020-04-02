@@ -216,7 +216,7 @@ export const ClanCollectionsView = ({ attrs: { clan, warClient }}) => {
       class: 'tab-pane fade col-sm-12 show active',
       role: 'tabpanel',
       'aria-labelledby': 'clan-collections-tab'
-    }, collections[0] ? m(renderCollectionsTable(clan)) : 'no table')
+    }, collections[0] ? m(renderCollectionsTable(clan)) : '')
   }
 
   const loadCollections = (clan, warClient) => {
