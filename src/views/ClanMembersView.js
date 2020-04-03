@@ -39,7 +39,9 @@ export const ClanMembersView = ({ attrs: { clan, clanClient }}) => {
         "searchable": false,
         "orderable": false,
         "targets": 0
-      }],
+        },
+        { "orderSequence": [ "desc", "asc" ], "targets": [ 2, 3, 4, 6, 7 ] }
+      ],
       "order": [[ 1, 'asc' ]],
       scrollY: 566,
       scrollX: true,

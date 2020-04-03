@@ -1,4 +1,5 @@
 import m from 'mithril'
+import imgs from '../imgs/*.png'
 import { ClanWarView } from './ClanWarView'
 import { ClanCollectionsView } from './ClanCollectionsView'
 import { ClanInfoView } from './ClanInfoView'
@@ -13,35 +14,74 @@ export const ClanTabsView = () => {
   clanTabRoute = _.includes(['members', 'collections', 'war'], clanTabRoute) ? clanTabRoute : 'info'
   
   const renderClanTabs = () => {
-    return m('div#clan-tabs.nav.nav-tabs[role="tablist"]', 
-      m('a', { 
+
+    const renderInfoTab = () => {
+      return m('a', { 
         id: 'clan-info-tab',
         class: `nav-item nav-link ${clanTabRoute === 'info' ? 'active' : ''}`,
         onclick: () => {
           m.route.set(baseRoute)
         },
-      }, 'Info'),
-      m('a', {
+      }, 
+        m('div', { class: 'row' },
+          m('img', { src: imgs.angry_king, style: 'width:auto;height:22px;padding-left:10px;padding-right:10px;' }),
+          m('div', { style: 'padding-right:10px;'}, 'Info')
+        )
+      )
+    }
+
+    const renderMembersTab = () => {
+      return m('a', {
         id: 'clan-members-tab',
         class: `nav-item nav-link ${clanTabRoute === 'members' ? 'active' : ''}`,
         onclick: () => {
           m.route.set(baseRoute + '/members')
         }
-      }, 'Members'),
-      m('a', {
+      }, 
+        m('div', { class: 'row' },
+          m('img', { src: imgs.members, style: 'width:auto;height:22px;padding-left:10px;padding-right:10px;' }),
+          m('div', { style: 'padding-right:10px;'}, 'Members')
+        )
+      )
+    }
+
+    const renderCollectionsTab = () => {
+      return m('a', {
         id: 'clan-collections-tab',
         class: `nav-item nav-link ${clanTabRoute === 'collections' ? 'active' : ''}`,
         onclick: () => {
           m.route.set(baseRoute + '/collections')
         }
-      }, 'Collections'),
-      m('a', {
+      },
+        m('div', { class: 'row' }, 
+          m('div', '   '),
+          m('img', { src: imgs.collections, style: 'width:auto;height:22px;padding-left:10px;padding-right:10px;' }),
+          m('div', { style: 'padding-right:10px;'}, 'Collections')
+        )
+      )
+    }
+
+    const renderWarTab = () => {
+      return m('a', {
         id: 'clan-war-tab',
         class: `nav-item nav-link ${clanTabRoute === 'war' ? 'active' : ''}`,
         onclick: () => {
           m.route.set(baseRoute + '/war')
         }
-      }, 'War')
+      }, m('div', { class: 'row' }, 
+        m('div', '   '),
+          m('img', { src: imgs.trophy_ribbon, style: 'width:auto;height:22px;padding-left:10px;padding-right:10px;' }),
+          m('div', { style: 'padding-right:10px;'}, 'War')
+        )
+      )
+    }
+
+
+    return m('div#clan-tabs.nav.nav-tabs', 
+      renderInfoTab(),
+      renderMembersTab(),
+      renderCollectionsTab(),
+      renderWarTab()
     )
   }
 
