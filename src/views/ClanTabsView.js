@@ -22,7 +22,12 @@ export const ClanTabsView = () => {
         onclick: () => {
           m.route.set(baseRoute)
         },
-      }, 'Info')
+      }, 
+        m('div', { class: 'row' },
+          m('img', { src: imgs.angry_king, style: 'width:auto;height:22px;padding-left:10px;padding-right:10px;' }),
+          m('div', { style: 'padding-right:10px;'}, 'Info')
+        )
+      )
     }
 
     const renderMembersTab = () => {
@@ -33,8 +38,7 @@ export const ClanTabsView = () => {
           m.route.set(baseRoute + '/members')
         }
       }, 
-        m('div', { class: 'row' }, 
-          m('div', '   '),
+        m('div', { class: 'row' },
           m('img', { src: imgs.members, style: 'width:auto;height:22px;padding-left:10px;padding-right:10px;' }),
           m('div', { style: 'padding-right:10px;'}, 'Members')
         )
@@ -48,7 +52,13 @@ export const ClanTabsView = () => {
         onclick: () => {
           m.route.set(baseRoute + '/collections')
         }
-      }, 'Collections')
+      },
+        m('div', { class: 'row' }, 
+          m('div', '   '),
+          m('img', { src: imgs.collections, style: 'width:auto;height:22px;padding-left:10px;padding-right:10px;' }),
+          m('div', { style: 'padding-right:10px;'}, 'Collections')
+        )
+      )
     }
 
     const renderWarTab = () => {
@@ -58,7 +68,12 @@ export const ClanTabsView = () => {
         onclick: () => {
           m.route.set(baseRoute + '/war')
         }
-      }, 'War')
+      }, m('div', { class: 'row' }, 
+        m('div', '   '),
+          m('img', { src: imgs.trophy_ribbon, style: 'width:auto;height:22px;padding-left:10px;padding-right:10px;' }),
+          m('div', { style: 'padding-right:10px;'}, 'War')
+        )
+      )
     }
 
 
