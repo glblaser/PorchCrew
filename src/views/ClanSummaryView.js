@@ -15,9 +15,9 @@ export const ClanSummaryView = () => {
   const renderClanMembers = (members) => {
     return m('div.col-sm',
       m('div', { class: 'row' },
-        m('img', { src: imgs.members, style: 'width:auto;height:50px;' }),
+        m('img', { src: imgs.members, style: 'width:auto;height:50px;margin-left:10px;' }),
         m('div.col', 
-          m('h5', 'Members'),
+          m('h5', { style: 'min-width:70px' }, 'Members'),
           m('p.text-muted', `${members}/50`)  
         )
       )
@@ -27,9 +27,9 @@ export const ClanSummaryView = () => {
   const renderClanScore = (clanScore) => {
     return m('div.col-sm',
       m('div', { class: 'row' },
-        m('img', { src: imgs.trophy_small, style: 'width:auto;height:50px;' }),
+        m('img', { src: imgs.trophy_small, style: 'width:auto;height:50px;margin-left:10px;' }),
         m('div.col', 
-          m('h5', 'Clan Score'),
+          m('h5', { style: 'min-width:70px' }, 'Clan Score'),
           m('p.text-muted', clanScore)  
         )
       )
@@ -39,9 +39,9 @@ export const ClanSummaryView = () => {
   const renderClanWarTrophies = (clanWarTrophies) => {
     return m('div.col-sm',
       m('div', { class: 'row' },
-        m('img', { src: imgs.clan_trophy, style: 'width:auto;height:50px;' }),
+        m('img', { src: imgs.clan_trophy, style: 'width:auto;height:50px;margin-left:10px;' }),
         m('div.col', 
-          m('h5', 'War Trophies'),
+          m('h5', { style: 'min-width:70px' }, 'War Trophies'),
           m('p.text-muted', clanWarTrophies)  
         )
       )

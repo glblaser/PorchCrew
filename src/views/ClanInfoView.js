@@ -11,9 +11,9 @@ export const ClanInfoView = ({ attrs: { clan, warClient }}) => {
   }
 
   const renderClanType = (type) => {
-    return m('div.col-sm-5',
-      m('div', { class: 'row' }, 
-        m('img', { src: imgs.people, style: 'width:auto;height:38px;' }),
+    return m('div.col-sm-5', { style: 'margin-bottom:10px;'},
+      m('div.row',
+        m('img', { src: imgs.people, style: 'width:auto;height:38px;margin-right:10px;' }),
         m('div', { class: 'col' }, 
           m('h6', 'Type'),
           m('div', { class: 'text-muted' }, type)
@@ -23,9 +23,9 @@ export const ClanInfoView = ({ attrs: { clan, warClient }}) => {
   }
 
   const renderRequiredTrophies = (requiredTrophies) => {
-    return m('div.col-sm-5',
+    return m('div.col-sm-5', { style: 'margin-bottom:10px;'},
       m('div.row', 
-        m('img', { src: imgs.trophy_small, style: 'width:auto;height:38px;' }),
+        m('img', { src: imgs.trophy_small, style: 'width:38;height:38px;margin-right:10px' }),
         m('div', { class: 'col' },
           m('h6', 'Required Trophies'),
           m('div', { class: 'text-muted' }, requiredTrophies)
@@ -39,7 +39,7 @@ export const ClanInfoView = ({ attrs: { clan, warClient }}) => {
 
     return m('div.col-sm-5',
       m('div.row', 
-        m('img', { src: flag, style: 'width:auto;height:38px;' }),
+        m('img', { src: flag, style: 'width:auto;height:38px;margin-right:10px' }),
         m('div', { class: 'col' },
           m('h6', 'Location'),
           m('div', { class: 'text-muted' }, locationName)
@@ -51,7 +51,7 @@ export const ClanInfoView = ({ attrs: { clan, warClient }}) => {
   const renderDonationsPerWeek = (donationsPerWeek) => {
     return m('div.col-sm-5',
       m('div.row', 
-        m('img', { src: imgs.cards_small, style: 'width:auto;height:38px;' }),
+        m('img', { src: imgs.cards_small, style: 'width:auto;height:38px;margin-right:10px' }),
         m('div', { class: 'col' },
           m('h6', 'Weekly Donations'),
           m('div', { class: 'text-muted' }, donationsPerWeek)
