@@ -51,7 +51,7 @@
     "babel-loader": "^8.0.6",
     "chai": "^4.2.0",
     "live-server": "^1.2.1",
-    "mocha": "^7.1.0",
+    "mocha": "^10.2.0",
     "mysql": "^2.18.1",
     "nodemon": "^1.19.4",
     "parcel-bundler": "^1.12.4",
